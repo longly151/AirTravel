@@ -2,8 +2,8 @@ import 'react-native';
 import 'jest-enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
-import { globalAny } from '@utils/functions';
 
+const globalAny: any = global;
 /**
  * Set up DOM in node.js environment for Enzyme to mount to
  */
