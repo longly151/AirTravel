@@ -1,0 +1,137 @@
+version: 2.1
+orbs:
+  rn: react-native-community/react-native@4.4.2
+
+jobs:
+  analyse_js:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
+      - run:
+          command: yarn lint
+          name: Run ESLint
+      - run:
+          command: yarn test
+          name: Jest
+  checkout_code:
+    executor:
+      name: rn/linux_js
+      node_version: '10'
+    steps:
+      - checkout
+      - persist_to_workspace:
+          paths: .
+          root: .
+  fastlane_android_release:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
+      - run:
+          command: echo
+          name: Run Fastlane
+  fastlane_ios_release:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
+      - run:
+          command: echo 1
+          name: Run Fastlane
+
+workflows:
+  test:
+    jobs:
+      - checkout_code:
+          filters:
+            branches:
+              ignore:
+                - dev
+                - master
+      - analyse_js:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore:
+                - dev
+                - master
+      - rn/android_build:
+          build_type: debug
+          name: build_android_debug
+          project_path: android
+          requires:
+            - analyse_js
+          filters:
+            branches:
+              ignore:
+                - dev
+                - master
+      - rn/android_build:
+          build_type: release
+          name: build_android_release
+          project_path: android
+          requires:
+            - analyse_js
+          filters:
+            branches:
+              ignore:
+                - dev
+                - master
+      # - rn/android_test:
+      #     detox_configuration: android.emu.release
+      #     requires:
+      #       - build_android_release
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - dev
+      #           - master
+      # - rn/ios_build:
+      #     build_configuration: Release
+      #     device: iPhone X
+      #     name: build_ios_release
+      #     node_version: '10'
+      #     project_path: ios/Example.xcodeproj
+      #     requires:
+      #       - analyse_js
+      #     scheme: Example
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - dev
+      #           - master
+      # - rn/ios_build_and_test:
+      #     build_configuration: Release
+      #     detox_configuration: ios.sim.release
+      #     device: iPhone X
+      #     node_version: '10'
+      #     project_path: ios/Example.xcodeproj
+      #     requires:
+      #       - analyse_js
+      #     scheme: Example
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - dev
+      #           - master
+      # - fastlane_android_release:
+      #     requires:
+      #       - rn/android_test
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - dev
+      #           - master
+      # - fastlane_ios_release:
+      #     requires:
+      #       - rn/ios_build_and_test
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - dev
+      #           - master
