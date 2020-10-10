@@ -17,7 +17,7 @@ type TFontFamily = typeof Font.fontFamily;
 type TFontSize = typeof Font.fontSize;
 type TType = typeof lightTheme.Text;
 
-export interface TextProps extends Omit<ETextProps, 'fontFamily' | 'fontWeight' | 'fontSize'> {
+export interface TextProps extends Omit<ETextProps, 'fontFamily' | 'fontSize'> {
   fontFamily?: keyof TFontFamily;
   fontSize?: keyof TFontSize | number;
   type?: keyof TType;

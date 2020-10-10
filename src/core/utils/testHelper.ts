@@ -90,7 +90,7 @@ class CTestHelper {
     /**
      * Use Shallow (For HOCs Component) => OK
      */
-    const component: any = this.TestHelper.getComponent(node, listOfProps, type);
+    const component: any = this.getComponent(node, listOfProps, type);
     const testStyle = component.props()[styleName];
     return testStyle;
   }
@@ -109,7 +109,7 @@ class CTestHelper {
     styleName: 'style' | 'containerStyle' | 'iconStyle' | 'iconContainerStyle' | 'avatarStyle' | 'overlayContainerStyle' | 'placeholderStyle' | 'titleStyle' | 'badgeStyle' | 'textStyle' | 'buttonStyle' | 'buttonContainerStyle' | 'disabledStyle' | 'disabledTitleStyle' | 'disabledTextStyle' | 'disabledSelectedStyle' | 'disabledSelectedTextStyle' | 'innerBorderStyle'| 'selectedButtonStyle' | 'selectedTextStyle' | 'loadingStyle' | 'dividerStyle' | 'featuredSubtitleStyle' | 'featuredTitleStyle' | 'imageStyle' | 'imageWrapperStyle' | 'wrapperStyle' | 'backgroundImageStyle' | 'leftContainerStyle' | 'centerContainerStyle' | 'rightContainerStyle' | 'barStyle' | 'disabledInputStyle' | 'inputContainerStyle' | 'inputStyle' | 'labelStyle' | 'leftIconContainerStyle' | 'rightIconContainerStyle' | 'contentContainerStyle' | 'rightContentContainerStyle' | 'subtitleStyle' | 'rightTitleStyle' | 'rightSubtitleStyle' | 'overlayStyle' | 'thumbStyle' | 'trackStyle' | 'fontStyle' | 'h1Style' | 'h2Style' | 'h3Style' | 'h4Style' | 'captionStyle' | 'imageContainerStyle' = 'style',
     level: number = 1,
   ) {
-    const component: any = this.TestHelper.getComponent(node, listOfProps, type);
+    const component: any = this.getComponent(node, listOfProps, type);
     let testStyle;
     switch (level) {
       case 1:
@@ -145,7 +145,7 @@ class CTestHelper {
     haveStyleProp: boolean = true,
   ) {
     it('should render without issues', () => {
-      const component: any = this.TestHelper.getComponent(node, {}, type);
+      const component: any = this.getComponent(node, {}, type);
       expect(component.length).toBe(1);
       expect(toJson(component)).toMatchSnapshot();
     });
@@ -155,7 +155,7 @@ class CTestHelper {
         const props: any = {
           children: 'Children Text',
         };
-        const component: any = this.TestHelper.getComponent(node, props, type);
+        const component: any = this.getComponent(node, props, type);
         switch (level) {
           case 1:
             expect(component.props().children).toBe('Children Text');
@@ -176,8 +176,8 @@ class CTestHelper {
         const props = {
           style: { color: 'red', fontSize: 30 },
         };
-        const testStyle = this.TestHelper.getStyle(node, props, type);
-        const component: any = this.TestHelper.getComponent(node, props, type);
+        const testStyle = this.getStyle(node, props, type);
+        const component: any = this.getComponent(node, props, type);
         switch (level) {
           case 1:
             expect(testStyle).toMatchObject(props.style);

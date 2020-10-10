@@ -5,7 +5,7 @@ exports[`Container Component should render without issues 1`] = `
   column={true}
   style={
     Object {
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#FFFFFF",
       "flex": 1,
     }
   }

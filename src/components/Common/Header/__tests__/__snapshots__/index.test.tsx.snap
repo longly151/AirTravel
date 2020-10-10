@@ -5,7 +5,7 @@ exports[`Header Component should render without issues 1`] = `
   ViewComponent={[Function]}
   containerStyle={
     Object {
-      "backgroundColor": "#012066",
+      "backgroundColor": "#107E83",
       "borderBottomColor": undefined,
       "borderBottomWidth": undefined,
       "bottom": undefined,

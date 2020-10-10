@@ -3,7 +3,7 @@ import {
   View, StyleSheet, SectionList,
 } from 'react-native';
 import {
-  Container, Header, QuickView, Avatar,
+  Container, Header, QuickView
 } from '@components';
 import { ListItem, Divider, Icon } from 'react-native-elements';
 import { withTranslation } from 'react-i18next';
@@ -37,7 +37,7 @@ interface Props {
 class Settings extends React.PureComponent<Props> {
   renderItem = ({
     item: {
-      title, backgroundColor, icon, rightTitle, hideChevron, rightElement,
+      title, backgroundColor, icon, rightElement,
     },
   }: any) => (
     <ListItem

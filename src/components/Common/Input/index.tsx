@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, Platform,
+  StyleSheet, NativeSyntheticEvent, TextInputFocusEventData,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 

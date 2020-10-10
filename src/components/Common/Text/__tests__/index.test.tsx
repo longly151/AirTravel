@@ -38,7 +38,7 @@ describe('Text Component', () => {
      */
     const props2 = {
       fontFamily: 'RobotoBold',
-      fontWeight: 'thin',
+      thin: true,
       fontSize: 'large',
     };
     const testStyle2 = TestHelper.getStyle(target, props2, type);

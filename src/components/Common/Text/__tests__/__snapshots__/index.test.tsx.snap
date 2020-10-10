@@ -4,7 +4,7 @@ exports[`Text Component should render without issues 1`] = `
 <Themed.Text
   style={
     Object {
-      "color": "#012066",
+      "color": "#121212",
       "fontSize": 16,
     }
   }

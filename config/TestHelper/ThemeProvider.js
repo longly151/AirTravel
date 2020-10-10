@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import deepmerge from 'deepmerge';
-import lightTheme from '../../../../src/core/themes/Theme';
+import {lightTheme} from '../../../../src/core/themes/Theme';
 
 export const ThemeContext = React.createContext({
-  theme: lightTheme,
+  theme: lightTheme
 });
 
 export default class ThemeProvider extends React.Component {
@@ -14,7 +14,19 @@ export default class ThemeProvider extends React.Component {
     this.defaultTheme = lightTheme;
     this.state = {
       theme: this.defaultTheme,
+      useDark: props.useDark,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const {useDark} = props;
+    if (useDark !== state.useDark) {
+      return {
+        theme: lightTheme,
+        useDark,
+      };
+    }
+    return null;
   }
 
   updateTheme = (updates) => {
@@ -49,10 +61,12 @@ export default class ThemeProvider extends React.Component {
 ThemeProvider.propTypes = {
   theme: PropTypes.object,
   children: PropTypes.node.isRequired,
+  useDark: PropTypes.bool,
 };
 
 ThemeProvider.defaultProps = {
   theme: {},
+  useDark: false,
 };
 
 export const ThemeConsumer = ThemeContext.Consumer;

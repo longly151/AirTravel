@@ -71,7 +71,7 @@ class ProductListScreen extends PureComponent<Props> {
             uri: item.mainImage?.link,
           }}
           imageProps={{ borderRadius: 10 }}
-          // containerStyle={containerStyle}
+          containerStyle={containerStyle}
           wrapperStyle={wrapperStyle}
         >
           <Text

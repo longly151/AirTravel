@@ -40,7 +40,20 @@ class CAppView {
     return CAppView._instance;
   }
 
-  shadow = (color: string) => (
+  shadow = Platform.select({
+    android: {
+      elevation: 4,
+    },
+    default: {
+      shadowColor: '#000000',
+      shadowOffset: { height: 2, width: 2 },
+      shadowOpacity: 1,
+      shadowRadius: 1,
+      elevation: 4,
+    },
+  });
+
+  createShadow = (color: string = '#000000') => (
     Platform.select({
       android: {
         elevation: 4,

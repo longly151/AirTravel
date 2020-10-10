@@ -1,15 +1,15 @@
 import React from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   Button as ElementButton,
   ButtonProps as EButtonProps,
   withTheme,
   ThemeProps,
 } from 'react-native-elements';
-import Font from '@themes/Font';
 import _ from 'lodash';
 import { Translation } from 'react-i18next';
 import Color from '@themes/Color';
+import AppView from '@utils/appView';
 
 export interface ButtonProps extends Omit<EButtonProps, 'raised' | 'type'> {
   width?: number | string;
@@ -164,7 +164,6 @@ class Button extends React.PureComponent<ButtonProps> {
         borderRadius = 0;
       }
     }
-    const { shadowView } = theme;
 
     const containerStyle: any = StyleSheet.flatten([
       {
@@ -210,7 +209,7 @@ class Button extends React.PureComponent<ButtonProps> {
     if (warning) borderColor = colors.warning;
     if (error) borderColor = colors.error;
 
-    let buttonStyle = StyleSheet.flatten([
+    let buttonStyle: any = StyleSheet.flatten([
       {
         width,
         height,
@@ -222,7 +221,7 @@ class Button extends React.PureComponent<ButtonProps> {
       titlePadding && { padding: titlePadding },
       titlePaddingHorizontal && { paddingHorizontal: titlePaddingHorizontal },
       titlePaddingVertical && { paddingVertical: titlePaddingVertical },
-      shadow && shadowView,
+      shadow && AppView.shadow,
       buttonStyleProp,
       !titleCenter && { justifyContent: 'flex-start' },
     ]);

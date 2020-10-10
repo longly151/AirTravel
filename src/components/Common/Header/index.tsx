@@ -120,7 +120,7 @@ class Header extends PureComponent<HeaderProps> {
         paddingBottom: 10,
         paddingHorizontal: AppView.headerPaddingHorizontal,
       },
-      shadow ? [{ marginBottom: 3 }, theme.shadowView] : undefined,
+      shadow ? [{ marginBottom: 3 }, AppView.shadow] : undefined,
       containerStyleProp,
     ]);
 
