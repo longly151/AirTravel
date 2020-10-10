@@ -39,23 +39,21 @@
     "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     "baseUrl": "./",                          /* Base directory to resolve non-absolute module names. */
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@config/*": ["./src/core/config/*"],
-      "@locales": ["./src/core/locales/index.ts"],
-      "@locales/*": ["./src/core/locales/*"],
-      "@contents/*": ["./src/contents/*"],
-      "@themes": ["./src/core/themes/index.ts"],
-      "@themes/*": ["./src/core/themes/*"],
-      "@utils/*": ["./src/core/utils/*"],
-      "@validators": ["src/core/content/example/*s"],
-      "@validators/*": ["./src/core/validators"],
-      "@core/*": ["./src/core/*"],
-      "@fonts/*": ["./src/assets/fonts/*"],
-      "@images/*": ["./src/assets/images/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@components": ["./src/components/index.ts"],
-      "@components/*": ["./src/components/*"],
-      "@src/*": ["./src/*"]
+      "@app/*": ["src/app/*"],
+      "@config/*": ["src/core/config/*"],
+      "@locales": ["src/core/locales/index.ts"],
+      "@locales/*": ["src/core/locales/*"],
+      "@contents/*": ["src/contents/*"],
+      "@themes/*": ["src/core/themes/*"],
+      "@utils/*": ["src/core/utils/*"],
+      "@validators": ["src/core/validators/index.ts"],
+      "@core/*": ["src/core/*"],
+      "@fonts/*": ["src/assets/fonts/*"],
+      "@images/*": ["src/assets/images/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components": ["src/components/index.ts"],
+      "@components/*": ["src/components/*"],
+      "@src/*": ["src/*"]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */

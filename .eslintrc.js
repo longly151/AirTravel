@@ -14,10 +14,16 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'global-require': 0,
     'no-param-reassign': 0,
-    'object-curly-newline': 'off',
-    'react/jsx-closing-bracket-location': [
-      1,
-      {selfClosing: 'line-aligned', nonEmpty: 'after-props'},
-    ],
+    'object-curly-newline': 0,
+    'no-underscore-dangle': 0,
+    // 'react/jsx-closing-bracket-location': [
+    //   1,
+    //   {selfClosing: 'line-aligned', nonEmpty: 'after-props'},
+    // ],
+    // Fix Package Bugs (Definition for rule '...' was not found.)
+    '@typescript-eslint/no-redeclare': 0,
+    '@typescript-eslint/comma-dangle': 0,
+    '@typescript-eslint/no-loop-func': 0,
+    '@typescript-eslint/no-shadow': 0
   },
 };

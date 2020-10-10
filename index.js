@@ -4,11 +4,11 @@
 
 import {
   AppRegistry,
-  YellowBox,
+  LogBox,
 } from 'react-native';
 import moment from 'moment';
-// import App from './src/app/app';
-import App from './App';
+import App from './src/app/app';
+// import App from './App';
 import {
   name as appName,
 } from './app.json';
@@ -17,8 +17,8 @@ import 'moment/locale/vi';
 
 moment.locale('vi');
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'Cannot update during an existing state transition',
-  'Require cycle: node_modules/',
+  'Warning: Cannot update a component from inside the function body of a different component',
 ]);
 AppRegistry.registerComponent(appName, () => App);
