@@ -110,7 +110,7 @@ class Text extends PureComponent<TextProps> {
         fontFamily: Font.fontFamily.RobotoItalic,
       },
       thin && {
-        fontWeight: 200,
+        fontWeight: '200',
       },
       bold && {
         fontWeight: 'bold',

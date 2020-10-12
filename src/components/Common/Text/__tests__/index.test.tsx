@@ -43,7 +43,7 @@ describe('Text Component', () => {
     };
     const testStyle2 = TestHelper.getStyle(target, props2, type);
     expect(testStyle2.fontFamily).toBe(Font.fontFamily.RobotoBold);
-    expect(testStyle2.fontWeight).toBe(200);
+    expect(testStyle2.fontWeight).toBe('200');
     expect(testStyle2.fontSize).toBe(Font.fontSize.large);
 
     /**

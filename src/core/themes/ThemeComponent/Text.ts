@@ -3,9 +3,9 @@ import Color from '../Color';
 /**
  * Text
  */
-const headerFontSize = 28;
+const headerFontSize = 25;
 const headerFontWeight = 'bold';
-const xTitleFontSize = 24;
+const xTitleFontSize = 22;
 const titleFontSize = 20;
 const paragraphFontSize = 16;
 const subtitleFontSize = 14;

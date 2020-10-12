@@ -38,7 +38,7 @@ class InputExample extends PureComponent {
               textCenter
               marginVertical={5}
             />
-            <Button title="Log Value" marginBottom={20} center onPress={() => { console.log(this.input1.getText()); }} />
+            <Button title="Log Value" titlePaddingHorizontal={20} marginBottom={20} center onPress={() => { console.log(this.input1.getText()); }} />
             <Input
               ref={(ref: any) => { this.input2 = ref; }}
               label="Input with default value"
@@ -47,7 +47,7 @@ class InputExample extends PureComponent {
               textCenter
               marginVertical={5}
             />
-            <Button title="Log Value" marginBottom={20} center onPress={() => { console.log(this.input2.getText()); }} />
+            <Button title="Log Value" titlePaddingHorizontal={20} marginBottom={20} center onPress={() => { console.log(this.input2.getText()); }} />
             <Input
               ref={(ref: any) => { this.inputPicker = ref; }}
               pickerProps={{
@@ -56,15 +56,15 @@ class InputExample extends PureComponent {
               }}
               textCenter
             />
-            <Button title="Log Selected Label" marginBottom={5} center onPress={() => { console.log(this.inputPicker.getText()); }} />
-            <Button title="Log Selected Index" marginBottom={5} center onPress={() => { console.log(this.inputPicker.getSelectedIndex()); }} />
-            <Button title="Log Selected Value" marginBottom={20} center onPress={() => { console.log(this.inputPicker.getSelectedValue()); }} />
+            <Button title="Log Selected Label" marginBottom={5} titlePaddingHorizontal={20} center onPress={() => { console.log(this.inputPicker.getText()); }} />
+            <Button title="Log Selected Index" marginBottom={5} titlePaddingHorizontal={20} center onPress={() => { console.log(this.inputPicker.getSelectedIndex()); }} />
+            <Button title="Log Selected Value" marginBottom={20} titlePaddingHorizontal={20} center onPress={() => { console.log(this.inputPicker.getSelectedValue()); }} />
             <Input
               ref={(ref: any) => { this.inputDateTimePicker = ref; }}
               dateTimePickerProps
             />
-            <Button title="Log Date String" marginBottom={5} center onPress={() => { console.log(this.inputPicker.getText()); }} />
-            <Button title="Log Date" marginBottom={5} center onPress={() => { console.log(this.inputPicker.getDate()); }} />
+            <Button title="Log Date String" titlePaddingHorizontal={20} marginBottom={5} center onPress={() => { console.log(this.inputPicker.getText()); }} />
+            <Button title="Log Date" titlePaddingHorizontal={20} marginBottom={5} center onPress={() => { console.log(this.inputPicker.getDate()); }} />
             <Input label="Sharp" validationField="name" type="sharp" marginVertical={5} />
             <Input label="Rounded" validationField="email" marginVertical={5} />
             <Input label="Underline" validationField="name" type="underline" marginVertical={5} />

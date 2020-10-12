@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/no-redeclare': 0,
     '@typescript-eslint/comma-dangle': 0,
     '@typescript-eslint/no-loop-func': 0,
-    '@typescript-eslint/no-shadow': 0
+    '@typescript-eslint/no-shadow': 0,
+    'jsx-a11y/accessible-emoji': 0,
   },
 };

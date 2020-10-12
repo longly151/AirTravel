@@ -29,6 +29,13 @@ class ButtonExample extends PureComponent {
             <Text type="header">Default Button</Text>
           </QuickView>
           <QuickView style={{ marginBottom: 15 }}>
+            <Button
+              title="Clear Button"
+              sharp
+              clear
+              titlePadding={0}
+              containerStyle={{ width: 91 }}
+            />
             <Button t="auth:login" />
             <Button width={200} title="Button with width = 200" />
             <Button height={70} title="Button with height = 70" />
@@ -88,7 +95,7 @@ class ButtonExample extends PureComponent {
               titleList={titleList}
               onItemPress={this.onItemPress}
               defaultActiveIndex={2}
-              propsChange={false}
+              defaultIndexChange={false}
               // activeBackgroundColor="transparent"
               // activeBorderColor={Color.orange}
               // activeTitleColor={Color.orange}

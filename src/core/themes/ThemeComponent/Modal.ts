@@ -1,13 +1,23 @@
+import AppView from '@utils/appView';
 import Color from '../Color';
-
 /**
- * Header
+ * Modal
  */
+const { roundedBorderRadius } = AppView;
+const width = 300;
+const height = 150;
+
 export const darkModal = {
-  backgroundColor: Color.darkSecondaryBackground,
+  backgroundColor: Color.darkPrimaryBackground,
   textColor: Color.darkPrimaryText,
+  roundedBorderRadius,
+  width,
+  height
 };
 export const lightModal = {
-  backgroundColor: Color.lightSecondaryBackground,
+  backgroundColor: Color.lightPrimaryBackground,
   textColor: Color.lightPrimaryText,
+  roundedBorderRadius,
+  width,
+  height
 };

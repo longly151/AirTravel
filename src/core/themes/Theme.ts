@@ -40,7 +40,7 @@ export const darkTheme = {
   Input: darkInput,
   CheckBox: darkCheckBox,
   Dropdown: darkDropdown,
-  AppModal: darkModal,
+  Modal: darkModal,
   ParallaxScrollView: darkParallaxScrollView,
   Map: darkMap,
 };
@@ -72,7 +72,7 @@ export const lightTheme = {
   Input: lightInput,
   CheckBox: lightCheckBox,
   Dropdown: lightDropdown,
-  AppModal: lightModal,
+  Modal: lightModal,
   ParallaxScrollView: lightParallaxScrollView,
   Map: lightMap,
 };

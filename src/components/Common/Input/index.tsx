@@ -23,6 +23,7 @@ import { connect } from 'react-redux';
 import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
 import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
+import AppView from '@utils/appView';
 import Button from '../Button/DefaultButton';
 import Text, { TextProps } from '../Text';
 import QuickView from '../View/QuickView';
@@ -337,7 +338,6 @@ class Input extends React.Component<InputProps, State> {
       ...otherProps
     } = this.props;
     const theme = AppHelper.getThemeByName(themeName);
-    const { shadowView } = theme;
 
     /**
      * Language Handle
@@ -401,7 +401,7 @@ class Input extends React.Component<InputProps, State> {
       backgroundColor && { backgroundColor },
       center && { alignSelf: 'center' },
       shadow && { paddingBottom: 3 },
-      shadow && shadowView,
+      shadow && AppView.shadow,
       containerStyleProp,
     ]);
 

@@ -6,7 +6,7 @@ import {
 import { withTheme, ThemeProps } from 'react-native-elements';
 
 class DateTimePickerExample extends PureComponent {
-  private dateTimePickerRef: any;
+  dateTimePickerRef: any;
 
   render() {
     return (

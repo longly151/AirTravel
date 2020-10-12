@@ -27,8 +27,8 @@ export const darkButton = {
    * Outline
    */
   outlineBorderWidth,
-  outlineBorderColor: Color.darkSecondaryBackground,
-  outlineTitleColor: Color.darkSecondaryBackground,
+  outlineBorderColor: Color.white,
+  outlineTitleColor: Color.white,
   /**
    * Active
    */
@@ -54,8 +54,8 @@ export const lightButton = {
    * Outline
    */
   outlineBorderWidth,
-  outlineBorderColor: Color.lightSecondaryBackground,
-  outlineTitleColor: Color.lightSecondaryBackground,
+  outlineBorderColor: Color.black,
+  outlineTitleColor: Color.black,
   /**
    * Active
    */

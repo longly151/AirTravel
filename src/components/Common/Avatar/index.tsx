@@ -3,9 +3,11 @@ import { StyleSheet } from 'react-native';
 import {
   Avatar as EAvatar,
   AvatarProps as EAvatarProps,
+  IconProps,
+  ImageProps,
 } from 'react-native-elements';
 
-export interface AvatarProps extends EAvatarProps {
+export interface AvatarProps extends Omit<EAvatarProps, 'accessory'>{
   margin?: number;
   marginTop?: number;
   marginBottom?: number;
@@ -14,6 +16,7 @@ export interface AvatarProps extends EAvatarProps {
   marginHorizontal?: number;
   marginVertical?: number;
   backgroundColor?: string;
+  accessory?: boolean | Partial<IconProps> & Partial<ImageProps>;
 }
 
 class Avatar extends React.PureComponent<AvatarProps> {
@@ -29,6 +32,8 @@ class Avatar extends React.PureComponent<AvatarProps> {
       backgroundColor,
       overlayContainerStyle: overlayContainerStyleProp,
       containerStyle: containerStyleProp,
+      accessory,
+      ...otherProps
     } = this.props;
 
     const overlayContainerStyle = StyleSheet.flatten([
@@ -48,13 +53,15 @@ class Avatar extends React.PureComponent<AvatarProps> {
       },
       containerStyleProp,
     ]);
-
+    const Accessory: any = accessory;
     return (
       <EAvatar
-        {...this.props}
+        {...otherProps}
         overlayContainerStyle={overlayContainerStyle}
         containerStyle={containerStyle}
-      />
+      >
+        {Accessory ? <EAvatar.Accessory {...Accessory} /> : null}
+      </EAvatar>
     );
   }
 }

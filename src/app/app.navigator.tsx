@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { withTheme } from 'react-native-elements';
 import { themeSelector, requireLoginSelector } from '@contents/Config/redux/selector';
@@ -41,7 +41,11 @@ class AppNavigator extends Component<Props, State> {
       const newTheme = lightTheme.key === themeRedux ? lightTheme : darkTheme;
       updateTheme(newTheme);
     }
+
     const barStyle = themeRedux === ThemeEnum.DARK ? 'dark-content' : 'light-content';
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('transparent', true);
+    }
     StatusBar.setBarStyle(barStyle, true);
 
     return (

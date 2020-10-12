@@ -3,12 +3,14 @@
 /**
  * Common
  */
+import StatusBar from './Common/StatusBar';
 import QuickView from './Common/View/QuickView';
 import Container from './Common/View/Container';
 import Body from './Common/View/Body';
 import Text from './Common/Text';
 import Header from './Common/Header';
 import Button from './Common/Button/DefaultButton';
+import ModalButton from './Common/Button/ModalButton';
 import ButtonGroup from './Common/Button/ButtonGroup';
 import Avatar from './Common/Avatar';
 import Picker from './Common/Picker';
@@ -18,7 +20,6 @@ import Input from './Common/Input';
 import FlatList from './Common/FlatList/DefaultFlatList';
 import Image from './Common/Image';
 import Dropdown from './Common/Dropdown';
-import AppModal from './Common/Modal';
 import Carousel from './Common/Carouse';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
 import HTML from './Common/Webview/HTML';
@@ -39,6 +40,7 @@ export {
   /**
    * Common
    */
+  StatusBar,
   QuickView,
   Container,
   Body,
@@ -54,7 +56,7 @@ export {
   FlatList,
   Image,
   Dropdown,
-  AppModal,
+  ModalButton,
   Carousel,
   ParallaxScrollView,
   HTML,

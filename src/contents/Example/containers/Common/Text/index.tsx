@@ -23,10 +23,11 @@ class TextExample extends PureComponent {
             <Text error>Error Text</Text>
           </QuickView>
           <QuickView style={{ marginBottom: 15 }}>
+            <Text thin>Thin Text</Text>
+            <Text>Normal Text</Text>
             <Text bold>Bold Text</Text>
             <Text italic>Italic Text</Text>
             <Text underline>Underline Text</Text>
-            <Text fontWeight="heavy">Text with custom fontWeight</Text>
             <Text fontSize="large">Text with custom fontSize</Text>
             <Text fontFamily="RobotoThin">Text with custom fontFamily</Text>
           </QuickView>
@@ -38,9 +39,9 @@ class TextExample extends PureComponent {
             <Text type="subtitle">Subtitle</Text>
           </QuickView>
           <QuickView style={{ marginBottom: 15 }}>
-            <Text icon={{ name: 'account' }}>Text with Icon</Text>
-            <Text icon={{ name: 'account' }} iconRight>Text with Icon on the right side</Text>
-            <Text icon={{ name: 'account', color: Color.orange, size: 20 }}>Text with Custom Icon</Text>
+            <Text icon={{ name: 'account', size: 18 }}>Text with Icon</Text>
+            <Text icon={{ name: 'account', size: 18 }} iconRight>Text with Icon on the right side</Text>
+            <Text icon={{ name: 'account', color: Color.orange, size: 18 }}>Text with Custom Icon</Text>
           </QuickView>
         </Body>
       </Container>

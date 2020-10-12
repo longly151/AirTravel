@@ -59,6 +59,17 @@ class AvatarExample extends PureComponent {
               title="XL"
               marginBottom={10}
             />
+            <Avatar
+              size="xlarge"
+              rounded
+              source={{
+                uri:
+      'https://www.easy-profile.com/support.html?controller=attachment&task=download&tmpl=component&id=2883',
+              }}
+              title="XL"
+              marginBottom={10}
+              accessory={{ size: 40 }}
+            />
           </QuickView>
           <QuickView>
             <Avatar

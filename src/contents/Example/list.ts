@@ -97,7 +97,7 @@ export const exampleList = [
   {
     name: 'Modal',
     iconName: 'alert-outline',
-    linearGradientColors: ['#4CAF50', '#8BC34A'],
+    linearGradientColors: ['#d0cd25', '#d3037c'],
     stack: exampleStack.commonExampleStack,
     screen: commonStack.modal,
   },

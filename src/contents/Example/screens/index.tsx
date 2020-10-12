@@ -6,7 +6,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationService } from '@utils/navigation';
 import {
-  QuickView, Body, Container, Avatar,
+  QuickView, Body, Container, Avatar, StatusBar,
 } from '@components';
 import Color from '@themes/Color';
 import { withTranslation } from 'react-i18next';
@@ -34,13 +34,16 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
+  navigation: any;
   t: any;
 }
+
 class ExampleList extends PureComponent<Props> {
   render() {
     const { t } = this.props;
     return (
       <Container scroll>
+        <StatusBar backgroundColor="#FD6B78" />
         <QuickView flex={1}>
           <View style={styles.headerContainer}>
             <Icon color="white" name="invert-colors" size={62} />

@@ -218,14 +218,13 @@ class Button extends React.PureComponent<ButtonProps> {
         borderColor: active ? activeBorderColor : borderColor,
         backgroundColor: active ? activeBackgroundColor : backgroundColor,
       },
-      titlePadding && { padding: titlePadding },
-      titlePaddingHorizontal && { paddingHorizontal: titlePaddingHorizontal },
-      titlePaddingVertical && { paddingVertical: titlePaddingVertical },
+      !_.isUndefined(titlePadding) && { padding: titlePadding },
+      !_.isUndefined(titlePaddingHorizontal) && { paddingHorizontal: titlePaddingHorizontal },
+      !_.isUndefined(titlePaddingVertical) && { paddingVertical: titlePaddingVertical },
       shadow && AppView.shadow,
       buttonStyleProp,
       !titleCenter && { justifyContent: 'flex-start' },
     ]);
-
     /**
      * titleStyle
      */
@@ -240,8 +239,7 @@ class Button extends React.PureComponent<ButtonProps> {
         fontSize: fontSize || theme.Button.titleFontSize,
         color: active ? activeTitleColor : titleColor,
         marginRight: (iconProp && !iconRight && !circle) ? 10 : 0,
-        marginLeft: (iconProp && iconRight && !circle) ? 10 : -10,
-        paddingHorizontal: 5,
+        marginLeft: (iconProp && iconRight && !circle) ? 10 : 0,
       },
       titleStyleProp,
     ]);
@@ -250,7 +248,7 @@ class Button extends React.PureComponent<ButtonProps> {
      * icon, iconContainerStyle
      */
     const iconContainerStyle: any = StyleSheet.flatten([
-      (iconProp && !iconRight && title) && { marginRight: 15 },
+      (iconProp && !iconRight && title) && { marginRight: 5 },
       iconContainerStyleProp,
     ]);
     const defaultIcon = {
@@ -258,8 +256,7 @@ class Button extends React.PureComponent<ButtonProps> {
       color: active ? activeTitleColor : titleColor,
       type: 'material-community',
     };
-    const icon = _.merge(defaultIcon, iconProp);
-
+    const icon = iconProp ? _.merge(defaultIcon, iconProp) : undefined;
     /**
      * type
      */

@@ -4,7 +4,7 @@ import Button, { ButtonProps } from '../DefaultButton';
 import FlatList, { FlatListProps } from '../../FlatList/DefaultFlatList';
 
 export interface ButtonGroupProps extends Omit<ButtonProps, 'title'|'t'|'onPress'|'margin'|'marginLeft'|'marginVertical'>{
-  propsChange?: boolean;
+  defaultIndexChange?: boolean;
   titleList?: Array<string>;
   tList?: Array<string>;
   onItemPress?: (index: number) => any;
@@ -18,7 +18,7 @@ interface State {
 
 class ButtonGroup extends React.Component<ButtonGroupProps, State> {
   static defaultProps = {
-    propsChange: true,
+    defaultIndexChange: true,
   };
 
   private flatListRef: any;
@@ -30,9 +30,9 @@ class ButtonGroup extends React.Component<ButtonGroupProps, State> {
   }
 
   static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    const { propsChange } = nextProps;
+    const { defaultIndexChange } = nextProps;
     const { activeIndex } = prevState;
-    if (propsChange && nextProps.defaultActiveIndex !== activeIndex) {
+    if (defaultIndexChange && nextProps.defaultActiveIndex !== activeIndex) {
       return {
         activeIndex: nextProps.defaultActiveIndex,
       };
@@ -100,7 +100,7 @@ class ButtonGroup extends React.Component<ButtonGroupProps, State> {
 
   render() {
     const {
-      titleList, flatListProps, defaultActiveIndex, propsChange,
+      titleList, flatListProps, defaultActiveIndex, defaultIndexChange,
     } = this.props;
     const { activeIndex } = this.state;
     const FlatListButton: any = FlatList;
@@ -121,7 +121,7 @@ class ButtonGroup extends React.Component<ButtonGroupProps, State> {
           });
         }}
         showsHorizontalScrollIndicator={flatListProps?.horizontal || false}
-        extraData={propsChange ? defaultActiveIndex : activeIndex}
+        extraData={defaultIndexChange ? defaultActiveIndex : activeIndex}
       />
     );
   }
