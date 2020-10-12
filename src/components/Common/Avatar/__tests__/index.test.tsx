@@ -8,7 +8,7 @@ const target = <Avatar />;
 const type = EnumComponent.SINGLE;
 
 describe('Avatar Component', () => {
-  TestHelper.basicTest(target, type);
+  TestHelper.basicTest(target, type, 1, false);
 
   it('should apply all style-related props', () => {
     const props = {

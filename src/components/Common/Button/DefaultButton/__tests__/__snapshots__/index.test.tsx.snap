@@ -30,22 +30,14 @@ exports[`Button Component should render without issues 1`] = `
       "paddingVertical": undefined,
     }
   }
-  icon={
-    Object {
-      "color": "#121212",
-      "size": 20,
-      "type": "material-community",
-    }
-  }
   iconContainerStyle={Object {}}
   titleStyle={
     Object {
       "color": "#121212",
       "fontSize": 16,
       "fontWeight": "normal",
-      "marginLeft": -10,
+      "marginLeft": 0,
       "marginRight": 0,
-      "paddingHorizontal": 5,
     }
   }
 />
