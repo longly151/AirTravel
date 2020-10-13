@@ -12,6 +12,7 @@ exports[`QuickView Component should render without issues 1`] = `
       "borderRadius": 0,
       "borderTopLeftRadius": undefined,
       "borderTopRightRadius": undefined,
+      "borderWidth": undefined,
       "bottom": undefined,
       "flex": undefined,
       "flexDirection": "column",
