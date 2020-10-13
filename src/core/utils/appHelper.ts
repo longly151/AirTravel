@@ -4,6 +4,7 @@ import { darkTheme, lightTheme } from '@themes/Theme';
 import En from '@locales/en.json';
 import Vi from '@locales/vi.json';
 import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
+import _ from 'lodash';
 
 export const Global: any = global;
 
@@ -61,6 +62,41 @@ export class CAppHelper {
 
   getLanguageByName(languageName: LanguageEnum = LanguageEnum.EN): any {
     return languageName === LanguageEnum.EN ? En : Vi;
+  }
+
+  setModalIntoGlobal(content: any): number {
+    let id = 0;
+    let modal = {};
+    if (!Global.modal) {
+      Global.modal = [];
+      id = 1;
+      modal = {
+        id,
+        content
+      };
+      Global.modal.push(modal);
+      return id;
+    }
+
+    // Existed Modal
+    const result = _.find(Global.modal, (o) => _.isEqual(o.content, content));
+    if (result) return result.id;
+
+    // New Modal
+    const preModal: any = _.last(Global.modal);
+    const preId: number = preModal.id;
+    id = preId + 1;
+    modal = {
+      id,
+      content
+    };
+    Global.modal.push(modal);
+    return id;
+  }
+
+  getModalFromGlobal(id: number) {
+    if (!Global.modal) return null;
+    return _.find(Global.modal, (o) => o.id === id);
   }
 }
 

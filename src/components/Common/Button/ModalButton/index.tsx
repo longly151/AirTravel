@@ -8,6 +8,8 @@ import { LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import { OrNull } from 'react-native-modal/dist/types';
 import { Animation, CustomAnimation } from 'react-native-animatable';
+import { NavigationService } from '@utils/navigation';
+import rootStack from '@contents/routes';
 import QuickView from '../../View/QuickView';
 import Button, { ButtonProps } from '../DefaultButton';
 import Text from '../../Text';
@@ -15,7 +17,7 @@ import Text from '../../Text';
 interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' | 'onSwipeComplete' | 'onSwipeCancel' | 'style' | 'swipeDirection' | 'onDismiss' | 'onShow' | 'hardwareAccelerated' | 'onOrientationChange' | 'presentationStyle' | 'supportedOrientations'> {
   children?: ReactNode;
   backdropClose?: boolean;
-  type?: 'notification' | 'confirmation';
+  type?: 'notification' | 'confirmation' | 'fullscreen' ;
   title?: string;
   t?: string;
   onOkButtonPress?: () => any;
@@ -150,10 +152,11 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     const { isVisible } = this.state;
     const {
       modalProps,
+      children,
       ...otherProps
     } = this.props;
 
-    const defaultModalProps: any = _.merge({
+    const defaultModalProps: ModalProps = _.merge({
       backdropClose: true,
       type: 'notification',
     }, modalProps);
@@ -166,7 +169,19 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       onOkButtonPress,
       ...otherModalProps
     } = defaultModalProps;
-
+    if (type === 'fullscreen') {
+      const { onPress, ...customOtherProps } = otherProps;
+      return (
+        <Button
+          {...customOtherProps}
+          onPress={() => {
+            const content = children;
+            const id = AppHelper.setModalIntoGlobal(content);
+            NavigationService.navigate(rootStack.modalStack, { id });
+          }}
+        />
+      );
+    }
     return (
       <QuickView>
         <Button {...otherProps} onPress={this.customOnPress} />

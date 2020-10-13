@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import MainBottomTab from '@contents/Main/index.bottomtab';
 import AuthStack from '@contents/Auth/containers/index.stack';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ export default function RootStack() {
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor },
+        gestureEnabled: true,
       }}
     >
       {
@@ -58,6 +59,10 @@ export default function RootStack() {
       <Stack.Screen
         name={rootStack.modalStack}
         component={ModalStack}
+        options={{
+          gestureDirection: 'vertical',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+        }}
       />
     </Stack.Navigator>
   );

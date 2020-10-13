@@ -230,9 +230,17 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
     } = this.props;
     const theme = AppHelper.getThemeByName(themeName);
     const bgColor = theme.colors.secondaryBackground;
+    const parentBgColor = themeName === ThemeEnum.LIGHT ? '#b4bcc6' : '#494e53';
     return (
       <QuickView
-        style={{ minWidth: this.minWidth, borderRadius: AppView.roundedBorderRadius, backgroundColor: '#b4bcc6', width, height, marginVertical: 5 }}
+        style={{
+          minWidth: this.minWidth,
+          borderRadius: AppView.roundedBorderRadius,
+          backgroundColor: parentBgColor,
+          width,
+          height,
+          marginVertical: 5
+        }}
       >
         <RNDateTimePicker
           value={date}

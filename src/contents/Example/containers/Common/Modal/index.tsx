@@ -133,18 +133,20 @@ class ModalExample extends PureComponent<any, State> {
                 onSwipeComplete: () => this.fancyModal.close()
               }}
             />
-          </QuickView>
-
-          {/* <QuickView marginVertical={10}>
-            <Text type="header">Scrollable Modal Button</Text>
             <ModalButton
-              title="Notification Modal Button"
-              modalProps={{
-                title: 'Successful 🚀',
-                onOkButtonPress: () => console.log('Successful')
-              }}
-            />
-          </QuickView> */}
+              title="Full Screen Modal"
+              modalProps={{ type: 'fullscreen' }}
+            >
+              <Container>
+                <Header backIcon title="ExampleScreen" />
+                <Body>
+                  <QuickView>
+                    <Text center>Example Screen</Text>
+                  </QuickView>
+                </Body>
+              </Container>
+            </ModalButton>
+          </QuickView>
         </Body>
       </Container>
     );

@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import configureStore from '@config/store';
+import Store from '@config/store';
 import AppContainer from './app.container';
 
-const { store, persistor } = configureStore();
+const { store, persistor } = Store();
 
 class App extends PureComponent {
   render() {

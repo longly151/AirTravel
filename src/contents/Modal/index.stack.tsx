@@ -5,10 +5,15 @@ import DefaultModal from './DefaultModal';
 
 const Stack = createStackNavigator();
 
-export default function ModalStack() {
+export default function ModalStack(props: any) {
+  const { route } = props;
   return (
     <Stack.Navigator mode="modal" headerMode="none">
-      <Stack.Screen name={modal.defaultModal} component={DefaultModal} />
+      <Stack.Screen
+        name={modal.defaultModal}
+        component={DefaultModal}
+        initialParams={route.params}
+      />
     </Stack.Navigator>
   );
 }

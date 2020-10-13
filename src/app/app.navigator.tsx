@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withTheme } from 'react-native-elements';
 import { themeSelector, requireLoginSelector } from '@contents/Config/redux/selector';
 import { INITIAL_STATE, ThemeEnum, resetRequireLogin } from '@contents/Config/redux/slice';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import RootStack from '@contents/index.navigator';
 import { NavigationService } from '@utils/navigation';
@@ -49,7 +49,7 @@ class AppNavigator extends Component<Props, State> {
     StatusBar.setBarStyle(barStyle, true);
 
     return (
-      <NavigationContainer ref={NavigationService.navigationRef}>
+      <NavigationContainer theme={DarkTheme} ref={NavigationService.navigationRef}>
         <Stack.Navigator>
           <Stack.Screen
             name="rootStack"
