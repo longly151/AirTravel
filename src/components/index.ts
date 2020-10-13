@@ -20,7 +20,6 @@ import Input from './Common/Input';
 import FlatList from './Common/FlatList/DefaultFlatList';
 import Image from './Common/Image';
 import Dropdown from './Common/Dropdown';
-import Carousel from './Common/Carouse';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
 import HTML from './Common/Webview/HTML';
 import Video from './Common/Video';
@@ -57,7 +56,6 @@ export {
   Image,
   Dropdown,
   ModalButton,
-  Carousel,
   ParallaxScrollView,
   HTML,
   Video,

@@ -87,14 +87,6 @@ export const exampleList = [
     screen: null,
   },
   {
-    name: 'Carousel',
-    iconName: 'view-carousel',
-    iconSize: 35,
-    linearGradientColors: ['#4CAF50', '#8BC34A'],
-    stack: exampleStack.commonExampleStack,
-    screen: commonStack.carousel,
-  },
-  {
     name: 'Modal',
     iconName: 'alert-outline',
     linearGradientColors: ['#d0cd25', '#d3037c'],

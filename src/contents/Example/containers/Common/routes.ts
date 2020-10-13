@@ -16,7 +16,6 @@ const commonStack = {
   dropdown: 'DropdownExample',
   appModal: 'AppModalExampleScreen',
   modal: 'ModalExampleScreen',
-  carousel: 'CarouselExampleScreen',
 };
 
 export default commonStack;

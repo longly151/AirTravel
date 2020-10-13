@@ -34,6 +34,7 @@ export interface QuickViewProps extends ViewProps, TouchableOpacityProps, Scroll
   paddingHorizontal?: number;
   paddingVertical?: number;
   borderRadius?: number;
+  borderWidth?: number;
   borderTopLeftRadius?: number;
   borderTopRightRadius?: number;
   borderBottomLeftRadius?: number;
@@ -111,6 +112,7 @@ class QuickView extends PureComponent<QuickViewProps> {
       paddingHorizontal,
       paddingVertical,
       borderRadius: borderRadiusProp,
+      borderWidth,
       borderTopLeftRadius,
       borderTopRightRadius,
       borderBottomLeftRadius,
@@ -214,6 +216,7 @@ class QuickView extends PureComponent<QuickViewProps> {
         paddingHorizontal,
         paddingVertical,
         borderRadius,
+        borderWidth,
         borderTopLeftRadius,
         borderTopRightRadius,
         borderBottomLeftRadius,

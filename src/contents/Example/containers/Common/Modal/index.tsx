@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { PureComponent } from 'react';
 import {
-  Container, QuickView, Header, Body, ModalButton, Button, Text
+  Container, QuickView, Header, Body, ModalButton, Button, Text, Image
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
@@ -81,19 +81,21 @@ class ModalExample extends PureComponent<any, State> {
           </QuickView>
 
           <QuickView marginVertical={10}>
-            <Text type="header">Custom Modal Button</Text>
+            <Text type="header">Custom Modal</Text>
             <ModalButton
-              title="Bottom-Half Modal Button"
-              modalProps={{
-                t: 'auth:login',
-                type: 'confirmation',
-                onOkButtonPress: () => console.log('Confirm'),
-                style: {
-                  justifyContent: 'flex-end',
-                  margin: 0,
-                }
-              }}
-            />
+              title="Bottom-Half Modal"
+              modalProps={{ type: 'bottom-half' }}
+            >
+              <QuickView
+                backgroundColor={theme.colors.primaryBackground}
+                borderRadius={10}
+                padding={30}
+                width="100%"
+                center
+              >
+                <Text center>Hi 👋!</Text>
+              </QuickView>
+            </ModalButton>
             <ModalButton
               ref={(ref: any) => { this.customBackdrop = ref; }}
               title="No Backdrop"
@@ -106,7 +108,7 @@ class ModalExample extends PureComponent<any, State> {
             />
             <ModalButton
               ref={(ref: any) => { this.customBackdrop = ref; }}
-              title="Custom Backdrop Modal Button"
+              title="Custom Backdrop Modal"
               modalProps={{
                 t: 'auth:login',
                 type: 'confirmation',
@@ -116,7 +118,7 @@ class ModalExample extends PureComponent<any, State> {
             />
             <ModalButton
               ref={(ref: any) => { this.fancyModal = ref; }}
-              title="Fancy Modal Button"
+              title="Fancy Modal"
               modalProps={{
                 t: 'auth:login',
                 type: 'confirmation',
@@ -145,6 +147,31 @@ class ModalExample extends PureComponent<any, State> {
                   </QuickView>
                 </Body>
               </Container>
+            </ModalButton>
+          </QuickView>
+          <QuickView marginVertical={10}>
+            <Text type="header">Invisible Modal Button</Text>
+            <ModalButton
+              invisible
+              buttonChildren={(
+                <Image
+                  source={{
+                    uri: 'https://picsum.photos/1000/1000',
+                    cache: 'web',
+                  }}
+                  containerStyle={{ marginVertical: 15 }}
+                />
+              )}
+            >
+              <QuickView
+                backgroundColor={theme.colors.primaryBackground}
+                borderRadius={10}
+                padding={30}
+                width="100%"
+                center
+              >
+                <Text center>Hi 👋!</Text>
+              </QuickView>
             </ModalButton>
           </QuickView>
         </Body>

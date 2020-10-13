@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 import * as React from 'react';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, DrawerActions } from '@react-navigation/native';
 import { Easing } from 'react-native';
 
 /**
@@ -55,6 +55,10 @@ class CNavigationService {
   popToTop() {
     return this.navigationRef.current?.dispatch(StackActions.popToTop());
   }
+
+  openDrawer() {
+    return this.navigationRef.current?.dispatch(DrawerActions.toggleDrawer());
+  }
 }
 export const NavigationService = CNavigationService.Instance;
 
@@ -94,7 +98,7 @@ class CNavigationAnimation {
     return CNavigationAnimation._instance;
   }
 
-  fadeAnimation = {
+  fade = {
     cardStyleInterpolator: forFade,
     transitionSpec: transitionSpecConfig,
   };

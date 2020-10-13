@@ -13,7 +13,6 @@ import FlatListExampleStack from './FlatList/index.stack';
 import ImageExample from './Image';
 import DropdownExample from './Dropdown';
 import ModalExample from './Modal';
-import CarouselExample from './Carousel';
 import DateTimePickerExample from './DateTimePicker';
 
 const Stack = createStackNavigator();
@@ -34,7 +33,6 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.bottomModalSelect} component={BottomModalSelectExample} />
       <Stack.Screen name={commonStack.dropdown} component={DropdownExample} />
       <Stack.Screen name={commonStack.modal} component={ModalExample} />
-      <Stack.Screen name={commonStack.carousel} component={CarouselExample} />
     </Stack.Navigator>
   );
 }

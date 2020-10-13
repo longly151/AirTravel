@@ -10,6 +10,7 @@ import { OrNull } from 'react-native-modal/dist/types';
 import { Animation, CustomAnimation } from 'react-native-animatable';
 import { NavigationService } from '@utils/navigation';
 import rootStack from '@contents/routes';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import QuickView from '../../View/QuickView';
 import Button, { ButtonProps } from '../DefaultButton';
 import Text from '../../Text';
@@ -17,7 +18,7 @@ import Text from '../../Text';
 interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' | 'onSwipeComplete' | 'onSwipeCancel' | 'style' | 'swipeDirection' | 'onDismiss' | 'onShow' | 'hardwareAccelerated' | 'onOrientationChange' | 'presentationStyle' | 'supportedOrientations'> {
   children?: ReactNode;
   backdropClose?: boolean;
-  type?: 'notification' | 'confirmation' | 'fullscreen' ;
+  type?: 'notification' | 'confirmation' | 'bottom-half' | 'fullscreen' ;
   title?: string;
   t?: string;
   onOkButtonPress?: () => any;
@@ -55,6 +56,8 @@ interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' |
 export interface ModalButtonProps extends ButtonProps {
   ref?: any;
   children?: any;
+  buttonChildren?: any;
+  invisible?: boolean;
   modalProps?: ModalProps;
   language?: any;
   themeName?: any;
@@ -153,6 +156,8 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     const {
       modalProps,
       children,
+      invisible,
+      buttonChildren,
       ...otherProps
     } = this.props;
 
@@ -167,30 +172,63 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       title,
       t,
       onOkButtonPress,
+      style,
       ...otherModalProps
     } = defaultModalProps;
+
+    /**
+     * fullscreen
+     */
     if (type === 'fullscreen') {
       const { onPress, ...customOtherProps } = otherProps;
+      const onPressFn = () => {
+        const content = children;
+        const id = AppHelper.setModalIntoGlobal(content);
+        NavigationService.navigate(rootStack.modalStack, { id });
+      };
+      if (invisible) {
+        return (
+          <TouchableOpacity onPress={onPressFn}>
+            {buttonChildren}
+          </TouchableOpacity>
+        );
+      }
       return (
         <Button
           {...customOtherProps}
-          onPress={() => {
-            const content = children;
-            const id = AppHelper.setModalIntoGlobal(content);
-            NavigationService.navigate(rootStack.modalStack, { id });
-          }}
+          onPress={onPressFn}
         />
       );
     }
+
+    /**
+     * Other types
+     */
+    let customStyle = style;
+    if (type === 'bottom-half') {
+      const bottomHalfStyle = {
+        justifyContent: 'flex-end',
+        margin: 0,
+      };
+      customStyle = _.merge(bottomHalfStyle, style);
+    }
     return (
       <QuickView>
-        <Button {...otherProps} onPress={this.customOnPress} />
+        {
+          invisible ? (
+            <TouchableOpacity onPress={this.customOnPress}>
+              {buttonChildren}
+            </TouchableOpacity>
+          )
+            : <Button {...otherProps} onPress={this.customOnPress} />
+        }
         <Modal
+          {...otherModalProps}
           isVisible={isVisible}
           onBackdropPress={() => {
             if (backdropClose) this.setState({ isVisible: false });
           }}
-          {...otherModalProps}
+          style={customStyle}
         >
           {this.renderChildren()}
         </Modal>
