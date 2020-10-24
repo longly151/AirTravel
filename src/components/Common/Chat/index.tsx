@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps } from 'react-native-gifted-chat';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Global } from '@utils/appHelper';
