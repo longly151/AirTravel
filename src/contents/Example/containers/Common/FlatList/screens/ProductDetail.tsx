@@ -18,14 +18,14 @@ import { productGetDetail } from '../redux/slice';
 
 interface Props {
   detail: any;
-  getDetail: (id: number) => any;
+  getDetail: (item: any) => any;
   theme?: any;
 }
 
 class ProductDetail extends PureComponent<Props> {
   componentDidMount() {
     const { getDetail } = this.props;
-    getDetail(AppHelper.getIdFromParams(this.props));
+    getDetail(AppHelper.getItemFromParams(this.props));
   }
 
   renderForeground = () => {
@@ -35,6 +35,7 @@ class ProductDetail extends PureComponent<Props> {
       theme,
       detail: { data },
     } = this.props;
+
     return (
       <QuickView
         height={height}
@@ -44,9 +45,9 @@ class ProductDetail extends PureComponent<Props> {
         marginTop={marginTop}
       >
         <QuickView margin={20}>
-          <Text type="header">{data.name}</Text>
+          <Text type="header">{data.enTitle}</Text>
           <Text icon={{ name: 'map-marker' }} numberOfLines={1}>
-            {data.address}
+            {data.viTitle}
           </Text>
         </QuickView>
       </QuickView>
@@ -67,7 +68,7 @@ class ProductDetail extends PureComponent<Props> {
     return (
       <Container>
         <ParallaxScrollView
-          backgroundImageSource={{ uri: data.mainImage?.link }}
+          backgroundImageSource={{ uri: data.thumbnail }}
           renderForeground={this.renderForeground}
           renderStickyHeader={this.renderStickyHeader}
         >
@@ -91,7 +92,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getDetail: (id: number) => dispatch(productGetDetail({ id })),
+  getDetail: (item: any) => dispatch(productGetDetail(item)),
 });
 
 export default connect(

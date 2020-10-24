@@ -5,6 +5,8 @@ import {
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
+import AppView from '@utils/appView';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface State {
   isVisible: boolean
@@ -88,10 +90,10 @@ class ModalExample extends PureComponent<any, State> {
             >
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
-                borderRadius={10}
                 padding={30}
                 width="100%"
                 center
+                style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10, }}
               >
                 <Text center>Hi 👋!</Text>
               </QuickView>

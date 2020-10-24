@@ -15,6 +15,8 @@ import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { TObjectRedux } from '@utils/redux';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
+import SocketIOClient from 'socket.io-client';
+import Config from 'react-native-config';
 import AppNavigator from './app.navigator';
 
 interface Props {
@@ -59,6 +61,11 @@ class AppContainer extends React.Component<Props, State> {
         });
       }
     });
+
+    /**
+     * Socket
+     */
+    this.onSocket();
   }
 
   checkInternet = () => {
@@ -72,6 +79,23 @@ class AppContainer extends React.Component<Props, State> {
       message: 'No internet',
       type: 'danger',
       onPress: () => this.checkInternet(),
+    });
+  };
+
+  onSocket = () => {
+    /**
+     * Socket
+     */
+    const { token } = Global;
+    // if (!window.location) {
+    //   // App is running in simulator
+    //   window.navigator.userAgent = 'ReactNative';
+    // }
+
+    // This must be below your `window.navigator` hack above
+    Global.socket = SocketIOClient(Config.SOCKET_URL, {
+      transports: ['websocket'], // you need to explicitly tell it to use websockets
+      query: { token }
     });
   };
 

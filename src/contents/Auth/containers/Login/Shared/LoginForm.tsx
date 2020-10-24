@@ -31,7 +31,7 @@ class LoginForm extends PureComponent<Props> {
           ref={(ref: any) => {
             this.email = ref;
           }}
-          value="realtor@gmail.com"
+          value="admin@gmail.com"
           leftIconName="email-outline"
           placeholder="Email"
           validationField="email"
@@ -41,7 +41,7 @@ class LoginForm extends PureComponent<Props> {
           ref={(ref: any) => {
             this.password = ref;
           }}
-          value="123456"
+          value="admin"
           leftIconName="lock-outline"
           textContentType="oneTimeCode"
           placeholder="Password"
@@ -57,7 +57,7 @@ class LoginForm extends PureComponent<Props> {
           onPress={() => {
             console.log('loginData: ', loginData);
             console.log('loginData loading: ', loginData.loading);
-            console.log('loginData data: ', loginData.data.toJS());
+            console.log('loginData data: ', loginData.data);
             console.log('loginData error: ', loginData.error);
           }}
         /> */}

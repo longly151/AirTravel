@@ -21,39 +21,6 @@ type TArraySelector = {
 /**
  * Selector
  */
-function applyObjectSelector(selector: TObjectSelector, state: any): TObjectRedux {
-  return ({
-    loading: selector.loading(state),
-    data: selector.data(state),
-    error: selector.error(state),
-  });
-}
-
-function parseObjectSelector(object: TObjectRedux): TObjectRedux {
-  return ({
-    loading: object.loading,
-    data: object.data.toJS(),
-    error: object.error,
-  });
-}
-
-function applyArraySelector(selector: TArraySelector, state: any): TArrayRedux {
-  return ({
-    loading: selector.loading(state),
-    data: selector.data(state),
-    metadata: selector.metadata(state),
-    error: selector.error(state),
-  });
-}
-
-function parseArraySelector(object: TArrayRedux): TArrayRedux {
-  return ({
-    loading: object.loading,
-    data: object.data.toJS(),
-    metadata: object.metadata.toJS(),
-    error: object.error,
-  });
-}
 
 class CSelector {
   private static _instance: CSelector;
@@ -72,14 +39,20 @@ class CSelector {
   getSelector(root: any, field: string) {
     return createSelector(
       root,
-      (data: any) => data.get(field),
+      (data: any) => data[field],
     );
   }
 
   getInSelector(root: any, fields: Array<string>) {
     return createSelector(
       root,
-      (data: any) => data.getIn(fields),
+      (data: any) => {
+        let result = data;
+        fields.forEach((e: any) => {
+          result = result[e];
+        });
+        return result;
+      }
     );
   }
 
@@ -115,12 +88,21 @@ class CSelector {
     });
   }
 
-  getObject(selector: TObjectSelector, state: any) {
-    return parseObjectSelector(applyObjectSelector(selector, state));
+  getObject(selector: TObjectSelector, state: any): TObjectRedux {
+    return ({
+      loading: selector.loading(state),
+      data: selector.data(state),
+      error: selector.error(state),
+    });
   }
 
-  getArray(selector: TArraySelector, state: any) {
-    return parseArraySelector(applyArraySelector(selector, state));
+  getArray(selector: TArraySelector, state: any): TArrayRedux {
+    return ({
+      loading: selector.loading(state),
+      data: selector.data(state),
+      metadata: selector.metadata(state),
+      error: selector.error(state),
+    });
   }
 }
 

@@ -14,8 +14,8 @@ const commonStack = {
   listCheckBox: 'ListCheckBoxExample',
   bottomModalSelect: 'BottomModalSelectExample',
   dropdown: 'DropdownExample',
-  appModal: 'AppModalExampleScreen',
   modal: 'ModalExampleScreen',
+  chat: 'ChatExample',
 };
 
 export default commonStack;

@@ -1,7 +1,7 @@
+/* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { fromJS } from 'immutable';
 import _ from 'lodash';
 import Config from 'react-native-config';
 import qs from 'qs';
@@ -10,6 +10,7 @@ import Filter from './filter';
 /**
  * Type
  */
+const dataPrefix = 'data';
 export type TError = {
   code: number;
   messages: Array<string>;
@@ -96,71 +97,44 @@ class CRedux {
   createObjectReducer<T>(
     name: string,
     parentKey?: string,
-    listKey?: string,
   ): T {
     const result: any = {};
     if (parentKey) {
       result[`${name}`] = (state: any, action: any) => {
-        if (listKey) {
-          const dataInList = state
-            .get(listKey)
-            .get('data')
-            .filter((item: any) => item.get('id') === action.payload.id);
-          if (!dataInList.isEmpty()) {
-            return state
-              .setIn([parentKey, 'loading'], true)
-              .setIn([parentKey, 'data'], dataInList.get(0))
-              .setIn([parentKey, 'error'], null);
-          }
-          return state
-            .setIn([parentKey, 'loading'], true)
-            .setIn([parentKey, 'error'], null);
-        }
-        return state
-          .setIn([parentKey, 'loading'], true)
-          .setIn([parentKey, 'error'], null);
+        state[parentKey].data = action.payload || {};
+        state[parentKey].loading = true;
+        state[parentKey].error = null;
       };
       result[`${name}Success`] = (state: any, action: any) => {
-        const data = fromJS(action.payload);
-        return state
-          .setIn([parentKey, 'loading'], false)
-          .mergeIn([parentKey, 'data'], data)
-          .setIn([parentKey, 'error'], null);
+        const data = action.payload;
+        state[parentKey].data = data;
+        state[parentKey].loading = false;
+        state[parentKey].error = null;
       };
       result[`${name}Fail`] = (state: any, action: any) => {
         const error = action.payload;
-        return state
-          .setIn([parentKey, 'loading'], false)
-          .setIn([parentKey, 'error'], error);
+        state[parentKey].loading = false;
+        state[parentKey].error = error;
       };
     } else {
       result[`${name}`] = (state: any, action: any) => {
-        if (listKey) {
-          const dataInList = state
-            .get(listKey)
-            .get('data')
-            .filter((item: any) => item.get('id') === action.payload.id);
-          if (!dataInList.isEmpty()) {
-            return state
-              .set('loading', true)
-              .set('data', dataInList.get(0))
-              .set('error', null);
-          }
-          return state.set('loading', true).set('error', null);
-        }
-        return state.set('loading', true).set('error', null);
+        state.data = action.payload || {};
+        state.loading = true;
+        state.error = null;
       };
       result[`${name}Success`] = (state: any, action: any) => {
-        const data = fromJS(action.payload);
-        return state.set('loading', false).set('data', data).set('error', null);
+        const data = action.payload;
+        state.data = data;
+        state.loading = false;
+        state.error = null;
       };
       result[`${name}Fail`] = (state: any, action: any) => {
         const error = action.payload;
 
         // Modify Error Message
         // error.messages.push('Another Message');
-
-        return state.set('loading', false).set('error', error);
+        state.loading = false;
+        state.error = error;
       };
     }
     return result;
@@ -169,78 +143,70 @@ class CRedux {
   createArrayReducer<T>(name: string, parentKey?: string): T {
     const result: any = {};
     if (parentKey) {
-      result[name] = (state: any, action: any) => state
-        .setIn([parentKey, 'loading'], true)
-        .setIn([parentKey, 'error'], null);
+      result[name] = (state: any, action: any) => {
+        state[parentKey].loading = true;
+        state[parentKey].error = null;
+      };
       result[`${name}Success`] = (state: any, action: any) => {
       // console.log('action.payload', parentKey, action.payload);
 
-        const metadata = fromJS(action.payload.metadata);
-        const dataGet = action.payload.results;
+        const { metadata } = action.payload;
+        const dataGet = action.payload[dataPrefix];
+        let data = dataGet;
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
-          const data = currentPage === 1 || !currentPage
-            ? fromJS(dataGet)
-            : state
-              .getIn([parentKey, 'data'])
-              .concat(
-                fromJS(dataGet).filter(
-                  (item: any) => state.getIn([parentKey, 'data']).indexOf(item) < 0,
-                ),
-              );
-          return state
-            .setIn([parentKey, 'loading'], false)
-            .setIn([parentKey, 'data'], data)
-            .setIn([parentKey, 'metadata'], metadata)
-            .setIn([parentKey, 'error'], null);
+          data = currentPage === 1 || !currentPage
+            ? dataGet
+            : state[parentKey].data.concat(
+              dataGet.filter(
+                (item: any) => state[parentKey].data.indexOf(item) < 0,
+              ),
+            );
         }
-        const data = fromJS(dataGet);
-        return state
-          .setIn([parentKey, 'loading'], false)
-          .setIn([parentKey, 'data'], data)
-          .setIn([parentKey, 'error'], null);
+        state[parentKey].loading = false;
+        state[parentKey].data = data;
+        state[parentKey].metadata = metadata;
+        state[parentKey].error = null;
       };
       result[`${name}Fail`] = (state: any, action: any) => {
         const error = action.payload;
-        return state
-          .setIn([parentKey, 'loading'], false)
-          .setIn([parentKey, 'error'], error);
+        state[parentKey].loading = false;
+        state[parentKey].error = error;
       };
     } else {
-      result[name] = (state: any, action: any) => state.set('loading', true).set('error', null);
+      result[name] = (state: any, action: any) => {
+        state.loading = true;
+        state.error = null;
+      };
       result[`${name}Success`] = (state: any, action: any) => {
-        const dataGet = action.payload.results;
-        const metadata = fromJS(action.payload.metadata);
+        const dataGet = action.payload[dataPrefix];
+        const { metadata } = action.payload;
+        let data = dataGet;
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
-          const data = currentPage === 1
-            ? fromJS(dataGet)
-            : state
-              .get('data')
-              .concat(
-                fromJS(dataGet).filter(
-                  (item: any) => state.get('data').indexOf(item) < 0,
-                ),
-              );
-          return state
-            .set('loading', false)
-            .set('data', data)
-            .set('metadata', metadata)
-            .set('error', null);
+          data = currentPage === 1
+            ? dataGet
+            : state.data.concat(
+              dataGet.filter(
+                (item: any) => state.data.indexOf(item) < 0,
+              ),
+            );
+          state.data = data;
+          state.metadata = metadata;
+          state.error = null;
         }
-        const data = fromJS(dataGet);
-        return state
-          .setIn([parentKey, 'loading'], false)
-          .setIn([parentKey, 'data'], data)
-          .setIn([parentKey, 'error'], null);
+        state.data = data;
+        state.loading = false;
+        state.metadata = metadata;
+        state.error = null;
       };
       result[`${name}Fail`] = (state: any, action: any) => {
         const error = action.payload;
 
         // Modify Error Message
         // error.messages.push('Another Message');
-
-        return state.set('loading', false).set('error', error);
+        state.loading = false;
+        state.error = error;
       };
     }
     return result;

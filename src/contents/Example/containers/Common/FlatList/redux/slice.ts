@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
-import { fromJS } from 'immutable';
 import Redux from '@utils/redux';
 
 /**
@@ -23,7 +22,7 @@ export type TDetail = {
   productGetDetailFail: (state: any, action: any) => any;
 };
 
-export const INITIAL_STATE = fromJS({
+export const INITIAL_STATE = ({
   ...Redux.createArrayInitialState(LIST),
   ...Redux.createObjectInitialState(DETAIL),
 });
@@ -36,15 +35,14 @@ const slice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     ...Redux.createArrayReducer<TList>(`${NAME}GetList`, LIST),
-    ...Redux.createObjectReducer<TDetail>(`${NAME}GetDetail`, DETAIL, LIST),
+    ...Redux.createObjectReducer<TDetail>(`${NAME}GetDetail`, DETAIL),
   },
   extraReducers: {
     [REHYDRATE]: (state, action) => {
       if (action.payload && action.payload.product) {
-        const list = action.payload.product.get('list');
-        return INITIAL_STATE.merge({
-          list: INITIAL_STATE.get('list').merge({ data: list.get('data') }),
-        });
+        const { list } = action.payload.product;
+        INITIAL_STATE.list.data = list.data;
+        return INITIAL_STATE;
       }
       return state;
     },

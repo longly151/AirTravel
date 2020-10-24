@@ -28,7 +28,8 @@ function MainBottomTab(props: any) {
         inactiveTintColor: primary,
         style: {
           height: AppView.bottomNavigationBarHeight,
-          borderRadius: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           borderTopColor: 'transparent',
           backgroundColor: secondaryBackground,
         },

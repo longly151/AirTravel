@@ -20,5 +20,7 @@ moment.locale('vi');
 LogBox.ignoreLogs([
   'Cannot update during an existing state transition',
   'Warning: Cannot update a component from inside the function body of a different component',
+  "'Card.imageProps'",
+  "'Card.image'",
 ]);
 AppRegistry.registerComponent(appName, () => App);

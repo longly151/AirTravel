@@ -11,6 +11,8 @@ import ExampleStack from './Example/index.stack';
 import { requireLoginSelector, themeSelector } from './Config/redux/selector';
 import { loginSelector } from './Auth/containers/Login/redux/selector';
 import { ThemeEnum } from './Config/redux/slice';
+import commonStack from './Example/containers/Common/routes';
+import ChatExampleStack from './Example/containers/Common/Chat/index.stack';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +66,7 @@ export default function RootStack() {
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
         }}
       />
+      <Stack.Screen name={commonStack.chat} component={ChatExampleStack} />
     </Stack.Navigator>
   );
 }

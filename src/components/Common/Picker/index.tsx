@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import {
   PickerProps as RNPickerProps, ActionSheetIOS, StyleSheet, Platform,
-} from 'react-native';
+  ScrollView } from 'react-native';
 import _ from 'lodash';
 import { Picker as RNPicker } from '@react-native-community/picker';
 import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
@@ -11,8 +11,11 @@ import { ItemValue } from '@react-native-community/picker/typings/Picker';
 import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
 import { connect } from 'react-redux';
 import AppHelper from '@utils/appHelper';
+import AppView from '@utils/appView';
 import Button, { ButtonProps } from '../Button/DefaultButton';
 import QuickView from '../View/QuickView';
+import ModalButton from '../Button/ModalButton';
+import Text from '../Text';
 
 export interface PickerProps extends RNPickerProps, Omit<ButtonProps, 'style' >{
   labels?: Array<string>;
@@ -21,7 +24,8 @@ export interface PickerProps extends RNPickerProps, Omit<ButtonProps, 'style' >{
   width?: number | string;
   iconColor?: string;
   themeName?: ThemeEnum;
-  language?: LanguageEnum
+  language?: LanguageEnum;
+  modal?: boolean;
 }
 interface State {
   selectedIndex: number | null;
@@ -34,6 +38,8 @@ class Picker extends PureComponent<PickerProps, State> {
     mode: 'dropdown',
     rounded: true,
   };
+
+  pickerModal: any;
 
   constructor(props: PickerProps) {
     super(props);
@@ -51,31 +57,6 @@ class Picker extends PureComponent<PickerProps, State> {
       defaultIndex = _.indexOf(values, selectedValue);
     }
     return defaultIndex;
-  };
-
-  onPressActionSheetIOS = () => {
-    const { labels, values, language } = this.props;
-    const itemLabel = labels || values;
-    const cancelText = language === LanguageEnum.EN ? 'Cancel' : 'Huỷ bỏ';
-    const newLabel = [...itemLabel, cancelText];
-    return (
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: newLabel,
-          cancelButtonIndex: values.length,
-        },
-        (buttonIndex) => {
-          if (buttonIndex !== values.length) {
-            const { selectedIndex } = this.state;
-            const { onValueChange } = this.props;
-            if (selectedIndex !== buttonIndex) {
-              this.setState({ selectedIndex: buttonIndex });
-              if (onValueChange) { onValueChange(values[buttonIndex], buttonIndex); }
-            }
-          }
-        },
-      )
-    );
   };
 
   getSelectedIndex = () => {
@@ -106,6 +87,35 @@ class Picker extends PureComponent<PickerProps, State> {
     const selectedIndex = this.getSelectedIndex();
     if (selectedIndex === null) return null;
     return labels ? labels[selectedIndex] : values[selectedIndex];
+  };
+
+  /**
+   * iOS
+   */
+
+  onPressActionSheetIOS = () => {
+    const { labels, values, language } = this.props;
+    const itemLabel = labels || values;
+    const cancelText = language === LanguageEnum.EN ? 'Cancel' : 'Huỷ bỏ';
+    const newLabel = [...itemLabel, cancelText];
+    return (
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: newLabel,
+          cancelButtonIndex: values.length,
+        },
+        (buttonIndex) => {
+          if (buttonIndex !== values.length) {
+            const { selectedIndex } = this.state;
+            const { onValueChange } = this.props;
+            if (selectedIndex !== buttonIndex) {
+              this.setState({ selectedIndex: buttonIndex });
+              if (onValueChange) { onValueChange(values[buttonIndex], buttonIndex); }
+            }
+          }
+        },
+      )
+    );
   };
 
   /**
@@ -154,6 +164,7 @@ class Picker extends PureComponent<PickerProps, State> {
       buttonStyle: buttonStyleProp,
       titleCenter,
       iconColor,
+      modal,
       themeName,
       ...otherProps
     } = this.props;
@@ -162,11 +173,7 @@ class Picker extends PureComponent<PickerProps, State> {
     const theme: any = AppHelper.getThemeByName(themeName);
 
     /**
-     * IOS
-     */
-
-    /**
-     * currentLabel
+     * currentLabel (iOS)
      */
     let currentLabel = '';
     const defaultIndex = this.getDefaultIndex();
@@ -181,39 +188,88 @@ class Picker extends PureComponent<PickerProps, State> {
       currentLabel = itemLabel[selectedIndex];
     }
 
-    if (Platform.OS === 'ios') {
-      /**
-       * titleStyle, titleProps
-       */
-      const titleStyle: any = StyleSheet.flatten([
-        typeof widthProp === 'number' && { maxWidth: widthProp > 50 ? widthProp - 50 : 50 },
-        typeof widthProp === 'string' && { maxWidth: widthProp },
-        titleStyleProp,
-      ]);
-      const titleProps: any = _.merge(
-        { numberOfLines: 1 },
-        titlePropsProp,
+    /**
+     * BUTTON PROPS (For iOS & Modal Picker)
+     */
+    /**
+     * titleStyle, titleProps
+     */
+    const titleStyle: any = StyleSheet.flatten([
+      typeof widthProp === 'number' && { maxWidth: widthProp > 50 ? widthProp - 50 : 50 },
+      typeof widthProp === 'string' && { maxWidth: widthProp },
+      titleStyleProp,
+    ]);
+    const titleProps: any = _.merge(
+      { numberOfLines: 1 },
+      titlePropsProp,
+    );
+
+    /**
+     * buttonStyle
+     */
+    const buttonStyle: any = StyleSheet.flatten([
+      !titleCenter && { justifyContent: 'space-between' },
+      buttonStyleProp,
+    ]);
+
+    /**
+     * Icon
+     */
+    const { titleColor } = this.props;
+    const defaultIcon = {
+      name: 'caretdown',
+      type: 'antdesign',
+      size: 15,
+      color: iconColor || titleColor,
+    };
+    const icon = _.merge(defaultIcon, iconProp);
+
+    if (modal) {
+      return (
+        <ModalButton
+          ref={(ref: any) => { this.pickerModal = ref; }}
+          testID="PickerIOS"
+          title={currentLabel}
+          buttonStyle={buttonStyle}
+          icon={icon}
+          titleStyle={titleStyle}
+          titleProps={titleProps}
+          iconRight
+          modalProps={{ type: 'bottom-half' }}
+          {...otherProps}
+        >
+          <QuickView
+            backgroundColor={theme.colors.primaryBackground}
+            height={0.75 * AppView.screenHeight}
+            style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+          >
+            <Text type="title" bold center marginTop={20}>{placeholder}</Text>
+            <ScrollView style={{ marginVertical: 20 }}>
+              {itemLabel.map((item: any, buttonIndex: number) => (
+                <Button
+                  key={buttonIndex.toString()}
+                  marginVertical={3}
+                  marginHorizontal={AppView.bodyPaddingHorizontal}
+                  clear
+                  title={item}
+                  titleCenter={false}
+                  onPress={() => {
+                    const { selectedIndex } = this.state;
+                    const { onValueChange } = this.props;
+                    if (selectedIndex !== buttonIndex) {
+                      this.pickerModal.close();
+                      this.setState({ selectedIndex: buttonIndex });
+                      if (onValueChange) { onValueChange(values[buttonIndex], buttonIndex); }
+                    }
+                  }}
+                />
+              ))}
+            </ScrollView>
+          </QuickView>
+        </ModalButton>
       );
-
-      /**
-       * buttonStyle
-       */
-      const buttonStyle: any = StyleSheet.flatten([
-        !titleCenter && { justifyContent: 'space-between' },
-        buttonStyleProp,
-      ]);
-
-      /**
-       * Icon
-       */
-      const { titleColor } = this.props;
-      const defaultIcon = {
-        name: 'caretdown',
-        type: 'antdesign',
-        size: 15,
-        color: iconColor || titleColor,
-      };
-      const icon = _.merge(defaultIcon, iconProp);
+    }
+    if (Platform.OS === 'ios') {
       return (
         <Button
           testID="PickerIOS"
@@ -230,12 +286,12 @@ class Picker extends PureComponent<PickerProps, State> {
     }
 
     /**
-     * Android
-     */
+       * Android
+       */
 
     /**
-     * androidStyle
-     */
+       * androidStyle
+       */
     const { colors } = theme;
     const {
       backgroundColor: backgroundColorProp,
@@ -291,8 +347,8 @@ class Picker extends PureComponent<PickerProps, State> {
     ]);
 
     /**
-     * currentValue
-     */
+       * currentValue
+       */
     let currentValue = '';
     if (selectedIndex === null) {
       if (defaultIndex !== null) {

@@ -34,13 +34,6 @@ export class CAppHelper {
     return result;
   }
 
-  getIdFromParams(props: any) {
-    const {
-      route,
-    } = props;
-    return route?.params?.id;
-  }
-
   getParams(props: any) {
     const {
       route,
@@ -48,8 +41,15 @@ export class CAppHelper {
     return route?.params;
   }
 
-  setIdIntoParams(item: any) {
-    return ({ id: item.id });
+  getItemFromParams(props: any) {
+    const {
+      route,
+    } = props;
+    return route?.params?.item;
+  }
+
+  setItemIntoParams(item: any) {
+    return ({ item });
   }
 
   focusNextField(component: any, name: string) {
@@ -62,6 +62,17 @@ export class CAppHelper {
 
   getLanguageByName(languageName: LanguageEnum = LanguageEnum.EN): any {
     return languageName === LanguageEnum.EN ? En : Vi;
+  }
+
+  getIdFromParams(props: any) {
+    const {
+      route,
+    } = props;
+    return route?.params?.id;
+  }
+
+  setIdIntoParams(item: any) {
+    return ({ id: item.id });
   }
 
   setModalIntoGlobal(content: any): number {

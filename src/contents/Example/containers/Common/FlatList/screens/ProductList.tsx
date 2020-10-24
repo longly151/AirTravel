@@ -14,7 +14,6 @@ import { StyleSheet } from 'react-native';
 import { compose } from 'recompose';
 import { NavigationService } from '@utils/navigation';
 import AppHelper from '@utils/appHelper';
-import Helper from '@utils/helper';
 import Filter from '@utils/filter';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppView from '@utils/appView';
@@ -30,7 +29,7 @@ interface Props {
 }
 
 class ProductListScreen extends PureComponent<Props> {
-  renderItem = ({ item }: { item: any }) => {
+  renderItem = ({ item, index }: { item: any, index: number }) => {
     const { theme } = this.props;
     const containerStyle = StyleSheet.flatten([
       {
@@ -63,12 +62,12 @@ class ProductListScreen extends PureComponent<Props> {
         // eslint-disable-next-line max-len
         onPress={() => NavigationService.navigate(
           productStack.productDetail,
-          AppHelper.setIdIntoParams(item),
+          AppHelper.setItemIntoParams(item),
         )}
       >
         <Card
           image={{
-            uri: item.mainImage?.link,
+            uri: item.thumbnail,
           }}
           imageProps={{ borderRadius: 10 }}
           containerStyle={containerStyle}
@@ -82,7 +81,7 @@ class ProductListScreen extends PureComponent<Props> {
             fontSize={18}
             color={theme.colors.primary}
           >
-            {item.name}
+            {item.viTitle}
           </Text>
           <Text
             marginLeft={10}
@@ -90,7 +89,7 @@ class ProductListScreen extends PureComponent<Props> {
             fontSize={12}
             color={theme.colors.secondary}
           >
-            {item.address}
+            {item.destinations[0]?.address || '123 Le Duan'}
           </Text>
         </Card>
         <QuickView
@@ -101,18 +100,10 @@ class ProductListScreen extends PureComponent<Props> {
         >
           <QuickView flex={5}>
             <Text color={theme.colors.secondary} fontSize={12}>
-              Phí hoa hồng
+              Giá
             </Text>
             <Text color={theme.colors.primary} fontSize={18}>
-              {`${item.commissionRate} %`}
-            </Text>
-          </QuickView>
-          <QuickView flex={5}>
-            <Text color={theme.colors.secondary} fontSize={12}>
-              Giá sản phẩm
-            </Text>
-            <Text color={theme.colors.primary} fontSize={18}>
-              {Helper.vndPriceFormat(item.price)}
+              {`${item.price} đ`}
             </Text>
           </QuickView>
         </QuickView>
@@ -123,7 +114,7 @@ class ProductListScreen extends PureComponent<Props> {
   render() {
     const { list, getList } = this.props;
     const { theme } = this.props;
-    const fields = ['id', 'name', 'commissionRate', 'address'];
+    // const fields = ['id', 'enName', 'viName', 'address'];
     /**
      * For Filter
      */
@@ -141,7 +132,7 @@ class ProductListScreen extends PureComponent<Props> {
             <FlatList
               list={list}
               getList={(query?: TQuery) => {
-                getList({ ...query, fields, filter: filter.filterObject });
+                getList({ ...query, filter: filter.filterObject });
               }}
               // getList={getList}
               renderItem={this.renderItem}

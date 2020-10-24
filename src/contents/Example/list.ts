@@ -94,6 +94,13 @@ export const exampleList = [
     screen: commonStack.modal,
   },
   {
+    name: 'Chat',
+    iconName: 'message-text-outline',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#064ad2', '#7444bb'],
+    stack: commonStack.chat,
+  },
+  {
     name: 'ListCheckbox',
     subtitle: 'Support Theme',
     iconName: 'checkbox-multiple-marked',

@@ -7,11 +7,8 @@ import { Platform } from 'react-native';
 import rootReducer from './reducers';
 import rootSaga from './sagas';
 
-const immutableTransform = require('redux-persist-transform-immutable');
-
 const persistConfig = {
   key: 'root',
-  transforms: [immutableTransform()],
   storage: AsyncStorage,
   whitelist: ['config', 'auth', 'product', 'event'],
 };

@@ -23,6 +23,7 @@ import Dropdown from './Common/Dropdown';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
 import HTML from './Common/Webview/HTML';
 import Video from './Common/Video';
+import Chat from './Common/Chat';
 
 /**
  * Custom
@@ -59,6 +60,7 @@ export {
   ParallaxScrollView,
   HTML,
   Video,
+  Chat,
   /**
    * Custom
    */

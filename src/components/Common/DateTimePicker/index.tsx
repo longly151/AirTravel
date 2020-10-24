@@ -41,6 +41,7 @@ interface State {
 class DateTimePicker extends Component<DateTimePickerProps, State> {
   static defaultProps = {
     mode: 'date',
+    display: 'default',
   };
 
   momentFormat = 'DD/MM/YYYY hh:mm A';
@@ -138,7 +139,7 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
         >
           <QuickView
             backgroundColor={bgColor}
-            style={{ minWidth: this.minWidth, borderRadius: 20 }}
+            style={{ minWidth: this.minWidth, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
           >
             <QuickView row alignItems="center">
               <Button
@@ -337,7 +338,7 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
     /**
      * iOS 14.0
      */
-    if (Platform.OS === 'ios' && Number.parseFloat(DeviceInfo.getSystemVersion()) >= 14) {
+    if (Platform.OS === 'ios' && Number.parseFloat(DeviceInfo.getSystemVersion()) >= 14 && display === 'default') {
       return this.renderDateTimeIOS14();
     }
 

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REHYDRATE } from 'redux-persist';
-import { fromJS } from 'immutable';
 import Redux from '@utils/redux';
 
 /**
@@ -16,7 +15,7 @@ type T = {
   loginFail: (state: any, action: any) => any;
 };
 
-const INITIAL_STATE = fromJS(Redux.createObjectInitialState());
+const INITIAL_STATE = Redux.createObjectInitialState();
 
 /**
  * --- SLICE ---
@@ -30,15 +29,15 @@ const slice = createSlice({
   },
   extraReducers: {
     // Redux Persist (REHYDRATE)
-    [REHYDRATE]: (state, action) => {
+    [REHYDRATE](state, action) {
       if (action.payload && action.payload.login) {
         // Only persist data (ignore loading & error)
         const { login } = action.payload;
-        return INITIAL_STATE.merge(
-          fromJS({
-            data: login.get('data'),
-          }),
-        );
+        INITIAL_STATE.data = login.data;
+        return {
+          ...INITIAL_STATE,
+          data: login.data,
+        };
       }
       return state;
     },

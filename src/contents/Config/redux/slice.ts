@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fromJS } from 'immutable';
 
 /**
  * --- CONSTANT ---
@@ -21,7 +20,7 @@ export enum LanguageEnum {
 /**
  * Initial State
  */
-export const INITIAL_STATE = fromJS({
+export const INITIAL_STATE = ({
   theme: ThemeEnum.LIGHT,
   language: LanguageEnum.EN,
   requireLogin: false,
@@ -34,9 +33,15 @@ const theme = createSlice({
   name: 'config',
   initialState: INITIAL_STATE,
   reducers: {
-    switchTheme: (state) => state.set('theme', state.get('theme') === ThemeEnum.LIGHT ? ThemeEnum.DARK : ThemeEnum.LIGHT),
-    changeLanguage: (state, action) => state.set('language', action.payload),
-    resetRequireLogin: (state) => state.set('requireLogin', INITIAL_STATE.get('requireLogin')),
+    switchTheme(state) {
+      state.theme = state.theme === ThemeEnum.LIGHT ? ThemeEnum.DARK : ThemeEnum.LIGHT;
+    },
+    changeLanguage(state, action) {
+      state.language = action.payload;
+    },
+    resetRequireLogin(state) {
+      state.requireLogin = INITIAL_STATE.requireLogin;
+    },
   },
 });
 

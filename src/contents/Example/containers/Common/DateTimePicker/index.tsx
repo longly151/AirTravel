@@ -20,6 +20,15 @@ class DateTimePickerExample extends PureComponent {
               minimumDate={new Date('2020-08-12')}
               maximumDate={new Date('2020-08-20')}
               placeholder="Pick a date"
+              display="spinner"
+              shadow
+            />
+            <DateTimePicker
+              ref={(ref) => { this.dateTimePickerRef = ref; }}
+              value={new Date('2019-01-01')}
+              minimumDate={new Date('2020-08-12')}
+              maximumDate={new Date('2020-08-20')}
+              placeholder="Pick a date"
               shadow
             />
             <DateTimePicker

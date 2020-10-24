@@ -15,12 +15,12 @@ import { realtorLoginApi } from './api';
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(realtorLoginApi, payload.data);
-    Global.token = response.token;
-    yield put(loginSuccess(response));
+    const { data } = response;
+    Global.token = data.token;
+    yield put(loginSuccess(data));
     const requiredLogin = yield select((state) => requireLoginSelector(state));
     if (!requiredLogin) {
-      yield call(NavigationService.goBack);
-      // yield call(NavigationService.navigate, mainBottomTab.homeStack);
+      NavigationService.goBack();
     }
     return true;
   } catch (error) {

@@ -90,7 +90,8 @@ class Text extends PureComponent<TextProps> {
      * Color Handle
      */
     const { colors } = theme;
-    let textColor = theme.colors.primaryText;
+    // eslint-disable-next-line max-len
+    let textColor = type ? theme.Text[type].color || theme.colors.primaryText : theme.colors.primaryText;
     if (primary) textColor = colors.primary;
     if (secondary) textColor = colors.secondary;
     if (success) textColor = colors.success;
