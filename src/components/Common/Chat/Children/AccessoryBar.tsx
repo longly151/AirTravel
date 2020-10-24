@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
-import AppView from '@utils/appView';
 import QuickView from '../../View/QuickView';
 
 class AccessoryBar extends PureComponent {

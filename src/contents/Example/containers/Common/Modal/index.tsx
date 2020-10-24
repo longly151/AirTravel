@@ -5,8 +5,6 @@ import {
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
-import AppView from '@utils/appView';
-import { ScrollView } from 'react-native-gesture-handler';
 
 interface State {
   isVisible: boolean

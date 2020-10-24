@@ -29,7 +29,7 @@ interface Props {
 }
 
 class ProductListScreen extends PureComponent<Props> {
-  renderItem = ({ item, index }: { item: any, index: number }) => {
+  renderItem = ({ item }: { item: any }) => {
     const { theme } = this.props;
     const containerStyle = StyleSheet.flatten([
       {

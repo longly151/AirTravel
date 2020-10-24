@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Platform, Alert, ActivityIndicator } from 'react-native';
-import { GiftedChat, SystemMessage, IMessage as IDefaultMessage, Send, GiftedChatProps, Bubble } from 'react-native-gifted-chat';
+import { View, ActivityIndicator } from 'react-native';
+import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps, Bubble } from 'react-native-gifted-chat';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Global } from '@utils/appHelper';
@@ -8,25 +8,13 @@ import Api from '@utils/api';
 import qs from 'qs';
 import Helper from '@utils/helper';
 import _ from 'lodash';
-import messagesData from './mock/messages';
-import earlierMessages from './mock/earlierMessages';
 import AccessoryBar from './Children/AccessoryBar';
-
-const user = {
-  _id: 1,
-  name: 'Developer',
-};
-
-const otherUser = {
-  _id: 2,
-  name: 'React Native',
-  avatar: 'https://facebook.github.io/react/img/logo_og.png',
-};
 
 export interface IMessage extends IDefaultMessage{
   room?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IEmitSocket {
   message: string;
   data?: any;
