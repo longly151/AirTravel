@@ -8,6 +8,7 @@ import QuickView from './Common/View/QuickView';
 import Container from './Common/View/Container';
 import Body from './Common/View/Body';
 import Text from './Common/Text';
+import Icon from './Common/Icon';
 import Header from './Common/Header';
 import Button from './Common/Button/DefaultButton';
 import ModalButton from './Common/Button/ModalButton';
@@ -45,6 +46,7 @@ export {
   Container,
   Body,
   Text,
+  Icon,
   Header,
   Button,
   ButtonGroup,
