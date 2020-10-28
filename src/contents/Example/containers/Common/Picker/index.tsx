@@ -52,7 +52,7 @@ class PickerExample extends PureComponent {
               height={40}
               shadow
               modal
-              placeholder="Chọn tỉnh thành"
+              // placeholder="Chọn tỉnh thành"
               ref={(ref: any) => { this.pickerModalRef = ref; }}
               onValueChange={(value) => {
                 console.log('onValueChange: ', value);

@@ -5,6 +5,8 @@ import En from '@locales/en.json';
 import Vi from '@locales/vi.json';
 import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
+import RNFetchBlob from 'rn-fetch-blob';
+import Api from './api';
 
 export const Global: any = global;
 
@@ -108,6 +110,34 @@ export class CAppHelper {
   getModalFromGlobal(id: number) {
     if (!Global.modal) return null;
     return _.find(Global.modal, (o) => o.id === id);
+  }
+
+  // => Customize this function depend on specific project
+  getPresignedUrl = async (presignedUrlApi: string, data: {
+    type?: string,
+    fileName?: string,
+    folderPrefix?: string
+  }) => {
+    const result = await Api.post(presignedUrlApi, data);
+    return {
+      presignedUrl: result.data.presignedUrl,
+      returnUrl: result.data.url,
+    };
+  };
+
+  async uploadToS3(presignedUrl: string, data: {
+    name?: string,
+    type: string,
+    uri: string,
+  }) {
+    return RNFetchBlob.fetch(
+      'PUT',
+      presignedUrl,
+      {
+        'Content-Type': data.type,
+      },
+      RNFetchBlob.wrap(data.uri),
+    );
   }
 }
 

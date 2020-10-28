@@ -1,5 +1,5 @@
 import React from 'react';
-import QuickView from '@components/Common/View/QuickView';
+import QuickView from '../../View/QuickView';
 import Button, { ButtonProps } from '../DefaultButton';
 import FlatList, { FlatListProps } from '../../FlatList/DefaultFlatList';
 

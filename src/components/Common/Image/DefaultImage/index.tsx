@@ -9,12 +9,12 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import _ from 'lodash';
 import Color from '@themes/Color';
 import AppView from '@utils/appView';
-import QuickView from '../View/QuickView';
+import QuickView from '../../View/QuickView';
 
 export interface ImageProps extends Omit<FastImageProps, 'source'> {
   width: number;
   height?: number | string;
-  source: Source;
+  source?: Source;
   multipleSources?: any;
   viewEnable?: boolean;
   containerStyle?: any;
@@ -22,6 +22,7 @@ export interface ImageProps extends Omit<FastImageProps, 'source'> {
   loadingSize?: number;
   showLoadingText?: boolean;
   loadingType?: 'default' | 'bar' | 'pie' | 'circle' | 'circleSnail';
+  isLoading?: boolean; // trigger loading from Props
   center?: boolean;
   sharp?: boolean;
   rounded?: boolean;
@@ -30,6 +31,7 @@ export interface ImageProps extends Omit<FastImageProps, 'source'> {
   placeholderBorderColor?: string;
   placeholderBorderWidth?: number;
   disablePlaceholder?: boolean;
+  onPress?: () => any;
 }
 interface State {
   progress: number;
@@ -100,7 +102,26 @@ class Image extends PureComponent<ImageProps, State> {
 
   renderLoadingPlaceholder = () => {
     const { loading } = this.state;
-    const { width, disablePlaceholder } = this.props;
+    const { width, disablePlaceholder, isLoading, source } = this.props;
+    if (isLoading) {
+      // Loading from Props
+      return (
+        <>
+          <QuickView style={styles.center}>
+            {
+              source ? null : (
+                <Icon
+                  name="image"
+                  color="rgba(173, 181, 189, 0.7)"
+                  size={width / 2}
+                />
+              )
+            }
+          </QuickView>
+          <ActivityIndicator style={styles.center} />
+        </>
+      );
+    }
     if (loading && !disablePlaceholder) {
       return (
         <QuickView style={styles.center}>
@@ -136,10 +157,11 @@ class Image extends PureComponent<ImageProps, State> {
   renderProgress = () => {
     const { progress, indeterminate, loading } = this.state;
     const {
-      loadingColor, loadingSize: loadingSizeProp, showLoadingText, width, loadingType,
+      isLoading, loadingColor, loadingSize: loadingSizeProp, showLoadingText, width, loadingType
     } = this.props;
     const loadingSize = loadingSizeProp || width / 5;
-    if (loading) {
+    if (_.isUndefined(isLoading) && loading) {
+      // Loading from State
       switch (loadingType) {
         case 'circle':
           return (
@@ -202,49 +224,60 @@ class Image extends PureComponent<ImageProps, State> {
     let index = 0;
     const { source: sourceProp, multipleSources, loadingColor } = this.props;
     let source = sourceProp;
-    if (sourceProp.uri) { source = _.pick(sourceProp, 'uri'); }
-    const { viewModeOn } = this.state;
-    if (!multipleSources) {
-      imageUrls.push({
-        url: source.uri || '',
-        props: {
-          source,
-        },
-      });
-    } else {
-      multipleSources.map((item:any) => {
+    if (sourceProp) {
+      if (sourceProp.uri) { source = _.pick(sourceProp, 'uri'); }
+      const { viewModeOn } = this.state;
+      if (!multipleSources) {
         imageUrls.push({
-          url: item.uri || '',
+          url: sourceProp.uri || '',
           props: {
-            item,
+            source,
           },
         });
-        return true;
-      });
-      index = _.findIndex(multipleSources, source);
+      } else {
+        multipleSources.map((item:any) => {
+          imageUrls.push({
+            url: item.uri || '',
+            props: {
+              item,
+            },
+          });
+          return true;
+        });
+        index = _.findIndex(multipleSources, source);
+      }
+      return (
+        <Modal visible={viewModeOn} transparent>
+          <ImageViewer
+            onCancel={() => this.setState({ viewModeOn: false })}
+            loadingRender={() => <ActivityIndicator size="large" color={loadingColor} />}
+            enableSwipeDown
+            index={index}
+            imageUrls={imageUrls}
+            renderHeader={() => (
+              <QuickView style={styles.viewHeaderImages}>
+                <Icon
+                  name="close"
+                  type="antdesign"
+                  size={24}
+                  color="#FFFFFF"
+                  onPress={() => this.setState({ viewModeOn: false })}
+                />
+              </QuickView>
+            )}
+          />
+        </Modal>
+      );
     }
-    return (
-      <Modal visible={viewModeOn} transparent>
-        <ImageViewer
-          onCancel={() => this.setState({ viewModeOn: false })}
-          loadingRender={() => <ActivityIndicator size="large" color={loadingColor} />}
-          enableSwipeDown
-          index={index}
-          imageUrls={imageUrls}
-          renderHeader={() => (
-            <QuickView style={styles.viewHeaderImages}>
-              <Icon
-                name="close"
-                type="antdesign"
-                size={24}
-                color="#FFFFFF"
-                onPress={() => this.setState({ viewModeOn: false })}
-              />
-            </QuickView>
-          )}
-        />
-      </Modal>
-    );
+    return null;
+  };
+
+  onPressImage = () => {
+    const { onPress, viewEnable } = this.props;
+    const { renderFail } = this.state;
+    if (viewEnable && !renderFail) {
+      this.setState({ viewModeOn: true });
+    } else if (onPress) onPress();
   };
 
   render() {
@@ -266,21 +299,25 @@ class Image extends PureComponent<ImageProps, State> {
       borderRadius: borderRadiusProp,
       placeholderBorderColor,
       placeholderBorderWidth,
+      onPress,
       ...otherProps
     } = this.props;
     const ratio = imageHeight / imageWidth || 1;
     let width: any = widthProp;
     let height = heightProp || ratio * width;
 
+    const touchableEnable = (viewEnable && !renderFail) || onPress;
     /**
      *  For Local Image
      */
-    const localSource: any = source;
-    const image: any = RNImage.resolveAssetSource(localSource);
+    if (source) {
+      const localSource: any = source;
+      const image: any = RNImage.resolveAssetSource(localSource);
 
-    // eslint-disable-next-line no-underscore-dangle
-    if (image.__packager_asset) {
-      height = heightProp || (image.height / image.width) * width;
+      // eslint-disable-next-line no-underscore-dangle
+      if (image.__packager_asset) {
+        height = heightProp || (image.height / image.width) * width;
+      }
     }
 
     /**
@@ -336,14 +373,21 @@ class Image extends PureComponent<ImageProps, State> {
       },
       styleProp,
     ]);
-
+    if (!source) {
+      return (
+        <QuickView
+          style={containerStyle}
+          onPress={this.onPressImage}
+        >
+          { this.renderLoadingPlaceholder() }
+        </QuickView>
+      );
+    }
     return (
       <>
         <QuickView
           style={containerStyle}
-          onPress={(viewEnable && !renderFail)
-            ? () => this.setState({ viewModeOn: true })
-            : undefined}
+          onPress={touchableEnable ? this.onPressImage : undefined}
         >
           { this.renderLoadingPlaceholder() }
           { this.renderProgress() }

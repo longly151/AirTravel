@@ -8,7 +8,7 @@ import Color from '@themes/Color';
 import AppView from '@utils/appView';
 import QuickView from '../../View/QuickView';
 import Header from '../../Header';
-import Image from '../../Image';
+import Image from '../../Image/DefaultImage';
 
 const BaseParallaxScrollView = require('react-native-parallax-scroll-view');
 

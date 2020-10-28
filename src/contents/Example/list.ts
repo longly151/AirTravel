@@ -75,9 +75,17 @@ export const exampleList = [
     name: 'Image',
     iconName: 'image',
     iconSize: 35,
-    linearGradientColors: ['#a55f9b', '#ae011e'],
+    linearGradientColors: ['#6d6bff', '#c50790'],
     stack: exampleStack.commonExampleStack,
     screen: commonStack.image,
+  },
+  {
+    name: 'Image Picker Button',
+    iconName: 'image-edit',
+    iconSize: 35,
+    linearGradientColors: ['#c50790', '#6d6bff'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.imagePickerButton,
   },
   {
     name: 'Badge',
@@ -99,6 +107,14 @@ export const exampleList = [
     subtitle: 'Support Theme',
     linearGradientColors: ['#064ad2', '#7444bb'],
     stack: commonStack.chat,
+  },
+  {
+    name: 'WebView',
+    iconName: 'web',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#02e7a3', '#8fce85'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.webView,
   },
   {
     name: 'ListCheckbox',

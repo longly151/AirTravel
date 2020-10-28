@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
-import {
-  PickerProps as RNPickerProps, ActionSheetIOS, StyleSheet, Platform,
-  ScrollView } from 'react-native';
+import { PickerProps as RNPickerProps, ActionSheetIOS, StyleSheet, Platform, VirtualizedList } from 'react-native';
 import _ from 'lodash';
 import { Picker as RNPicker } from '@react-native-community/picker';
 import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
@@ -13,7 +11,7 @@ import { connect } from 'react-redux';
 import AppHelper from '@utils/appHelper';
 import AppView from '@utils/appView';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon } from '@components';
+import Icon from '../Icon';
 import Button from '../Button/DefaultButton';
 import QuickView from '../View/QuickView';
 import ModalButton, { ModalButtonProps } from '../Button/ModalButton';
@@ -29,6 +27,7 @@ export interface PickerProps extends RNPickerProps, Omit<ModalButtonProps, 'styl
   themeName?: ThemeEnum;
   language?: LanguageEnum;
   modal?: boolean;
+  onValuePress?: (value: any, index?: number) => any;
 }
 interface State {
   selectedIndex: number | null;
@@ -111,8 +110,9 @@ class Picker extends PureComponent<PickerProps, State> {
         (buttonIndex: number) => {
           if (buttonIndex !== values.length) {
             const { selectedIndex } = this.state;
-            const { onValueChange } = this.props;
-            if (selectedIndex !== buttonIndex) {
+            const { onValueChange, onValuePress } = this.props;
+            if (onValuePress) onValuePress(values[buttonIndex], buttonIndex); // Not Change State
+            else if (selectedIndex !== buttonIndex) {
               this.setState({ selectedIndex: buttonIndex });
               if (onValueChange) { onValueChange(values[buttonIndex], buttonIndex); }
             }
@@ -146,14 +146,42 @@ class Picker extends PureComponent<PickerProps, State> {
   };
 
   onValueChangeAndroid = (itemValue: ItemValue, itemIndex: number): void => {
-    const { values, onValueChange, placeholder } = this.props;
-    if (!placeholder) {
+    const { values, onValueChange, onValuePress, placeholder } = this.props;
+    if (onValuePress) onValuePress(values[itemIndex], itemIndex); // Not Change State
+    else if (!placeholder) {
       this.setState({ selectedIndex: itemIndex });
       if (onValueChange) { onValueChange(values[itemIndex], itemIndex); }
     } else {
       this.setState({ selectedIndex: itemIndex - 1 });
       if (itemIndex >= 1) { if (onValueChange) { onValueChange(values[itemIndex - 1], itemIndex - 1); } }
     }
+  };
+
+  getItem = (data: Array<string>, index: number) => data[index];
+
+  getItemCount = (data: Array<string>) => data.length;
+
+  renderModalItem = ({ item, index }: { item: string, index: number }) => {
+    const { values } = this.props;
+    return (
+      <Button
+        marginVertical={3}
+        marginHorizontal={AppView.bodyPaddingHorizontal}
+        clear
+        title={item}
+        titleCenter={false}
+        onPress={() => {
+          const { selectedIndex } = this.state;
+          const { onValueChange, onValuePress } = this.props;
+          if (onValuePress) onValuePress(values[index], index);
+          else if (selectedIndex !== index) {
+            this.pickerModal.close();
+            this.setState({ selectedIndex: index });
+            if (onValueChange) { onValueChange(values[index], index); }
+          }
+        }}
+      />
+    );
   };
 
   render() {
@@ -248,39 +276,38 @@ class Picker extends PureComponent<PickerProps, State> {
             height={modalHeight}
             style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
           >
-            <QuickView row justifyContent="space-between" marginTop={20} marginHorizontal={AppView.bodyPaddingHorizontal}>
-              <QuickView />
-              <Text type="title" bold center>{placeholder}</Text>
-              <TouchableOpacity containerStyle={{ alignSelf: 'center' }} onPress={() => this.pickerModal.close()}>
-                <Icon name="close" size={30} />
-              </TouchableOpacity>
-            </QuickView>
-            <ScrollView style={{ marginVertical: 20 }}>
-              {itemLabel.map((item: any, buttonIndex: number) => (
-                <Button
-                  key={buttonIndex.toString()}
-                  marginVertical={3}
-                  marginHorizontal={AppView.bodyPaddingHorizontal}
-                  clear
-                  title={item}
-                  titleCenter={false}
-                  onPress={() => {
-                    const { selectedIndex } = this.state;
-                    const { onValueChange } = this.props;
-                    if (selectedIndex !== buttonIndex) {
-                      this.pickerModal.close();
-                      this.setState({ selectedIndex: buttonIndex });
-                      if (onValueChange) { onValueChange(values[buttonIndex], buttonIndex); }
-                    }
-                  }}
-                />
-              ))}
-            </ScrollView>
+            {placeholder ? (
+              <QuickView row justifyContent="space-between" marginTop={20} marginHorizontal={AppView.bodyPaddingHorizontal}>
+                <QuickView />
+                <Text type="title" bold center>{placeholder}</Text>
+                <TouchableOpacity containerStyle={{ alignSelf: 'center' }} onPress={() => this.pickerModal.close()}>
+                  <Icon name="close" size={30} />
+                </TouchableOpacity>
+              </QuickView>
+            ) : null}
+            <VirtualizedList
+              data={itemLabel}
+              renderItem={this.renderModalItem}
+              initialNumToRender={20}
+              updateCellsBatchingPeriod={10}
+              keyExtractor={(item, index) => index.toString()}
+              getItemCount={this.getItemCount}
+              getItem={this.getItem}
+              style={{ marginVertical: 20 }}
+            />
           </QuickView>
         </ModalButton>
       );
     }
     if (Platform.OS === 'ios') {
+      const { invisible, buttonChildren } = this.props;
+      if (invisible) {
+        return (
+          <TouchableOpacity onPress={this.onPressActionSheetIOS}>
+            {buttonChildren}
+          </TouchableOpacity>
+        );
+      }
       return (
         <Button
           testID="PickerIOS"
@@ -358,8 +385,8 @@ class Picker extends PureComponent<PickerProps, State> {
     ]);
 
     /**
-       * currentValue
-       */
+     * currentValue
+     */
     let currentValue: any = '';
     if (selectedIndex === null) {
       if (defaultIndex !== null) {

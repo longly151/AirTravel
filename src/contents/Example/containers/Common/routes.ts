@@ -7,6 +7,7 @@ const commonStack = {
   button: 'ButtonExampleScreen',
   avatar: 'AvatarExampleScreen',
   picker: 'PickerExampleScreen',
+  imagePickerButton: 'ImagePickerButtonExampleScreen',
   dateTimePicker: 'DateTimePickerExampleScreen',
   input: 'InputExampleScreen',
   flatList: 'FlatListExample',
@@ -16,6 +17,7 @@ const commonStack = {
   dropdown: 'DropdownExample',
   modal: 'ModalExampleScreen',
   chat: 'ChatExample',
+  webView: 'WebViewExample',
 };
 
 export default commonStack;

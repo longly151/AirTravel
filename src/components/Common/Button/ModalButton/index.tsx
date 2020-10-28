@@ -74,7 +74,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     };
   }
 
-  customOnPress = (event: GestureResponderEvent) => {
+  defaultOnPress = (event: GestureResponderEvent) => {
     const { onPress } = this.props;
     this.setState({ isVisible: true });
     if (onPress) onPress(event);
@@ -113,7 +113,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
             {
             type === 'notification' ? (
               <Button
-                title={okText}
+                title="OK"
                 width={100}
                 paddingHorizontal={10}
                 onPress={() => {
@@ -162,9 +162,15 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     } = this.props;
 
     const defaultModalProps: ModalProps = _.merge({
+      swipeDirection: ['up', 'left', 'right', 'down'],
       backdropClose: true,
       type: 'notification',
     }, modalProps);
+    // eslint-disable-next-line max-len
+    defaultModalProps.swipeDirection = (defaultModalProps.type === 'notification' || defaultModalProps.type === 'confirmation') ? ['up', 'down'] : undefined;
+    if (defaultModalProps.swipeDirection) {
+      defaultModalProps.onSwipeComplete = () => this.setState({ isVisible: false });
+    }
 
     const {
       backdropClose,
@@ -216,11 +222,11 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       <QuickView>
         {
           invisible ? (
-            <TouchableOpacity onPress={this.customOnPress}>
+            <TouchableOpacity onPress={this.defaultOnPress}>
               {buttonChildren}
             </TouchableOpacity>
           )
-            : <Button {...otherProps} onPress={this.customOnPress} />
+            : <Button {...otherProps} onPress={this.defaultOnPress} />
         }
         <Modal
           {...otherModalProps}

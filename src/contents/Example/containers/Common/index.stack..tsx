@@ -14,6 +14,8 @@ import ImageExample from './Image';
 import DropdownExample from './Dropdown';
 import ModalExample from './Modal';
 import DateTimePickerExample from './DateTimePicker';
+import ImagePickerButtonExample from './ImagePickerButton';
+import WebViewExample from './WebView';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +27,7 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.button} component={ButtonExample} />
       <Stack.Screen name={commonStack.avatar} component={AvatarExample} />
       <Stack.Screen name={commonStack.picker} component={PickerExample} />
+      <Stack.Screen name={commonStack.imagePickerButton} component={ImagePickerButtonExample} />
       <Stack.Screen name={commonStack.dateTimePicker} component={DateTimePickerExample} />
       <Stack.Screen name={commonStack.input} component={InputExample} />
       <Stack.Screen name={commonStack.flatList} component={FlatListExampleStack} />
@@ -33,6 +36,7 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.bottomModalSelect} component={BottomModalSelectExample} />
       <Stack.Screen name={commonStack.dropdown} component={DropdownExample} />
       <Stack.Screen name={commonStack.modal} component={ModalExample} />
+      <Stack.Screen name={commonStack.webView} component={WebViewExample} />
     </Stack.Navigator>
   );
 }

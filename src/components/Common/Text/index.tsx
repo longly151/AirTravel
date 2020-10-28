@@ -10,8 +10,8 @@ import {
 import { StyleSheet } from 'react-native';
 import Font from '@themes/Font';
 import { lightTheme } from '@themes/Theme';
-import QuickView from '@components/Common/View/QuickView';
 import { Translation } from 'react-i18next';
+import QuickView from '../View/QuickView';
 
 type TFontFamily = typeof Font.fontFamily;
 type TFontSize = typeof Font.fontSize;

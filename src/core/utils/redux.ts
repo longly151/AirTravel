@@ -1,3 +1,4 @@
+import AppHelper from '@utils/appHelper';
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -6,6 +7,8 @@ import _ from 'lodash';
 import Config from 'react-native-config';
 import qs from 'qs';
 import Filter from './filter';
+// eslint-disable-next-line import/no-cycle
+import Api from './api';
 
 /**
  * Type
@@ -42,6 +45,15 @@ export type TQuery = {
   limit?: number;
   filter?: Filter;
 };
+
+/**
+ * Interface
+ */
+export interface BaseState {
+  loading: boolean;
+  data: any;
+  error: any;
+}
 
 /**
  * Redux
@@ -237,6 +249,33 @@ class CRedux {
       arrayFormat: 'comma',
     });
     return stringifiedQuery;
+  }
+
+  initDetail(props: any) {
+    return {
+      loading: true,
+      data: AppHelper.getItemFromParams(props),
+      error: null,
+    };
+  }
+
+  async fetchDetail(props: any, preApi: string) {
+    const initialData = AppHelper.getItemFromParams(props);
+    const api = preApi.replace(':id', initialData.id);
+    try {
+      const response = await Api.get(api);
+      return {
+        loading: false,
+        data: response.data,
+        error: null,
+      };
+    } catch (error) {
+      return {
+        loading: false,
+        data: [],
+        error,
+      };
+    }
   }
 }
 const Redux = CRedux.Instance;

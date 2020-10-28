@@ -5,11 +5,8 @@ import {
   productGetList,
   productGetListSuccess,
   productGetListFail,
-  productGetDetail,
-  productGetDetailFail,
-  productGetDetailSuccess,
 } from './slice';
-import { fetchProducts, fetchProductById } from './api';
+import { fetchProducts } from './api';
 
 export function* getListSaga({ payload }: { payload: any }) {
   try {
@@ -22,18 +19,6 @@ export function* getListSaga({ payload }: { payload: any }) {
   }
 }
 
-export function* getDetailSaga({ payload }: { payload: any }) {
-  try {
-    const response = yield call(fetchProductById, payload.id);
-    yield put(productGetDetailSuccess(response));
-    return true;
-  } catch (error) {
-    yield put(productGetDetailFail(yield* handleException(error)));
-    return false;
-  }
-}
-
 export default [
   takeLatest(productGetList, getListSaga),
-  takeLatest(productGetDetail, getDetailSaga),
 ];

@@ -12,6 +12,7 @@ import Icon from './Common/Icon';
 import Header from './Common/Header';
 import Button from './Common/Button/DefaultButton';
 import ModalButton from './Common/Button/ModalButton';
+import ImagePickerButton from './Common/Button/ImagePickerButton';
 import ButtonGroup from './Common/Button/ButtonGroup';
 import Avatar from './Common/Avatar';
 import Picker from './Common/Picker';
@@ -19,10 +20,10 @@ import DateTimePicker from './Common/DateTimePicker';
 import ListCheckBox from './Common/ListCheckBox';
 import Input from './Common/Input';
 import FlatList from './Common/FlatList/DefaultFlatList';
-import Image from './Common/Image';
+import Image from './Common/Image/DefaultImage';
 import Dropdown from './Common/Dropdown';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
-import HTML from './Common/Webview/HTML';
+import HTML from './Common/WebView/HTML';
 import Video from './Common/Video';
 import Chat from './Common/Chat';
 
@@ -36,6 +37,7 @@ import AuthButton from './Custom/Button/AuthButton';
 import PrimaryInput from './Custom/Input/PrimaryInput';
 import BackIcon from './Custom/Icon/BackIcon';
 import NavigatorButtonGroup from './Custom/Button/NavigatorButtonGroup';
+import EditableImage from './Common/Image/EditableImage';
 
 export {
   /**
@@ -49,6 +51,8 @@ export {
   Icon,
   Header,
   Button,
+  ImagePickerButton,
+  ModalButton,
   ButtonGroup,
   Avatar,
   Picker,
@@ -57,8 +61,8 @@ export {
   ListCheckBox,
   FlatList,
   Image,
+  EditableImage,
   Dropdown,
-  ModalButton,
   ParallaxScrollView,
   HTML,
   Video,

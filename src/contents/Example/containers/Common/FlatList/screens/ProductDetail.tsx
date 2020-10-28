@@ -1,6 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import AppHelper from '@utils/appHelper';
 import {
   Container,
   Body,
@@ -9,32 +7,36 @@ import {
   QuickView,
   Image,
   Header,
+  HTML,
 } from '@components';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
 import { withTheme } from 'react-native-elements';
-import Selector from '@utils/selector';
-import { productDetailSelector } from '../redux/selector';
-import { productGetDetail } from '../redux/slice';
+import Redux, { BaseState } from '@utils/redux';
+import { ActivityIndicator } from 'react-native';
 
 interface Props {
   detail: any;
   getDetail: (item: any) => any;
   theme?: any;
 }
+interface State extends BaseState {}
 
-class ProductDetail extends PureComponent<Props> {
-  componentDidMount() {
-    const { getDetail } = this.props;
-    getDetail(AppHelper.getItemFromParams(this.props));
+class ProductDetail extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = Redux.initDetail(props);
+  }
+
+  async componentDidMount() {
+    const result = await Redux.fetchDetail(this.props, '/services/:id');
+    this.setState(result);
   }
 
   renderForeground = () => {
     const height = 80;
     const marginTop = parallaxHeaderHeight - height;
-    const {
-      theme,
-      detail: { data },
-    } = this.props;
+    const { theme } = this.props;
+    const { data } = this.state;
 
     return (
       <QuickView
@@ -55,16 +57,12 @@ class ProductDetail extends PureComponent<Props> {
   };
 
   renderStickyHeader = () => {
-    const {
-      detail: { data },
-    } = this.props;
+    const { data } = this.state;
     return <Header title={data.name} />;
   };
 
   render() {
-    const {
-      detail: { data },
-    } = this.props;
+    const { loading, data } = this.state;
     return (
       <Container>
         <ParallaxScrollView
@@ -80,6 +78,10 @@ class ProductDetail extends PureComponent<Props> {
               }}
               containerStyle={{ marginTop: 20 }}
             />
+            {
+              loading ? <ActivityIndicator style={{ marginTop: 20 }} />
+                : <HTML html={data.enContent} marginVertical={20} />
+            }
           </Body>
         </ParallaxScrollView>
       </Container>
@@ -87,15 +89,17 @@ class ProductDetail extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  detail: Selector.getObject(productDetailSelector, state),
-});
+// const mapStateToProps = (state: any) => ({
+//   detail: Selector.getObject(productDetailSelector, state),
+// });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  getDetail: (item: any) => dispatch(productGetDetail(item)),
-});
+// const mapDispatchToProps = (dispatch: any) => ({
+//   getDetail: (item: any) => dispatch(productGetDetail(item)),
+// });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTheme(ProductDetail as any));
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(withTheme(ProductDetail as any));
+
+export default withTheme(ProductDetail as any);

@@ -1,5 +1,5 @@
 import Selector from '@utils/selector';
-import { PARENT_NAME, NAME, LIST, DETAIL } from './slice';
+import { PARENT_NAME, NAME, LIST } from './slice';
 
 export const root = (state: any) => {
   if (PARENT_NAME) return state[PARENT_NAME][NAME];
@@ -7,5 +7,3 @@ export const root = (state: any) => {
 };
 
 export const productListSelector = Selector.createArraySelector(root, LIST);
-
-export const productDetailSelector = Selector.createObjectSelector(root, DETAIL);

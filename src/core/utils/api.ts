@@ -5,8 +5,10 @@
 import Config from 'react-native-config';
 import _ from 'lodash';
 import qs from 'qs';
-import { Global } from './appHelper';
+// eslint-disable-next-line import/no-cycle
 import { TMetadata } from './redux';
+
+export const Global: any = global;
 
 const checkIfErrorOccurs = (res: any) => ({
   code: res.status,
@@ -141,7 +143,7 @@ function requestWrapper(method: string) {
     };
 
     if (Global.token && !isFullUrl) {
-      defaults.headers.Authorization = `${Global.token}`;
+      defaults.headers.Authorization = `Bearer ${Global.token}`;
     }
     if (data) {
       defaults.body = data;

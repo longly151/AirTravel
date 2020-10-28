@@ -1,15 +1,54 @@
 import React, { PureComponent } from 'react';
 import {
-  Container, QuickView, Header, Body, Image, Text,
+  Container, QuickView, Header, Body, Image, Text, EditableImage, Icon,
 } from '@components';
 import Color from '@themes/Color';
 
 class ImageExample extends PureComponent {
+  // eslint-disable-next-line no-console
+  uploadCallback = (url: string) => console.log('New Image Url: ', url);
+
   render() {
     return (
       <Container>
         <Header backIcon title="Image" shadow switchTheme />
         <Body scroll>
+          <QuickView>
+            <Text type="header" marginTop={10} marginBottom={10}>Editable Image</Text>
+            <Text type="title" center marginVertical={5}>Default Editable Image</Text>
+            <EditableImage
+              presignedUrlApi="/medias/presigned-url"
+              folderPrefix="avatar"
+              source={{
+                uri: 'https://picsum.photos/600/600',
+              }}
+              uploadCallback={this.uploadCallback}
+              imagePickerButtonProps={{
+                cropType: 'circular',
+                imageWidth: 100,
+                imageHeight: 100,
+              }}
+              width={100}
+              height={100}
+              circle
+              center
+              loadingSize={60}
+            />
+            <Text type="title" center marginVertical={5}>Custom Editable Image</Text>
+            <EditableImage
+              buttonChildren={<Icon name="image" size={30} />}
+              presignedUrlApi="/medias/presigned-url"
+              folderPrefix="images"
+              // eslint-disable-next-line no-console
+              uploadCallback={this.uploadCallback}
+              imagePickerButtonProps={{
+                imageWidth: 100,
+                imageHeight: 100,
+              }}
+              width={100}
+              height={100}
+            />
+          </QuickView>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Text type="header">Basic Image</Text>
             <Text type="title" center marginVertical={5}>Remote Image (auto width, height)</Text>
@@ -71,6 +110,14 @@ class ImageExample extends PureComponent {
               height={100}
               center
               viewEnable
+            />
+            <Text type="title" center marginBottom={5} marginTop={25}>Touchable Image without Source</Text>
+            <Image
+              width={100}
+              height={100}
+              center
+              // eslint-disable-next-line no-console
+              onPress={() => console.log('Touchable Image without source')}
             />
             <Text type="title" center marginBottom={5} marginTop={25}>Error Image</Text>
             <Image
