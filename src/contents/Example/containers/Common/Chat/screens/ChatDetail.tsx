@@ -26,7 +26,7 @@ class ChatDetailScreen extends PureComponent<any> {
           partnerTypingOnSocket={{
             message: 'trigger_typing',
           }}
-          url="http://localhost:3000/rooms/5f94236e8d8e86305b9fa612"
+          url="http://localhost:3000/rooms/5f9a662605aea25743c06038"
           apiMessageField="messages"
           pagingQueryParam={{
             offset: 'message_offset',

@@ -8,7 +8,8 @@ import Api from '@utils/api';
 import qs from 'qs';
 import Helper from '@utils/helper';
 import _ from 'lodash';
-import AccessoryBar from './Children/AccessoryBar';
+import ActionBar from './Children/ActionBar';
+import Image from '../Image/DefaultImage';
 
 export interface IMessage extends IDefaultMessage{
   room?: string;
@@ -63,6 +64,7 @@ interface State {
   seen: boolean;
   input: string;
   hasSentTyping: boolean;
+  loadingImage: boolean;
 }
 
 class Chat extends Component<ChatProps, State> {
@@ -92,6 +94,7 @@ class Chat extends Component<ChatProps, State> {
       seen: false,
       input: '',
       hasSentTyping: false,
+      loadingImage: false,
     };
     const { offset, limit } = this.state;
     const { pagingQueryParam } = this.props;
@@ -204,7 +207,7 @@ class Chat extends Component<ChatProps, State> {
     const { messages } = this.state;
     const seen = _.includes(data, receiver._id);
     // Change "Received" in Latest Message to true
-    if (seen) {
+    if (seen && !_.isEmpty(messages)) {
       messages[0].received = true;
       this.setState({ messages });
     }
@@ -268,6 +271,18 @@ class Chat extends Component<ChatProps, State> {
     // }, 1500); // simulating network
   };
 
+  onSendFromUser = (messages: IMessage[] = []) => {
+    const { sender } = this.props;
+    const createdAt = new Date();
+    const messagesToUpload = messages.map((message: IMessage) => ({
+      ...message,
+      user: sender,
+      createdAt,
+      _id: Math.round(Math.random() * 1000000),
+    }));
+    this.onSend(messagesToUpload);
+  };
+
   onSend = (messages: IMessage[] = []) => {
     const { seen } = this.state;
     const message = _.omit(messages[0], '_id', 'createdAt');
@@ -276,7 +291,7 @@ class Chat extends Component<ChatProps, State> {
 
     this.setState((previousState: any) => {
       const sentMessages = [{ ...messages[0] }];
-      previousState.messages[0].received = false;
+      if (previousState.messages[0]) { previousState.messages[0].received = false; }
       return {
         messages: GiftedChat.append(
           previousState.messages,
@@ -290,8 +305,11 @@ class Chat extends Component<ChatProps, State> {
   //   return <CustomView {...props} />
   // }
 
-  renderAccessory = () => (
-    <AccessoryBar />
+  renderActions = () => (
+    <ActionBar
+      onSend={this.onSendFromUser}
+      setImageLoading={(loadingImage) => this.setState({ loadingImage })}
+    />
   );
 
   renderSend = (props: Send['props']) => (
@@ -300,9 +318,25 @@ class Chat extends Component<ChatProps, State> {
     </Send>
   );
 
+  renderMessageImage = (props : any) => (
+    <Image
+      width={200}
+      source={{ uri: props.currentMessage.image }}
+      viewEnable
+      placeholderBorderWidth={0}
+      containerStyle={{ marginTop: -10, marginBottom: 5 }}
+    />
+  );
+
   render() {
     const { sender } = this.props;
-    const { appIsReady, messages, isLoadingEarlier, loadEarlier, isTyping } = this.state;
+    const { appIsReady,
+      messages,
+      isLoadingEarlier,
+      loadEarlier,
+      isTyping,
+      loadingImage
+    } = this.state;
     if (!appIsReady) {
       return <ActivityIndicator style={{ marginTop: 200 }} />;
     }
@@ -327,8 +361,10 @@ class Chat extends Component<ChatProps, State> {
           infiniteScroll
           onInputTextChanged={this.emitTyping}
           isTyping={isTyping}
-          renderActions={this.renderAccessory}
+          renderActions={this.renderActions}
+          renderMessageImage={this.renderMessageImage}
           alwaysShowSend
+          renderChatFooter={() => (loadingImage ? <ActivityIndicator style={{ marginBottom: 10, alignSelf: 'flex-end', marginRight: 10 }} /> : null)}
         />
       </View>
     );

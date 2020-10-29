@@ -18,6 +18,9 @@ export interface EditableImageProps extends ImageProps {
   folderPrefix?: string;
   uploadCallback?: (url: string) => Promise<any> | any;
   buttonChildren?: any;
+  pickSingleSuccess?: (media: ImageOrVideo) => Promise<any> | any;
+  handleException?: (e: any) => any;
+  ref?: any;
 }
 
 interface State {
@@ -77,15 +80,25 @@ class EditableImage extends Component<EditableImageProps, State> {
   };
 
   pickSingleSuccess = async (media: ImageOrVideo) => {
-    await this.uploadMedia(media);
+    const { pickSingleSuccess: pickSingleSuccessProp } = this.props;
+    if (pickSingleSuccessProp) pickSingleSuccessProp(media);
+
     this.pickerRef.pickerModal?.close();
+    await this.uploadMedia(media);
   };
 
   handleException = (e: any) => {
+    const { handleException: handleExceptionProp } = this.props;
+    if (handleExceptionProp) handleExceptionProp(e);
+
     // eslint-disable-next-line no-console
     console.log('Error: ', e);
     this.pickerRef.pickerModal?.close();
   };
+
+  openCamera = () => this.pickerCamera.defaultOnPress(null);
+
+  openGallery = () => this.pickerGallery.defaultOnPress(null);
 
   render() {
     const {
@@ -124,10 +137,10 @@ class EditableImage extends Component<EditableImageProps, State> {
           onValuePress={(value, index) => {
             switch (index) {
               case 0:
-                this.pickerCamera.defaultOnPress(null);
+                this.openCamera();
                 break;
               default:
-                this.pickerGallery.defaultOnPress(null);
+                this.openGallery();
             }
           }}
         />

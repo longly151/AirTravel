@@ -107,7 +107,7 @@ class ChatListScreen extends Component<any, State> {
             // Notify partner that the Current User is in the conversation
             Global.socket.emit('chatting', {
               user: {
-                _id: this.sender_id
+                _id: item._id
               }
             });
             // Remove Current User from Unread Message List

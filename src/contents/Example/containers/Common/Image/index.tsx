@@ -39,7 +39,6 @@ class ImageExample extends PureComponent {
               buttonChildren={<Icon name="image" size={30} />}
               presignedUrlApi="/medias/presigned-url"
               folderPrefix="images"
-              // eslint-disable-next-line no-console
               uploadCallback={this.uploadCallback}
               imagePickerButtonProps={{
                 imageWidth: 100,
