@@ -43,25 +43,12 @@ class CSelector {
     );
   }
 
-  getInSelector(root: any, fields: Array<string>) {
-    return createSelector(
-      root,
-      (data: any) => {
-        let result = data;
-        fields.forEach((e: any) => {
-          result = result[e];
-        });
-        return result;
-      }
-    );
-  }
-
-  createObjectSelector(root: any, parentKey?: string): TObjectSelector {
-    if (parentKey) {
+  createObjectSelector(root: any, key?: string): TObjectSelector {
+    if (key) {
       return ({
-        loading: this.getInSelector(root, [parentKey, 'loading']),
-        data: this.getInSelector(root, [parentKey, 'data']),
-        error: this.getInSelector(root, [parentKey, 'error']),
+        loading: this.getSelector(root, `${key}Loading`),
+        data: this.getSelector(root, `${key}Data`),
+        error: this.getSelector(root, `${key}Error`),
       });
     }
     return ({
@@ -71,13 +58,13 @@ class CSelector {
     });
   }
 
-  createArraySelector(root: any, parentKey?: string): TArraySelector {
-    if (parentKey) {
+  createArraySelector(root: any, key?: string): TArraySelector {
+    if (key) {
       return ({
-        loading: this.getInSelector(root, [parentKey, 'loading']),
-        data: this.getInSelector(root, [parentKey, 'data']),
-        metadata: this.getInSelector(root, [parentKey, 'metadata']),
-        error: this.getInSelector(root, [parentKey, 'error']),
+        loading: this.getSelector(root, `${key}Loading`),
+        data: this.getSelector(root, `${key}Data`),
+        metadata: this.getSelector(root, `${key}Metadata`),
+        error: this.getSelector(root, `${key}Error`),
       });
     }
     return ({

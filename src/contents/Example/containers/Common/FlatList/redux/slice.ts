@@ -27,18 +27,18 @@ const slice = createSlice({
   name: NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    ...Redux.createArrayReducer<TList>(`${NAME}GetList`, LIST),
+    ...Redux.createArrayReducer<TList>('productGetList', LIST),
   },
-  extraReducers: {
-    [REHYDRATE]: (state, action) => {
-      if (action.payload && action.payload.product) {
-        const { list } = action.payload.product;
-        INITIAL_STATE.list.data = list.data;
-        return INITIAL_STATE;
-      }
-      return state;
-    },
-  },
+  // extraReducers: {
+  //   [REHYDRATE]: (state, action) => {
+  //     if (action.payload && action.payload.product) {
+  //       const { list } = action.payload.product;
+  //       INITIAL_STATE.list.data = list.data;
+  //       return INITIAL_STATE;
+  //     }
+  //     return state;
+  //   },
+  // },
 });
 
 export const {

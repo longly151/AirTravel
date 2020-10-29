@@ -23,7 +23,10 @@ import { productListSelector } from '../redux/selector';
 import productStack from '../routes';
 
 interface Props {
-  list: TArrayRedux;
+  loading: boolean;
+  data: any;
+  metadata: any;
+  error: any;
   getList: (query?: TQuery) => any;
   theme?: any;
 }
@@ -112,7 +115,7 @@ class ProductListScreen extends PureComponent<Props> {
   };
 
   render() {
-    const { list, getList } = this.props;
+    const { data, metadata, loading, error, getList } = this.props;
     const { theme } = this.props;
     // const fields = ['id', 'enName', 'viName', 'address'];
     /**
@@ -123,6 +126,12 @@ class ProductListScreen extends PureComponent<Props> {
     // filter.mergeFilter('name', '$not', 'Sunshine City Sài Gòn', 'OR');
     // filter.mergeFilter('sections.price', '$lte', 1000000000);
 
+    const list = {
+      data,
+      metadata,
+      loading,
+      error,
+    };
     return (
       <Container>
         <Header backIcon title="FlatList" shadow switchTheme />
@@ -155,7 +164,7 @@ class ProductListScreen extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-  list: Selector.getArray(productListSelector, state),
+  ...Selector.getArray(productListSelector, state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

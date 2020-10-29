@@ -96,7 +96,7 @@ export const exampleList = [
   },
   {
     name: 'Modal',
-    iconName: 'alert-outline',
+    iconName: 'arrange-bring-forward',
     linearGradientColors: ['#d0cd25', '#d3037c'],
     stack: exampleStack.commonExampleStack,
     screen: commonStack.modal,

@@ -86,7 +86,7 @@ class CRedux {
     return result;
   }
 
-  createArrayInitialState(parentKey?: string) {
+  createArrayInitialState(key?: string) {
     const result: TArrayRedux = {
       loading: false,
       data: [],
@@ -98,49 +98,52 @@ class CRedux {
       },
       error: null,
     };
-    if (parentKey) {
+    if (key) {
       const parentResult: any = {};
-      parentResult[parentKey] = result;
+      parentResult[`${key}Loading`] = result.loading;
+      parentResult[`${key}Data`] = result.data;
+      parentResult[`${key}Metadata`] = result.metadata;
+      parentResult[`${key}Error`] = result.error;
       return parentResult;
     }
     return result;
   }
 
   createObjectReducer<T>(
-    name: string,
-    parentKey?: string,
+    action: string,
+    key?: string,
   ): T {
     const result: any = {};
-    if (parentKey) {
-      result[`${name}`] = (state: any, action: any) => {
-        state[parentKey].data = action.payload || {};
-        state[parentKey].loading = true;
-        state[parentKey].error = null;
+    if (key) {
+      result[`${action}`] = (state: any, action: any) => {
+        state[`${key}Data`] = action.payload || {};
+        state[`${key}Loading`] = true;
+        state[`${key}Error`] = null;
       };
-      result[`${name}Success`] = (state: any, action: any) => {
+      result[`${action}Success`] = (state: any, action: any) => {
         const data = action.payload;
-        state[parentKey].data = data;
-        state[parentKey].loading = false;
-        state[parentKey].error = null;
+        state[`${key}Data`] = data;
+        state[`${key}Loading`] = false;
+        state[`${key}Error`] = null;
       };
-      result[`${name}Fail`] = (state: any, action: any) => {
+      result[`${action}Fail`] = (state: any, action: any) => {
         const error = action.payload;
-        state[parentKey].loading = false;
-        state[parentKey].error = error;
+        state[`${key}Loading`] = false;
+        state[`${key}Error`] = error;
       };
     } else {
-      result[`${name}`] = (state: any, action: any) => {
+      result[`${action}`] = (state: any, action: any) => {
         state.data = action.payload || {};
         state.loading = true;
         state.error = null;
       };
-      result[`${name}Success`] = (state: any, action: any) => {
+      result[`${action}Success`] = (state: any, action: any) => {
         const data = action.payload;
         state.data = data;
         state.loading = false;
         state.error = null;
       };
-      result[`${name}Fail`] = (state: any, action: any) => {
+      result[`${action}Fail`] = (state: any, action: any) => {
         const error = action.payload;
 
         // Modify Error Message
@@ -152,16 +155,14 @@ class CRedux {
     return result;
   }
 
-  createArrayReducer<T>(name: string, parentKey?: string): T {
+  createArrayReducer<T>(action: string, key?: string): T {
     const result: any = {};
-    if (parentKey) {
-      result[name] = (state: any, action: any) => {
-        state[parentKey].loading = true;
-        state[parentKey].error = null;
+    if (key) {
+      result[action] = (state: any, action: any) => {
+        state[`${key}Loading`] = true;
+        state[`${key}Error`] = null;
       };
-      result[`${name}Success`] = (state: any, action: any) => {
-      // console.log('action.payload', parentKey, action.payload);
-
+      result[`${action}Success`] = (state: any, action: any) => {
         const { metadata } = action.payload;
         const dataGet = action.payload[dataPrefix];
         let data = dataGet;
@@ -169,28 +170,28 @@ class CRedux {
           const currentPage = action.payload.metadata?.page;
           data = currentPage === 1 || !currentPage
             ? dataGet
-            : state[parentKey].data.concat(
+            : state[key].data.concat(
               dataGet.filter(
-                (item: any) => state[parentKey].data.indexOf(item) < 0,
+                (item: any) => state[key].data.indexOf(item) < 0,
               ),
             );
         }
-        state[parentKey].loading = false;
-        state[parentKey].data = data;
-        state[parentKey].metadata = metadata;
-        state[parentKey].error = null;
+        state[`${key}Loading`] = false;
+        state[`${key}Data`] = data;
+        state[`${key}Metadata`] = metadata;
+        state[`${key}Error`] = null;
       };
-      result[`${name}Fail`] = (state: any, action: any) => {
+      result[`${action}Fail`] = (state: any, action: any) => {
         const error = action.payload;
-        state[parentKey].loading = false;
-        state[parentKey].error = error;
+        state[`${key}Loading`] = false;
+        state[`${key}Error`] = error;
       };
     } else {
-      result[name] = (state: any, action: any) => {
+      result[action] = (state: any, action: any) => {
         state.loading = true;
         state.error = null;
       };
-      result[`${name}Success`] = (state: any, action: any) => {
+      result[`${action}Success`] = (state: any, action: any) => {
         const dataGet = action.payload[dataPrefix];
         const { metadata } = action.payload;
         let data = dataGet;
@@ -212,7 +213,7 @@ class CRedux {
         state.metadata = metadata;
         state.error = null;
       };
-      result[`${name}Fail`] = (state: any, action: any) => {
+      result[`${action}Fail`] = (state: any, action: any) => {
         const error = action.payload;
 
         // Modify Error Message

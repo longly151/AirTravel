@@ -8,6 +8,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'only-warn'],
   rules: {
+    // 'max-len': ["error", {"code": 150}],
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 0,
     'react/static-property-placement': 0,
