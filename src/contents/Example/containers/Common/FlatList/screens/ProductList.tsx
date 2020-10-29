@@ -8,7 +8,7 @@ import {
   Text,
 } from '@components';
 import { connect } from 'react-redux';
-import { TQuery, TArrayRedux } from '@utils/redux';
+import { TQuery } from '@utils/redux';
 import { Card, withTheme } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import { compose } from 'recompose';
