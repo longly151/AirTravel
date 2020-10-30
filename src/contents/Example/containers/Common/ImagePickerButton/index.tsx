@@ -61,6 +61,7 @@ class ImagePickerButtonExample extends PureComponent {
           <QuickView style={{ marginTop: 10, marginBottom: 15 }}>
             <ImagePickerButton
               invisible
+              dataSource="gallery"
               buttonChildren={<Text center success type="header">Invisible Select Single Image</Text>}
             />
           </QuickView>
