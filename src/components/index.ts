@@ -23,11 +23,12 @@ import FlatList from './Common/FlatList/DefaultFlatList';
 import Image from './Common/Image/DefaultImage';
 import Dropdown from './Common/Dropdown';
 import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
-import HTML from './Common/WebView/HTML';
+import HTML from './Common/HTML';
 import Video from './Common/Video';
 import Chat from './Common/Chat';
 import FileViewButton from './Common/Button/FileViewButton';
 import Loading from './Common/Loading';
+import MapView from './Common/MapView';
 
 /**
  * Custom
@@ -71,6 +72,8 @@ export {
   Chat,
   FileViewButton,
   Loading,
+  MapView,
+
   /**
    * Custom
    */

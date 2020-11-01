@@ -133,6 +133,14 @@ export const exampleList = [
     screen: commonStack.loading,
   },
   {
+    name: 'Map',
+    iconName: 'menu',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#431895', '#85057b'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.map,
+  },
+  {
     name: 'ListCheckbox',
     subtitle: 'Support Theme',
     iconName: 'checkbox-multiple-marked',
