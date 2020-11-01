@@ -122,4 +122,5 @@ class HTML extends React.PureComponent<HTMLProps> {
     );
   }
 }
+
 export default HTML;
