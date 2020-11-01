@@ -3,8 +3,8 @@ import React, { ReactNode } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import RNHTML, { NonRegisteredStylesProp, PassProps, HtmlAttributesDictionary } from 'react-native-render-html';
 import AppView from '@utils/appView';
-import Image from '../../Image/DefaultImage';
-import Text from '../../Text';
+import Image from '../Image/DefaultImage';
+import Text from '../Text';
 
 export interface HTMLProps extends RNHTML.ContainerProps {
   margin?: number;
@@ -122,4 +122,5 @@ class HTML extends React.PureComponent<HTMLProps> {
     );
   }
 }
+
 export default HTML;
