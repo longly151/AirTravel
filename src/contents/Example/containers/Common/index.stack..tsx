@@ -16,6 +16,8 @@ import ModalExample from './Modal';
 import DateTimePickerExample from './DateTimePicker';
 import ImagePickerButtonExample from './ImagePickerButton';
 import WebViewExample from './WebView';
+import FileExample from './File';
+import LoadingExample from './Loading';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +39,8 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.dropdown} component={DropdownExample} />
       <Stack.Screen name={commonStack.modal} component={ModalExample} />
       <Stack.Screen name={commonStack.webView} component={WebViewExample} />
+      <Stack.Screen name={commonStack.file} component={FileExample} />
+      <Stack.Screen name={commonStack.loading} component={LoadingExample} />
     </Stack.Navigator>
   );
 }

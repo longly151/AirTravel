@@ -6,10 +6,22 @@ import Vi from '@locales/vi.json';
 import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
+import { Platform } from 'react-native';
 import Api from './api';
 
 export const Global: any = global;
 
+interface S3Body {
+  type?: string;
+  fileName?: string;
+  folderPrefix?: string;
+}
+export interface IFile {
+  name: string;
+  type: string;
+  uri: string;
+  updatedAt?: Date;
+}
 export class CAppHelper {
   private static _instance: CAppHelper;
 
@@ -113,16 +125,21 @@ export class CAppHelper {
   }
 
   // => Customize this function depend on specific project
-  getPresignedUrl = async (presignedUrlApi: string, data: {
-    type?: string,
-    fileName?: string,
-    folderPrefix?: string
-  }) => {
+
+  // eslint-disable-next-line max-len
+  getUploadUrls = async (data: S3Body[]): Promise<{presignedUrl: string, returnUrl: string}[]> => {
+    const presignedUrlApi = '/medias/presigned-url/bulk';
     const result = await Api.post(presignedUrlApi, data);
-    return {
-      presignedUrl: result.data.presignedUrl,
-      returnUrl: result.data.url,
-    };
+    const returnResult: any = [];
+    result.data.forEach((item: any) => {
+      returnResult.push(
+        {
+          presignedUrl: item.presignedUrl,
+          returnUrl: item.url,
+        }
+      );
+    });
+    return returnResult;
   };
 
   async uploadToS3(presignedUrl: string, data: {
@@ -130,13 +147,17 @@ export class CAppHelper {
     type: string,
     uri: string,
   }) {
+    const uri = Platform.OS === 'ios'
+      ? data.uri.replace('file:///', '').replace('file://', '')
+      : data.uri.replace('file://', '').replace('file:/', '');
+
     return RNFetchBlob.fetch(
       'PUT',
       presignedUrl,
       {
         'Content-Type': data.type,
       },
-      RNFetchBlob.wrap(data.uri),
+      RNFetchBlob.wrap(uri),
     );
   }
 }

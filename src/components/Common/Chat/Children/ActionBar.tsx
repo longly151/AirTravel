@@ -15,13 +15,13 @@ class ActionBar extends PureComponent<Props> {
 
   editableImageRef: any;
 
-  uploadCallback = (url: string) => {
+  uploadCallback = (urls: string[]) => {
     const { onSend, setImageLoading } = this.props;
-    onSend([{ image: url }]);
+    onSend([{ image: urls[0] }]);
     setImageLoading(false);
   };
 
-  pickSingleSuccess = () => {
+  pickSuccess = () => {
     const { setImageLoading } = this.props;
     this.actionModalRef.pickerModal?.close();
     setImageLoading(true);
@@ -66,10 +66,9 @@ class ActionBar extends PureComponent<Props> {
         <EditableImage
           ref={(ref: any) => { this.editableImageRef = ref; }}
           buttonChildren={<View />}
-          presignedUrlApi="/medias/presigned-url"
           folderPrefix="chat"
           uploadCallback={this.uploadCallback}
-          pickSingleSuccess={this.pickSingleSuccess}
+          pickSuccess={this.pickSuccess}
           handleException={this.handleException}
           width={500}
         />

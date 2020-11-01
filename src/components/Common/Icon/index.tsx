@@ -21,6 +21,7 @@ export interface IconProps extends EIconProps {
   warning?: boolean;
   error?: boolean;
   color?: string;
+  type?: 'material' | 'material-community' | 'simple-line-icon' | 'zocial' | 'octicon' | 'font-awesome' | 'ionicon' | 'foundation' | 'evilicon' | 'entypo' | 'antdesign' | 'font-awesome-5' ;
   theme?: any;
 }
 

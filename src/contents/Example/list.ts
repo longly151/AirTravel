@@ -117,6 +117,22 @@ export const exampleList = [
     screen: commonStack.webView,
   },
   {
+    name: 'File',
+    iconName: 'attachment',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#187c9d', '#4743ff'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.file,
+  },
+  {
+    name: 'Loading',
+    iconName: 'circle-slice-7',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#c250df', '#dd525b'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.loading,
+  },
+  {
     name: 'ListCheckbox',
     subtitle: 'Support Theme',
     iconName: 'checkbox-multiple-marked',

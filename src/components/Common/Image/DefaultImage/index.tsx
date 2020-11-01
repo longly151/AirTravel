@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import FastImage, { FastImageProps, Source } from 'react-native-fast-image';
 import * as Progress from 'react-native-progress';
 import {
-  ActivityIndicator, Image as RNImage, StyleSheet, Modal,
+  Image as RNImage, StyleSheet, Modal,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -10,6 +10,7 @@ import _ from 'lodash';
 import Color from '@themes/Color';
 import AppView from '@utils/appView';
 import QuickView from '../../View/QuickView';
+import Loading from '../../Loading';
 
 export interface ImageProps extends Omit<FastImageProps, 'source'> {
   width: number;
@@ -118,7 +119,7 @@ class Image extends PureComponent<ImageProps, State> {
               )
             }
           </QuickView>
-          <ActivityIndicator style={styles.center} />
+          <Loading style={styles.center} />
         </>
       );
     }
@@ -211,7 +212,7 @@ class Image extends PureComponent<ImageProps, State> {
         default:
           return (
             <QuickView style={styles.center}>
-              <ActivityIndicator color={loadingColor} size={loadingSize >= 50 ? 'large' : 'small'} />
+              <Loading color={loadingColor} size={loadingSize >= 50 ? 'large' : 'small'} />
             </QuickView>
           );
       }
@@ -250,7 +251,7 @@ class Image extends PureComponent<ImageProps, State> {
         <Modal visible={viewModeOn} transparent>
           <ImageViewer
             onCancel={() => this.setState({ viewModeOn: false })}
-            loadingRender={() => <ActivityIndicator size="large" color={loadingColor} />}
+            loadingRender={() => <Loading size="large" color={loadingColor} />}
             enableSwipeDown
             index={index}
             imageUrls={imageUrls}

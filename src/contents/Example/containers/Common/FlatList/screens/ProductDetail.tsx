@@ -8,11 +8,11 @@ import {
   Image,
   Header,
   HTML,
+  Loading,
 } from '@components';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
 import { withTheme } from 'react-native-elements';
 import Redux, { BaseState } from '@utils/redux';
-import { ActivityIndicator } from 'react-native';
 
 interface Props {
   detail: any;
@@ -79,7 +79,7 @@ class ProductDetail extends PureComponent<Props, State> {
               containerStyle={{ marginTop: 20 }}
             />
             {
-              loading ? <ActivityIndicator style={{ marginTop: 20 }} />
+              loading ? <Loading style={{ marginTop: 20 }} />
                 : <HTML html={data.enContent} marginVertical={20} />
             }
           </Body>

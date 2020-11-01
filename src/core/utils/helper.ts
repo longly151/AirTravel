@@ -79,6 +79,7 @@ class CHelper {
     return result;
   }
 
+
   findDeepFields(theObject: any, field: string, value: any): any {
     let result = null;
     if (theObject instanceof Array) {
@@ -104,6 +105,12 @@ class CHelper {
       }
     }
     return result;
+  }
+
+  assignKeyToPlainArray(array: Array<string | number>, assignedKey: string) {
+    return array.map(e =>
+      ({[assignedKey]: e})
+    )
   }
 
   convertToRgb(hex: any){

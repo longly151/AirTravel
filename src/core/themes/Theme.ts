@@ -29,6 +29,7 @@ export const darkTheme = {
     secondaryBackground: Color.darkSecondaryBackground,
     primaryText: Color.darkPrimaryText,
     secondaryText: Color.darkSecondaryText,
+    loading: Color.darkPrimary,
   },
 
   /**
@@ -61,6 +62,7 @@ export const lightTheme = {
     secondaryBackground: Color.lightSecondaryBackground,
     primaryText: Color.lightPrimaryText,
     secondaryText: Color.lightSecondaryText,
+    loading: Color.lightPrimary,
   },
 
   /**

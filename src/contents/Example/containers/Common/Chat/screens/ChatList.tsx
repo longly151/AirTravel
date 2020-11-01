@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
-import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import Api from '@utils/api';
-import { Text, QuickView, Avatar, Container, Body, } from '@components';
+import { Text, QuickView, Avatar, Container, Body, Loading, } from '@components';
 import { NavigationService } from '@utils/navigation';
 import Color from '@themes/Color';
 import { SearchBar, Icon } from 'react-native-elements';
@@ -180,7 +180,7 @@ class ChatListScreen extends Component<any, State> {
     return (
       <Container>
         <Body height="100%">
-          {loading ? <ActivityIndicator />
+          {loading ? <Loading />
             : (
               <QuickView>
                 <SearchBar

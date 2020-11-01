@@ -26,6 +26,8 @@ import ParallaxScrollView from './Common/ScrollView/ParallaxScrollView';
 import HTML from './Common/WebView/HTML';
 import Video from './Common/Video';
 import Chat from './Common/Chat';
+import FileViewButton from './Common/Button/FileViewButton';
+import Loading from './Common/Loading';
 
 /**
  * Custom
@@ -67,6 +69,8 @@ export {
   HTML,
   Video,
   Chat,
+  FileViewButton,
+  Loading,
   /**
    * Custom
    */

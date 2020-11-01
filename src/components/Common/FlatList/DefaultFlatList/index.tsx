@@ -3,7 +3,6 @@ import { TQuery, TArrayRedux } from '@utils/redux';
 import {
   FlatList as RNFlatList,
   FlatListProps as RNFlatListProps,
-  ActivityIndicator,
   RefreshControl,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -15,6 +14,7 @@ import {
 import { connect } from 'react-redux';
 import { darkTheme, lightTheme } from '@themes/Theme';
 import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
+import Loading from '../../Loading';
 import QuickView from '../../View/QuickView';
 import Text from '../../Text';
 
@@ -127,7 +127,7 @@ class FlatList extends PureComponent<FlatListProps, State> {
       if (!list.loading || refreshing) return null;
       return (
         <QuickView marginVertical={5}>
-          <ActivityIndicator animating color={loadingColor} size="small" />
+          <Loading animating color={loadingColor} size="small" />
         </QuickView>
       );
     }

@@ -1,16 +1,14 @@
+/* eslint-disable no-console */
 import React, { PureComponent } from 'react';
 import { Container, Header, Body, ImagePickerButton, Text, QuickView } from '@components';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 
 class ImagePickerButtonExample extends PureComponent {
-  pickSingleSuccess = (media: ImageOrVideo) => {
-    // eslint-disable-next-line no-console
-    console.log('media', media);
-  };
-
-  pickMultipleSuccess = (medias: ImageOrVideo[]) => {
-    // eslint-disable-next-line no-console
-    console.log('medias', medias);
+  pickSuccess = (media: ImageOrVideo[]) => {
+    console.log('------------------------------------------------------');
+    media.forEach((item: ImageOrVideo) => {
+      console.log('item', item);
+    });
   };
 
   handleException = (e: any) => {
@@ -34,21 +32,21 @@ class ImagePickerButtonExample extends PureComponent {
             <ImagePickerButton
               title="Select Single Image (Log)"
               dataSource="gallery"
-              pickSingleSuccess={this.pickSingleSuccess}
+              pickSuccess={this.pickSuccess}
               handleException={this.handleException}
             />
             <ImagePickerButton
               title="Select Single Video (Log)"
               dataSource="gallery"
               mediaType="video"
-              pickSingleSuccess={this.pickSingleSuccess}
+              pickSuccess={this.pickSuccess}
               handleException={this.handleException}
             />
             <ImagePickerButton
               title="Select Multiple Media (Log)"
               dataSource="gallery"
               multiple
-              pickMultipleSuccess={this.pickMultipleSuccess}
+              pickSuccess={this.pickSuccess}
               handleException={this.handleException}
             />
           </QuickView>

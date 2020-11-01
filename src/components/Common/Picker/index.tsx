@@ -199,6 +199,7 @@ class Picker extends PureComponent<PickerProps, State> {
       modal,
       modalHeight,
       themeName,
+      modalProps: modalPropsProp,
       ...otherProps
     } = this.props;
     const { width: widthProp, height: heightProp } = this.props;
@@ -257,6 +258,7 @@ class Picker extends PureComponent<PickerProps, State> {
     };
     const icon = _.merge(defaultIcon, iconProp);
 
+    const modalProps = _.merge({ type: 'bottom-half' }, modalPropsProp);
     if (modal) {
       return (
         <ModalButton
@@ -268,7 +270,7 @@ class Picker extends PureComponent<PickerProps, State> {
           titleStyle={titleStyle}
           titleProps={titleProps}
           iconRight
-          modalProps={{ type: 'bottom-half' }}
+          modalProps={modalProps}
           {...otherProps}
         >
           <QuickView

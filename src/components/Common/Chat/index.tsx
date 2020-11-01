@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps } from 'react-native-gifted-chat';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -10,6 +10,7 @@ import Helper from '@utils/helper';
 import _ from 'lodash';
 import ActionBar from './Children/ActionBar';
 import Image from '../Image/DefaultImage';
+import Loading from '../Loading';
 
 export interface IMessage extends IDefaultMessage{
   room?: string;
@@ -338,7 +339,7 @@ class Chat extends Component<ChatProps, State> {
       loadingImage
     } = this.state;
     if (!appIsReady) {
-      return <ActivityIndicator style={{ marginTop: 200 }} />;
+      return <Loading marginTop={200} />;
     }
 
     return (
@@ -364,7 +365,7 @@ class Chat extends Component<ChatProps, State> {
           renderActions={this.renderActions}
           renderMessageImage={this.renderMessageImage}
           alwaysShowSend
-          renderChatFooter={() => (loadingImage ? <ActivityIndicator style={{ marginBottom: 10, alignSelf: 'flex-end', marginRight: 10 }} /> : null)}
+          renderChatFooter={() => (loadingImage ? <Loading style={{ marginBottom: 10, alignSelf: 'flex-end', marginRight: 10 }} /> : null)}
         />
       </View>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import RNImagePicker, { Image as TImage, ImageOrVideo as TImageOrVideo } from 'react-native-image-crop-picker';
-import { Alert, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { TouchableOpacity, GestureResponderEvent } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import Button, { ButtonProps } from '../DefaultButton';
 import QuickView from '../../View/QuickView';
@@ -22,14 +22,12 @@ export interface ImagePickerButtonProps extends ButtonProps {
   imageOutput?: 'path' | 'base64'
   imageWidth?: number;
   imageHeight?: number;
-  pickSingleSuccess?: (media: TImageOrVideo) => any;
-  pickMultipleSuccess?: (media: TImageOrVideo[]) => any;
+  pickSuccess?: (media: TImageOrVideo[]) => any;
   handleException?: (e: any) => any;
   theme?: any;
 }
 
 interface State {
-  image: IImage | null;
   images: IImage[] | null;
 }
 class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, State> {
@@ -42,7 +40,6 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
   constructor(props: any) {
     super(props);
     this.state = {
-      image: null,
       images: null,
     };
   }
@@ -84,26 +81,24 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       mediaType,
     })
       .then((media: TImageOrVideo) => {
-        this.customPickSingleSuccess(media);
+        this.customPickSuccess([media]);
         if (includeBase64 && this.isImage(media)) {
           const image: TImage = media;
           this.setState({
-            image: {
+            images: [{
               uri: `data:${image.mime};base64,${image.data}`,
               width: image.width,
               height: image.height,
-            },
-            images: null,
+            }],
           });
         } else {
           this.setState({
-            image: {
+            images: [{
               uri: media.path,
               width: media.width,
               height: media.height,
               mime: media.mime,
-            },
-            images: null,
+            }],
           });
         }
       })
@@ -145,15 +140,14 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       mediaType,
     })
       .then((media: TImageOrVideo) => {
-        this.customPickSingleSuccess(media);
+        this.customPickSuccess([media]);
         this.setState({
-          image: {
+          images: [{
             uri: media.path,
             width: media.width,
             height: media.height,
             mime: media.mime,
-          },
-          images: null,
+          }],
         });
       })
       .catch((e) => this.customHandleException(e));
@@ -164,13 +158,14 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       multiple: true,
       waitAnimationEnd: false,
       sortOrder: 'desc',
+      width: 100,
+      height: 100,
       // includeExif: true,
       forceJpg: true,
     })
       .then((images) => {
-        this.customPickMultipleSuccess(images);
+        this.customPickSuccess(images);
         this.setState({
-          image: null,
           images: images.map((i) => ({
             uri: i.path,
             width: i.width,
@@ -182,45 +177,40 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       .catch((e) => this.customHandleException(e));
   };
 
-  cropLast = () => {
-    const { image } = this.state;
-    if (!image) {
-      return Alert.alert(
-        'No image',
-        'Before open cropping only, please select image'
-      );
-    }
+  // cropLast = () => {
+  //   const { images } = this.state;
+  //   if (!image) {
+  //     return Alert.alert(
+  //       'No image',
+  //       'Before open cropping only, please select image'
+  //     );
+  //   }
 
-    RNImagePicker.openCropper({
-      path: image.uri,
-      width: 200,
-      height: 200,
-      mediaType: 'photo',
-    })
-      .then((image: TImage) => {
-        this.customPickSingleSuccess(image);
-        this.setState({
-          image: {
-            uri: image.path,
-            width: image.width,
-            height: image.height,
-            mime: image.mime,
-          },
-          images: null,
-        });
-      })
-      .catch((e) => this.customHandleException(e));
-    return true;
-  };
+  //   RNImagePicker.openCropper({
+  //     path: image.uri,
+  //     width: 200,
+  //     height: 200,
+  //     mediaType: 'photo',
+  //   })
+  //     .then((image: TImage) => {
+  //       this.customPickSingleSuccess(image);
+  //       this.setState({
+  //         image: {
+  //           uri: image.path,
+  //           width: image.width,
+  //           height: image.height,
+  //           mime: image.mime,
+  //         },
+  //         images: null,
+  //       });
+  //     })
+  //     .catch((e) => this.customHandleException(e));
+  //   return true;
+  // };
 
   scaledHeight = (oldW: number, oldH: number, newW: number) => (oldH / oldW) * newW;
 
-  getSingle = () => {
-    const { image } = this.state;
-    return image;
-  };
-
-  getMultiple = () => {
+  getData = () => {
     const { images } = this.state;
     return images;
   };
@@ -262,16 +252,10 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
   //   return this.renderImage(media);
   // }
 
-  customPickSingleSuccess = (media: TImageOrVideo) => {
+  customPickSuccess = (medias: TImageOrVideo[]) => {
     // Custom Action...
-    const { pickSingleSuccess } = this.props;
-    if (pickSingleSuccess) pickSingleSuccess(media);
-  };
-
-  customPickMultipleSuccess = (medias: TImageOrVideo[]) => {
-    // Custom Action...
-    const { pickMultipleSuccess } = this.props;
-    if (pickMultipleSuccess) pickMultipleSuccess(medias);
+    const { pickSuccess } = this.props;
+    if (pickSuccess) pickSuccess(medias);
   };
 
   customHandleException = (e: any) => {

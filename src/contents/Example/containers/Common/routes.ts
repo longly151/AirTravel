@@ -18,6 +18,8 @@ const commonStack = {
   modal: 'ModalExampleScreen',
   chat: 'ChatExample',
   webView: 'WebViewExample',
+  file: 'FileExample',
+  loading: 'LoadingExample',
 };
 
 export default commonStack;

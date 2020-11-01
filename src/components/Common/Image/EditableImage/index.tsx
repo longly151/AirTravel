@@ -3,29 +3,34 @@ import { themeSelector, languageSelector } from '@contents/Config/redux/selector
 import { connect } from 'react-redux';
 import AppHelper from '@utils/appHelper';
 import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
-import { Platform } from 'react-native';
+import { FlatList, Platform } from 'react-native';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
+import Helper from '@utils/helper';
+import _ from 'lodash';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Button from '../../Button/DefaultButton';
+import Icon from '../../Icon';
 import Image, { ImageProps } from '../DefaultImage';
 import ImagePickerButton, { ImagePickerButtonProps } from '../../Button/ImagePickerButton';
 import QuickView from '../../View/QuickView';
 import Picker from '../../Picker';
 
 export interface EditableImageProps extends ImageProps {
-  presignedUrlApi: string;
   imagePickerButtonProps?: ImagePickerButtonProps;
   language?: LanguageEnum;
   themeName?: ThemeEnum;
   folderPrefix?: string;
-  uploadCallback?: (url: string) => Promise<any> | any;
+  uploadCallback?: (urls: string[]) => Promise<any> | any;
   buttonChildren?: any;
-  pickSingleSuccess?: (media: ImageOrVideo) => Promise<any> | any;
+  pickSuccess?: (media: ImageOrVideo[]) => Promise<any> | any;
   handleException?: (e: any) => any;
+  multiple?: any;
   ref?: any;
 }
 
 interface State {
   loading: boolean;
-  uri: string;
+  imageUrls: string[];
 }
 
 class EditableImage extends Component<EditableImageProps, State> {
@@ -44,47 +49,58 @@ class EditableImage extends Component<EditableImageProps, State> {
 
     this.state = {
       loading: false,
-      uri: '',
+      imageUrls: [
+        // 'https://airtravel.s3.us-east-2.amazonaws.com/images/img0005-2020103108093228.JPG',
+        // 'https://airtravel.s3.us-east-2.amazonaws.com/images/img0006-2020103108093229.HEIC'
+      ],
     };
   }
 
-  uploadMedia = async (media: ImageOrVideo) => {
-    const { folderPrefix, presignedUrlApi, uploadCallback } = this.props;
+  uploadMedias = async (medias: ImageOrVideo[]) => {
+    const { folderPrefix, uploadCallback } = this.props;
     this.setState({ loading: true });
 
-    const data = {
-      name: media.filename,
-      type: media.mime,
-      uri: media.path,
-    };
-
-    /**
-     * Get PresignedURL
-     */
-    const uploadUrl = await AppHelper.getPresignedUrl(presignedUrlApi, {
-      type: data.type,
-      fileName: data.name,
-      folderPrefix,
+    // Get uploadUrls
+    const uploadUrlBody: any = [];
+    medias.forEach((item: ImageOrVideo) => {
+      uploadUrlBody.push({
+        type: item.mime,
+        fileName: item.filename,
+        folderPrefix,
+      });
     });
+    const uploadUrls = await AppHelper.getUploadUrls(uploadUrlBody);
 
-    /**
-     * Get uploadToS3
-     */
-    try {
-      await AppHelper.uploadToS3(uploadUrl.presignedUrl, data);
-      this.setState({ loading: false, uri: uploadUrl.returnUrl });
-    } catch (error) {
-      this.handleException(error);
-    }
-    if (uploadCallback) await uploadCallback(uploadUrl.returnUrl);
+    await Promise.all(medias.map(async (media: ImageOrVideo, index: number) => {
+      const data = {
+        name: media.filename,
+        type: media.mime,
+        uri: media.path,
+      };
+
+      /**
+       * uploadToS3
+       */
+      try {
+        await AppHelper.uploadToS3(uploadUrls[index].presignedUrl, data);
+        this.setState((previousState: any) => ({
+          imageUrls: [...previousState.imageUrls, uploadUrls[index].returnUrl]
+        }));
+      } catch (error) {
+        this.handleException(error);
+      }
+    }));
+    this.setState({ loading: false });
+    const returnUrls = Helper.selectFields(uploadUrls, 'returnUrl');
+    if (uploadCallback) await uploadCallback(returnUrls);
   };
 
-  pickSingleSuccess = async (media: ImageOrVideo) => {
-    const { pickSingleSuccess: pickSingleSuccessProp } = this.props;
-    if (pickSingleSuccessProp) pickSingleSuccessProp(media);
+  pickSuccess = async (medias: ImageOrVideo[]) => {
+    const { pickSuccess: pickSuccessProp } = this.props;
+    if (pickSuccessProp) pickSuccessProp(medias);
 
-    this.pickerRef.pickerModal?.close();
-    await this.uploadMedia(media);
+    this.pickerRef?.pickerModal?.close();
+    await this.uploadMedias(medias);
   };
 
   handleException = (e: any) => {
@@ -93,37 +109,72 @@ class EditableImage extends Component<EditableImageProps, State> {
 
     // eslint-disable-next-line no-console
     console.log('Error: ', e);
-    this.pickerRef.pickerModal?.close();
+    this.pickerRef?.pickerModal?.close();
   };
 
   openCamera = () => this.pickerCamera.defaultOnPress(null);
 
   openGallery = () => this.pickerGallery.defaultOnPress(null);
 
-  render() {
+  removeImageItem = (imageUrl: string) => {
+    const { imageUrls } = this.state;
+    this.setState({ imageUrls: imageUrls.filter((item: string) => item !== imageUrl) });
+  };
+
+  renderImageItem = ({ item }: any) => {
+    // Just for getting ...otherProps
+    const { language, multiple, source: sourceProp, buttonChildren, ...otherProps } = this.props;
+    const { loading, imageUrls } = this.state;
+    const source = { uri: item };
+    return (
+      <QuickView>
+        <Image
+          isLoading={loading}
+          loadingType="default"
+          source={source}
+          containerStyle={{ marginHorizontal: 5 }}
+          viewEnable
+          multipleSources={Helper.assignKeyToPlainArray(imageUrls, 'uri')}
+          {...otherProps}
+        />
+        <Button
+          icon={{ name: 'close', size: 25 }}
+          width={35}
+          titlePadding={0}
+          circle
+          backgroundColor="#E6E9F0"
+          containerStyle={{ position: 'absolute', right: 15, top: 5 }}
+          onPress={() => this.removeImageItem(item)}
+        />
+      </QuickView>
+    );
+  };
+
+  renderPickerOrFlatList = () => {
     const {
-      themeName,
       language,
-      imagePickerButtonProps,
+      multiple,
       source: sourceProp,
       buttonChildren: buttonChildrenProp,
       ...otherProps
     } = this.props;
-    const { loading, uri } = this.state;
-    // const theme = AppHelper.getThemeByName(themeName);
-    const takePictureText = language === LanguageEnum.EN ? 'Take photograph' : 'Chụp ảnh';
-    const selectFromAlbumText = language === LanguageEnum.EN ? 'Select from album' : 'Chọn từ Album';
-    const source = uri ? { uri } : sourceProp;
-    const buttonChildren = buttonChildrenProp || (
-      <Image
-        isLoading={loading}
-        loadingType="default"
-        source={source}
-        {...otherProps}
-      />
-    );
-    return (
-      <QuickView>
+    const { loading, imageUrls } = this.state;
+
+    // Single Image
+    if (!multiple) {
+      const takePictureText = language === LanguageEnum.EN ? 'Take photograph' : 'Chụp ảnh';
+      const selectFromAlbumText = language === LanguageEnum.EN ? 'Select from album' : 'Chọn từ Album';
+      const source = !_.isEmpty(imageUrls) ? { uri: imageUrls[0] } : sourceProp;
+
+      const buttonChildren = buttonChildrenProp || (
+        <Image
+          isLoading={loading}
+          loadingType="default"
+          source={source}
+          {...otherProps}
+        />
+      );
+      return (
         <Picker
           ref={(ref: any) => { this.pickerRef = ref; }}
           values={[takePictureText, selectFromAlbumText]}
@@ -131,6 +182,7 @@ class EditableImage extends Component<EditableImageProps, State> {
           height={40}
           shadow
           modal={Platform.OS !== 'ios'}
+          modalProps={{ swipeDirection: 'down' }}
           modalHeight={130}
           invisible
           buttonChildren={buttonChildren}
@@ -144,11 +196,51 @@ class EditableImage extends Component<EditableImageProps, State> {
             }
           }}
         />
+      );
+    }
+
+    // Multiple Images
+    const buttonChildren = buttonChildrenProp || (
+      <Icon name="folder-multiple-image" size={30} type="material-community" />
+    );
+
+    if (_.isEmpty(imageUrls)) {
+      return (
+        <TouchableOpacity onPress={() => this.openGallery()}>
+          {buttonChildren}
+        </TouchableOpacity>
+      );
+    }
+    return (
+      <FlatList
+        data={imageUrls}
+        renderItem={this.renderImageItem}
+        horizontal
+        contentContainerStyle={{ marginHorizontal: -5 }}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => `${index}`}
+      />
+    );
+  };
+
+  getData = () => {
+    const { imageUrls } = this.state;
+    return imageUrls;
+  };
+
+  render() {
+    const {
+      imagePickerButtonProps,
+      multiple,
+    } = this.props;
+    return (
+      <QuickView>
+        {this.renderPickerOrFlatList()}
         <ImagePickerButton
           ref={(ref: any) => { this.pickerCamera = ref; }}
           {...imagePickerButtonProps}
           invisible
-          pickSingleSuccess={this.pickSingleSuccess}
+          pickSuccess={this.pickSuccess}
           handleException={this.handleException}
         />
         <ImagePickerButton
@@ -156,7 +248,8 @@ class EditableImage extends Component<EditableImageProps, State> {
           {...imagePickerButtonProps}
           invisible
           dataSource="gallery"
-          pickSingleSuccess={this.pickSingleSuccess}
+          multiple={multiple}
+          pickSuccess={this.pickSuccess}
           handleException={this.handleException}
         />
       </QuickView>
