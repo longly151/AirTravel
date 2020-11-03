@@ -26,10 +26,19 @@ interface State {
 class FilePickerButton extends Component<FilePickerButtonProps, State> {
   static defaultProps = {
     filePickerProps: {
-      type: [DocumentPicker.types.allFiles]
+      type: [
+        DocumentPicker.types.doc,
+        DocumentPicker.types.docx,
+        DocumentPicker.types.pdf,
+        DocumentPicker.types.csv,
+        DocumentPicker.types.xls,
+        DocumentPicker.types.xlsx,
+        DocumentPicker.types.zip,
+        DocumentPicker.types.audio,
+        DocumentPicker.types.video,
+      ]
     },
     folderPrefix: 'files',
-    multiple: true,
   };
 
   constructor(props: FilePickerButtonProps) {
@@ -86,7 +95,7 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
       /**
        * uploadToS3
        */
-      await setTimeout(() => {}, 200);
+      await setTimeout(() => {}, 100);
       try {
         await AppHelper.uploadToS3(uploadUrls[index].presignedUrl, data);
         this.setState((previousState: any) => ({

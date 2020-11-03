@@ -1,9 +1,6 @@
 /* eslint-disable no-console */
 import React, { PureComponent } from 'react';
-import {
-  Container, QuickView, Header, Body, Text,
-  FileViewButton } from '@components';
-import FilePickerButton from '@components/Common/Button/FilePickerButton';
+import { Container, QuickView, Header, Body, Text, FilePickerButton, FileViewButton } from '@components';
 
 import fileData from './mock/fileData';
 

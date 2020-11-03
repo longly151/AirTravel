@@ -126,7 +126,7 @@ export const exampleList = [
   },
   {
     name: 'Loading',
-    iconName: 'circle-slice-7',
+    iconName: 'circle-slice-6',
     subtitle: 'Support Theme',
     linearGradientColors: ['#c250df', '#dd525b'],
     stack: exampleStack.commonExampleStack,

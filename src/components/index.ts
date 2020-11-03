@@ -27,6 +27,7 @@ import HTML from './Common/HTML';
 import Video from './Common/Video';
 import Chat from './Common/Chat';
 import FileViewButton from './Common/Button/FileViewButton';
+import FilePickerButton from './Common/Button/FilePickerButton';
 import Loading from './Common/Loading';
 import MapView from './Common/MapView';
 
@@ -71,6 +72,7 @@ export {
   Video,
   Chat,
   FileViewButton,
+  FilePickerButton,
   Loading,
   MapView,
 

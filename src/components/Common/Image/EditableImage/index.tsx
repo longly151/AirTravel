@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
 import { connect } from 'react-redux';
-import AppHelper from '@utils/appHelper';
+import AppHelper, { IResizedImage, IImage } from '@utils/appHelper';
 import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
-import { FlatList, Platform } from 'react-native';
+import { FlatList, Platform, } from 'react-native';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import Helper from '@utils/helper';
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import RNFetchBlob from 'rn-fetch-blob';
 import Button from '../../Button/DefaultButton';
 import Icon from '../../Icon';
 import Image, { ImageProps } from '../DefaultImage';
@@ -15,21 +16,36 @@ import ImagePickerButton, { ImagePickerButtonProps } from '../../Button/ImagePic
 import QuickView from '../../View/QuickView';
 import Picker from '../../Picker';
 
+export interface IStateImage extends IImage {
+  remoteUrl: string;
+  resizedImageUrl: {
+    origin: string,
+    medium: string,
+    thumbnail: string
+  } | null;
+}
+
 export interface EditableImageProps extends ImageProps {
   imagePickerButtonProps?: ImagePickerButtonProps;
   language?: LanguageEnum;
   themeName?: ThemeEnum;
   folderPrefix?: string;
-  uploadCallback?: (urls: string[]) => Promise<any> | any;
+  uploadCallback?: (data: IStateImage[]) => Promise<any> | any;
   buttonChildren?: any;
   pickSuccess?: (media: ImageOrVideo[]) => Promise<any> | any;
   handleException?: (e: any) => any;
+  resizedImageWidth?: {
+    'origin': number,
+    'medium': number,
+    'thumbnail': number
+  };
   multiple?: any;
   ref?: any;
 }
 
 interface State {
   loading: boolean;
+  data: IStateImage[];
   imageUrls: string[];
 }
 
@@ -53,54 +69,103 @@ class EditableImage extends Component<EditableImageProps, State> {
         // 'https://airtravel.s3.us-east-2.amazonaws.com/images/img0005-2020103108093228.JPG',
         // 'https://airtravel.s3.us-east-2.amazonaws.com/images/img0006-2020103108093229.HEIC'
       ],
+      data: []
     };
   }
 
-  uploadMedias = async (medias: ImageOrVideo[]) => {
-    const { folderPrefix, uploadCallback } = this.props;
-    this.setState({ loading: true });
-
-    // Get uploadUrls
-    const uploadUrlBody: any = [];
-    medias.forEach((item: ImageOrVideo) => {
-      uploadUrlBody.push({
-        type: item.mime,
-        fileName: item.filename,
-        folderPrefix,
-      });
-    });
-    const uploadUrls = await AppHelper.getUploadUrls(uploadUrlBody);
-
-    await Promise.all(medias.map(async (media: ImageOrVideo, index: number) => {
-      const data = {
-        name: media.filename,
-        type: media.mime,
-        uri: media.path,
-      };
-
-      /**
-       * uploadToS3
-       */
-      try {
-        await AppHelper.uploadToS3(uploadUrls[index].presignedUrl, data);
-        this.setState((previousState: any) => ({
-          imageUrls: [...previousState.imageUrls, uploadUrls[index].returnUrl]
-        }));
-      } catch (error) {
-        this.handleException(error);
-      }
-    }));
-    this.setState({ loading: false });
-    const returnUrls = Helper.selectFields(uploadUrls, 'returnUrl');
-    if (uploadCallback) await uploadCallback(returnUrls);
-  };
-
   pickSuccess = async (medias: ImageOrVideo[]) => {
-    const { pickSuccess: pickSuccessProp } = this.props;
-    if (pickSuccessProp) pickSuccessProp(medias);
-
     this.pickerRef?.pickerModal?.close();
-    await this.uploadMedias(medias);
+
+    const {
+      pickSuccess: pickSuccessProp,
+      resizedImageWidth,
+      folderPrefix,
+      uploadCallback,
+    } = this.props;
+    if (pickSuccessProp) pickSuccessProp(medias);
+    // console.log('medias', medias[0].path);
+    if (resizedImageWidth) {
+      this.setState({ loading: true });
+      await Promise.all(medias.map(async (media: ImageOrVideo) => {
+        const originImage = await AppHelper.resize(media, resizedImageWidth.origin);
+        const mediumImage = await AppHelper.resize(media, resizedImageWidth.medium);
+        const thumbnailImage = await AppHelper.resize(media, resizedImageWidth.thumbnail);
+        const resizedImage: IResizedImage = {
+          origin: originImage,
+          medium: mediumImage,
+          thumbnail: thumbnailImage,
+        };
+        resizedImage.origin.name = `${resizedImage.origin.name.replace(`.${resizedImage.origin.name.split('.').pop()}` || '', `-origin.${resizedImage.origin.name.split('.').pop()}`)}`;
+        resizedImage.medium.name = `${resizedImage.medium.name.replace(`.${resizedImage.medium.name.split('.').pop()}` || '', `-medium.${resizedImage.medium.name.split('.').pop()}`)}`;
+        resizedImage.thumbnail.name = `${resizedImage.thumbnail.name.replace(`.${resizedImage.thumbnail.name.split('.').pop()}` || '', `-thumbnail.${resizedImage.thumbnail.name.split('.').pop()}`)}`;
+
+        const { data } = this.state;
+        // Upload to S3
+        const resizedReturnUrl = await AppHelper.uploadResizedImageToS3(folderPrefix, resizedImage);
+
+        const name: string = media.filename || media.path.split('/').pop() || '';
+
+        // For Setting State
+        const image: IImage = {
+          name,
+          mime: media.mime,
+          width: media.width,
+          height: media.height,
+          size: media.size,
+          path: media.path,
+          sourceURL: media.sourceURL,
+        };
+
+        data.push({
+          ...image,
+          remoteUrl: resizedReturnUrl.thumbnail,
+          resizedImageUrl: resizedReturnUrl,
+        });
+
+        // Clear Cache
+        RNFetchBlob.fs.unlink(originImage.path);
+        RNFetchBlob.fs.unlink(mediumImage.path);
+        RNFetchBlob.fs.unlink(thumbnailImage.path);
+
+        this.setState((previousState: any) => ({
+          data,
+          imageUrls: [...previousState.imageUrls, resizedReturnUrl.thumbnail]
+        }));
+      }));
+    } else {
+      this.setState({ loading: true });
+      await Promise.all(medias.map(async (media: ImageOrVideo) => {
+        const name: string = media.filename || media.path.split('/').pop() || '';
+
+        // convert ImageOrVideo to IImage
+        const image: IImage = {
+          name,
+          mime: media.mime,
+          width: media.width,
+          height: media.height,
+          size: media.size,
+          path: media.path,
+          sourceURL: media.sourceURL,
+        };
+        const { data } = this.state;
+
+        // Upload to S3
+        const returnUrl = await AppHelper.uploadImageToS3(folderPrefix, image);
+        data.push({
+          ...image,
+          remoteUrl: returnUrl,
+          resizedImageUrl: null
+        });
+
+        this.setState((previousState: any) => ({
+          data,
+          imageUrls: [...previousState.imageUrls, returnUrl],
+        }));
+      }));
+    }
+    const { data } = this.state;
+    if (uploadCallback) await uploadCallback(data);
+    this.setState({ loading: false });
   };
 
   handleException = (e: any) => {
@@ -117,8 +182,11 @@ class EditableImage extends Component<EditableImageProps, State> {
   openGallery = () => this.pickerGallery.defaultOnPress(null);
 
   removeImageItem = (imageUrl: string) => {
-    const { imageUrls } = this.state;
-    this.setState({ imageUrls: imageUrls.filter((item: string) => item !== imageUrl) });
+    const { imageUrls, data } = this.state;
+    this.setState({
+      imageUrls: imageUrls.filter((item: string) => item !== imageUrl),
+      data: data.filter((item: IStateImage) => item.remoteUrl !== imageUrl)
+    });
   };
 
   renderImageItem = ({ item }: any) => {
@@ -224,8 +292,8 @@ class EditableImage extends Component<EditableImageProps, State> {
   };
 
   getData = () => {
-    const { imageUrls } = this.state;
-    return imageUrls;
+    const { data } = this.state;
+    return data;
   };
 
   render() {

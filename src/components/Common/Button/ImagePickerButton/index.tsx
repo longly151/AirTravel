@@ -50,7 +50,7 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       .catch((e) => this.customHandleException(e));
   }
 
-  isImage = (media: TImageOrVideo) => media.mime && media.mime.toLowerCase().indexOf('video/') !== -1;
+  isImage = (media: TImageOrVideo) => media.mime && media.mime.toLowerCase().indexOf('video/') === -1;
 
   pickSingleWithCamera = () => {
     const { cropType, mediaType, imageOutput, imageWidth, imageHeight, theme } = this.props;
@@ -127,8 +127,8 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       cropperCircleOverlay,
       freeStyleCropEnabled,
       sortOrder: 'none',
-      compressImageMaxWidth: 500,
-      compressImageMaxHeight: 500,
+      compressImageMaxWidth: 1000,
+      compressImageMaxHeight: 1000,
       compressImageQuality: 0.8,
       compressVideoPreset: 'MediumQuality',
       // includeExif: true,
