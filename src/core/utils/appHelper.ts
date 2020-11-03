@@ -18,11 +18,10 @@ interface S3Body {
   fileName?: string;
   folderPrefix?: string;
 }
-export interface IFile {
-  name: string;
-  type: string;
-  uri: string;
-  updatedAt?: Date;
+
+export interface IUploadUrl {
+  presignedUrl: string;
+  returnUrl: string;
 }
 
 export interface IImage {
@@ -32,7 +31,13 @@ export interface IImage {
   height: number;
   size: number;
   path: string;
-  sourceURL?: string;
+  sourceUrl?: string;
+  remoteUrl?: string;
+  resizedImageUrl?: {
+    origin: string,
+    medium: string,
+    thumbnail: string
+  };
 }
 
 export interface IResizedImage {
@@ -41,9 +46,14 @@ export interface IResizedImage {
   thumbnail: IImage;
 }
 
-export interface IUploadUrl {
-  presignedUrl: string;
-  returnUrl: string;
+export interface IFile {
+  name: string;
+  mime: string;
+  size?: string;
+  path?: string;
+  sourceUrl?: string;
+  remoteUrl?: string;
+  updatedAt?: Date;
 }
 
 export class CAppHelper {
@@ -299,7 +309,7 @@ export class CAppHelper {
       height: data.height,
       size: data.size,
       path: data.path,
-      sourceURL: image.sourceURL
+      sourceUrl: image.sourceURL
     };
   }
 }

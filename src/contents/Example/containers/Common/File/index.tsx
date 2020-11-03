@@ -2,10 +2,11 @@
 import React, { PureComponent } from 'react';
 import { Container, QuickView, Header, Body, Text, FilePickerButton, FileViewButton } from '@components';
 
+import { IFile } from '@utils/appHelper';
 import fileData from './mock/fileData';
 
 class FileExample extends PureComponent {
-  uploadCallback = (url: string) => console.log('New File Url: ', url);
+  uploadCallback = (url: IFile[]) => console.log('New File Upload Callback: ', url);
 
   renderFileItem = () => fileData.map((item: any, index: number) => (
     <FileViewButton

@@ -5,7 +5,7 @@ import {
 } from '@components';
 import Color from '@themes/Color';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import { IStateImage } from '@components/Common/Image/EditableImage';
+import { IImage } from '@utils/appHelper';
 
 interface State {
   loadingMultiple: boolean;
@@ -22,7 +22,7 @@ class ImageExample extends PureComponent<any, State> {
     };
   }
 
-  uploadCallback = (data: IStateImage[]) => {
+  uploadCallback = (data: IImage[]) => {
     console.log('UploadCallBack: ', data);
     this.setState({ loadingMultiple: false });
   };

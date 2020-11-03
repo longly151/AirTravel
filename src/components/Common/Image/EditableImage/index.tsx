@@ -16,21 +16,12 @@ import ImagePickerButton, { ImagePickerButtonProps } from '../../Button/ImagePic
 import QuickView from '../../View/QuickView';
 import Picker from '../../Picker';
 
-export interface IStateImage extends IImage {
-  remoteUrl: string;
-  resizedImageUrl: {
-    origin: string,
-    medium: string,
-    thumbnail: string
-  } | null;
-}
-
 export interface EditableImageProps extends ImageProps {
   imagePickerButtonProps?: ImagePickerButtonProps;
   language?: LanguageEnum;
   themeName?: ThemeEnum;
   folderPrefix?: string;
-  uploadCallback?: (data: IStateImage[]) => Promise<any> | any;
+  uploadCallback?: (data: IImage[]) => Promise<any> | any;
   buttonChildren?: any;
   pickSuccess?: (media: ImageOrVideo[]) => Promise<any> | any;
   handleException?: (e: any) => any;
@@ -45,7 +36,7 @@ export interface EditableImageProps extends ImageProps {
 
 interface State {
   loading: boolean;
-  data: IStateImage[];
+  data: IImage[];
   imageUrls: string[];
 }
 
@@ -113,12 +104,12 @@ class EditableImage extends Component<EditableImageProps, State> {
           height: media.height,
           size: media.size,
           path: media.path,
-          sourceURL: media.sourceURL,
+          sourceUrl: media.sourceURL,
         };
 
         data.push({
           ...image,
-          remoteUrl: resizedReturnUrl.thumbnail,
+          remoteUrl: resizedReturnUrl.medium,
           resizedImageUrl: resizedReturnUrl,
         });
 
@@ -145,7 +136,7 @@ class EditableImage extends Component<EditableImageProps, State> {
           height: media.height,
           size: media.size,
           path: media.path,
-          sourceURL: media.sourceURL,
+          sourceUrl: media.sourceURL,
         };
         const { data } = this.state;
 
@@ -154,7 +145,6 @@ class EditableImage extends Component<EditableImageProps, State> {
         data.push({
           ...image,
           remoteUrl: returnUrl,
-          resizedImageUrl: null
         });
 
         this.setState((previousState: any) => ({
@@ -185,7 +175,7 @@ class EditableImage extends Component<EditableImageProps, State> {
     const { imageUrls, data } = this.state;
     this.setState({
       imageUrls: imageUrls.filter((item: string) => item !== imageUrl),
-      data: data.filter((item: IStateImage) => item.remoteUrl !== imageUrl)
+      data: data.filter((item: IImage) => item.remoteUrl !== imageUrl)
     });
   };
 
