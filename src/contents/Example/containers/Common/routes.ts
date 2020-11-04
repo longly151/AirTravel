@@ -16,10 +16,11 @@ const commonStack = {
   bottomModalSelect: 'BottomModalSelectExample',
   dropdown: 'DropdownExample',
   modal: 'ModalExampleScreen',
-  chat: 'ChatExample',
-  webView: 'WebViewExample',
-  file: 'FileExample',
-  loading: 'LoadingExample',
+  chat: 'ChatExampleScreen',
+  webView: 'WebViewExampleScreen',
+  file: 'FileExampleScreen',
+  loading: 'LoadingExampleScreen',
+  map: 'MapExampleScreen',
 };
 
 export default commonStack;

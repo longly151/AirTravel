@@ -52,23 +52,23 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
     const { data } = this.props;
     let name = 'file';
     // Image
-    if (_.startsWith(data.type, 'image')) {
+    if (_.startsWith(data.mime, 'image')) {
       name = 'image';
     }
     // Pdf
-    if (data.type === 'application/pdf') {
+    if (data.mime === 'application/pdf') {
       name = 'file-pdf';
     }
     // Doc
-    if (data.type === 'application/msword' || data.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || data.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' || data.type === 'application/vnd.ms-word.document.macroEnabled.12' || data.type === 'application/vnd.ms-word.template.macroEnabled.12') {
+    if (data.mime === 'application/msword' || data.mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || data.mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' || data.mime === 'application/vnd.ms-word.document.macroEnabled.12' || data.mime === 'application/vnd.ms-word.template.macroEnabled.12') {
       name = 'file-word';
     }
     // Excel
-    if (data.type === 'application/vnd.ms-excel' || data.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || data.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' || data.type === 'application/vnd.ms-excel.sheet.macroEnabled.12' || data.type === 'application/vnd.ms-excel.template.macroEnabled.12' || data.type === 'application/vnd.ms-excel.addin.macroEnabled.12' || data.type === 'application/vnd.ms-excel.sheet.binary.macroEnabled.12') {
+    if (data.mime === 'application/vnd.ms-excel' || data.mime === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || data.mime === 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' || data.mime === 'application/vnd.ms-excel.sheet.macroEnabled.12' || data.mime === 'application/vnd.ms-excel.template.macroEnabled.12' || data.mime === 'application/vnd.ms-excel.addin.macroEnabled.12' || data.mime === 'application/vnd.ms-excel.sheet.binary.macroEnabled.12') {
       name = 'file-excel';
     }
     // PowerPoint
-    if (data.type === 'application/vnd.ms-powerpoint' || data.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' || data.type === 'application/vnd.openxmlformats-officedocument.presentationml.template' || data.type === 'application/vnd.openxmlformats-officedocument.presentationml.slideshow' || data.type === 'application/vnd.ms-powerpoint.addin.macroEnabled.12' || data.type === 'application/vnd.ms-powerpoint.presentation.macroEnabled.12' || data.type === 'application/vnd.ms-powerpoint.template.macroEnabled.12' || data.type === 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12') {
+    if (data.mime === 'application/vnd.ms-powerpoint' || data.mime === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' || data.mime === 'application/vnd.openxmlformats-officedocument.presentationml.template' || data.mime === 'application/vnd.openxmlformats-officedocument.presentationml.slideshow' || data.mime === 'application/vnd.ms-powerpoint.addin.macroEnabled.12' || data.mime === 'application/vnd.ms-powerpoint.presentation.macroEnabled.12' || data.mime === 'application/vnd.ms-powerpoint.template.macroEnabled.12' || data.mime === 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12') {
       name = 'file-powerpoint';
     }
 
@@ -79,8 +79,8 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
   onPress = async () => {
     await this.setState({ loading: true });
     const { data } = this.props;
-    if (data.uri) {
-      // if (_.startsWith(data.type, 'image') && Platform.OS === 'android') {
+    if (data.remoteUrl) {
+      // if (_.startsWith(data.mime, 'image') && Platform.OS === 'android') {
       //   this.setState({ loading: false });
       //   // NavigationService.navigate(rootStack.modalStack, {
       //   //   screen: modalStack.imageModal,
@@ -88,7 +88,7 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
       //   // });
       //   return;
       // }
-      const fileExtension = data.uri.split('.').pop();
+      const fileExtension = data.remoteUrl.split('.').pop();
       const { dirs } = RNFetchBlob.fs;
       RNFetchBlob
         .config({
@@ -97,7 +97,7 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
           appendExt: fileExtension,
           path: `${dirs.DocumentDir}/${data.name || 'Untitled'}.${fileExtension}`,
         })
-        .fetch('GET', data.uri, {
+        .fetch('GET', data.remoteUrl, {
           // some headers ..
         })
         .then((res) => {
@@ -106,7 +106,7 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
           // console.log('res.path()', res.path());
           // the temp file path with file extension `png`
           if (Platform.OS === 'ios') RNFetchBlob.ios.openDocument(res.data);
-          else { RNFetchBlob.android.actionViewIntent(`${res.path()}`, data.type); }
+          else { RNFetchBlob.android.actionViewIntent(`${res.path()}`, data.mime); }
           this.setState({ loading: false });
         });
     }

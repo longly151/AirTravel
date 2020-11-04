@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DocumentPicker, { DocumentPickerOptions, DocumentPickerResponse } from 'react-native-document-picker';
 import { GestureResponderEvent, FlatList } from 'react-native';
-import Helper from '@utils/helper';
 import AppHelper, { IFile } from '@utils/appHelper';
 import _ from 'lodash';
 import QuickView from '@components/Common/View/QuickView';
@@ -12,24 +11,33 @@ interface FilePickerButtonProps extends ButtonProps {
   filePickerProps: DocumentPickerOptions<any>;
   multiple?: boolean;
   folderPrefix?: string;
-  uploadCallback?: (url: string) => Promise<any> | any;
+  uploadCallback?: (file: IFile[]) => Promise<any> | any;
   pickSuccess?: (file: DocumentPickerResponse[]) => Promise<any> | any;
   handleException?: (e: any) => any;
 }
 
 interface State {
   loading: boolean;
-  files: IFile[];
+  data: IFile[];
   folderPrefix?: string;
 }
 
 class FilePickerButton extends Component<FilePickerButtonProps, State> {
   static defaultProps = {
     filePickerProps: {
-      type: [DocumentPicker.types.allFiles]
+      type: [
+        DocumentPicker.types.doc,
+        DocumentPicker.types.docx,
+        DocumentPicker.types.pdf,
+        DocumentPicker.types.csv,
+        DocumentPicker.types.xls,
+        DocumentPicker.types.xlsx,
+        DocumentPicker.types.zip,
+        DocumentPicker.types.audio,
+        DocumentPicker.types.video,
+      ]
     },
     folderPrefix: 'files',
-    multiple: true,
   };
 
   constructor(props: FilePickerButtonProps) {
@@ -37,8 +45,8 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
 
     this.state = {
       loading: false,
-      files: []
-      // files: [
+      data: []
+      // data: [
       //   {
       //     name: 'img0005-2020103108093228.JPG',
       //     uri: 'https://airtravel.s3.us-east-2.amazonaws.com/images/img0005-2020103108093228.JPG',
@@ -86,14 +94,17 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
       /**
        * uploadToS3
        */
-      await setTimeout(() => {}, 200);
+      await setTimeout(() => {}, 100);
       try {
         await AppHelper.uploadToS3(uploadUrls[index].presignedUrl, data);
         this.setState((previousState: any) => ({
-          files: [...previousState.files, {
-            name: file.name,
-            type: file.type,
-            uri: uploadUrls[index].returnUrl,
+          data: [...previousState.data, {
+            name: data.name,
+            mime: data.type,
+            size: file.size,
+            path: data.uri,
+            sourceUrl: file.uri,
+            remoteUrl: uploadUrls[index].returnUrl,
             updatedAt: new Date()
           }]
         }));
@@ -102,8 +113,8 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
       }
     }));
     this.setState({ loading: false });
-    const returnUrls = Helper.selectFields(uploadUrls, 'returnUrl');
-    if (uploadCallback) await uploadCallback(returnUrls);
+    const { data } = this.state;
+    if (uploadCallback) await uploadCallback(data);
   };
 
   pickSuccess = async (res: DocumentPickerResponse[]) => {
@@ -147,19 +158,40 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
     if (onPress) onPress(event);
   };
 
-  renderFileItem = ({ item }: any) => (
+  getData = () => {
+    const { data } = this.state;
+    return data;
+  };
+
+  removeFileItem = (file: IFile) => {
+    const { data } = this.state;
+    this.setState({
+      data: data.filter((item: IFile) => item.remoteUrl !== file.remoteUrl)
+    });
+  };
+
+  renderFileItem = ({ item }: {item: IFile}) => (
     <QuickView marginHorizontal={5}>
       <FileViewButton
         data={item}
         horizontal
+      />
+      <Button
+        icon={{ name: 'close', size: 20 }}
+        width={30}
+        titlePadding={0}
+        circle
+        backgroundColor="#E6E9F0"
+        containerStyle={{ position: 'absolute', right: 10, top: 10 }}
+        onPress={() => this.removeFileItem(item)}
       />
     </QuickView>
   );
 
   render() {
     const { ...otherProps } = this.props;
-    const { files, loading } = this.state;
-    if (_.isEmpty(files)) {
+    const { data, loading } = this.state;
+    if (_.isEmpty(data)) {
       return (
         <Button
           {...otherProps}
@@ -171,7 +203,7 @@ class FilePickerButton extends Component<FilePickerButtonProps, State> {
 
     return (
       <FlatList
-        data={files}
+        data={data}
         renderItem={this.renderFileItem}
         horizontal
         contentContainerStyle={{ marginHorizontal: -5 }}

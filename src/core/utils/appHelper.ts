@@ -7,6 +7,8 @@ import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Platform } from 'react-native';
+import { Image } from 'react-native-image-crop-picker';
+import ImageResizer from 'react-native-image-resizer';
 import Api from './api';
 
 export const Global: any = global;
@@ -16,12 +18,44 @@ interface S3Body {
   fileName?: string;
   folderPrefix?: string;
 }
+
+export interface IUploadUrl {
+  presignedUrl: string;
+  returnUrl: string;
+}
+
+export interface IImage {
+  name: string;
+  mime: string;
+  width: number;
+  height: number;
+  size: number;
+  path: string;
+  sourceUrl?: string;
+  remoteUrl?: string;
+  resizedImageUrl?: {
+    origin: string,
+    medium: string,
+    thumbnail: string
+  };
+}
+
+export interface IResizedImage {
+  origin: IImage;
+  medium: IImage;
+  thumbnail: IImage;
+}
+
 export interface IFile {
   name: string;
-  type: string;
-  uri: string;
+  mime: string;
+  size?: string;
+  path?: string;
+  sourceUrl?: string;
+  remoteUrl?: string;
   updatedAt?: Date;
 }
+
 export class CAppHelper {
   private static _instance: CAppHelper;
 
@@ -127,7 +161,7 @@ export class CAppHelper {
   // => Customize this function depend on specific project
 
   // eslint-disable-next-line max-len
-  getUploadUrls = async (data: S3Body[]): Promise<{presignedUrl: string, returnUrl: string}[]> => {
+  getUploadUrls = async (data: S3Body[]): Promise<IUploadUrl[]> => {
     const presignedUrlApi = '/medias/presigned-url/bulk';
     const result = await Api.post(presignedUrlApi, data);
     const returnResult: any = [];
@@ -159,6 +193,124 @@ export class CAppHelper {
       },
       RNFetchBlob.wrap(uri),
     );
+  }
+
+  async uploadImageToS3(folderPrefix: string = 'images', image: IImage): Promise<string> {
+    // Get uploadUrl
+    const uploadUrlBody: any = [];
+    uploadUrlBody.push({
+      type: image.mime,
+      fileName: image.name,
+      folderPrefix,
+    });
+    // console.log('uploadUrlBody', uploadUrlBody);
+
+    const uploadUrls = await this.getUploadUrls(uploadUrlBody);
+
+    const data = {
+      name: image.name,
+      type: image.mime,
+      uri: image.path,
+    };
+
+    try {
+      await this.uploadToS3(uploadUrls[0].presignedUrl, data);
+      return uploadUrls[0].returnUrl;
+    } catch (error) {
+      return '';
+    }
+  }
+
+  async uploadResizedImageToS3(folderPrefix: string = 'images', resizedImage: IResizedImage): Promise<{origin: string, medium: string, thumbnail: string}> {
+    // Get uploadUrl
+    const uploadUrlBody: any = [];
+    const keys: any = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [key, value] of Object.entries(resizedImage)
+    ) {
+      uploadUrlBody.push({
+        type: value.mime,
+        fileName: value.name,
+        folderPrefix,
+      });
+      keys.push(key);
+    }
+
+    const uploadUrls = await this.getUploadUrls(uploadUrlBody);
+
+    const returnUrl: any = {};
+
+    try {
+      // Origin
+      const origin = {
+        name: resizedImage.origin.name,
+        type: resizedImage.origin.mime,
+        uri: resizedImage.origin.path,
+      };
+      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'origin')].presignedUrl, origin);
+      returnUrl.origin = uploadUrls[0].returnUrl;
+
+      // medium
+      const medium = {
+        name: resizedImage.medium.name,
+        type: resizedImage.medium.mime,
+        uri: resizedImage.medium.path,
+      };
+      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'medium')].presignedUrl, medium);
+      returnUrl.medium = uploadUrls[0].returnUrl;
+
+      // medium
+      const thumbnail = {
+        name: resizedImage.thumbnail.name,
+        type: resizedImage.thumbnail.mime,
+        uri: resizedImage.thumbnail.path,
+      };
+      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'thumbnail')].presignedUrl, thumbnail);
+      returnUrl.thumbnail = uploadUrls[0].returnUrl;
+
+      return returnUrl;
+    } catch (error) {
+      return {
+        origin: '',
+        medium: '',
+        thumbnail: '',
+      };
+    }
+  }
+
+  // eslint-disable-next-line max-len
+  async resize(image: Image, resizedWidth: number = 500, resizedHeight?: number): Promise<IImage> {
+    const uri = image.path;
+    let imageFormat: any = 'JPEG';
+    switch (uri.split('.').pop()) {
+      case 'png':
+      case 'PNG':
+        imageFormat = 'PNG';
+        break;
+      case 'webp':
+      case 'WEBP':
+        imageFormat = 'WEBP';
+        break;
+      default:
+        imageFormat = 'JPEG';
+        break;
+    }
+    const height: number = resizedHeight || (image.height / image.width) * resizedWidth;
+    const data = await ImageResizer.createResizedImage(
+      uri, resizedWidth, height, imageFormat, 95
+    );
+
+    return {
+      name: data.name,
+      mime: image.mime,
+      width: data.width,
+      height: data.height,
+      size: data.size,
+      path: data.path,
+      sourceUrl: image.sourceURL
+    };
   }
 }
 

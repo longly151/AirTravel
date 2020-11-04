@@ -5,6 +5,7 @@ import {
 } from '@components';
 import Color from '@themes/Color';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { IImage } from '@utils/appHelper';
 
 interface State {
   loadingMultiple: boolean;
@@ -21,11 +22,8 @@ class ImageExample extends PureComponent<any, State> {
     };
   }
 
-  uploadCallback = (urls: string[]) => {
-    console.log('UploadCallBack: ');
-    urls.forEach((url: string) => {
-      console.log('New Image Url: ', url);
-    });
+  uploadCallback = (data: IImage[]) => {
+    console.log('UploadCallBack: ', data);
     this.setState({ loadingMultiple: false });
   };
 
@@ -78,11 +76,31 @@ class ImageExample extends PureComponent<any, State> {
             {loadingMultiple ? <Loading marginBottom={10} /> : null}
             <EditableImage
               ref={(ref: any) => { this.multiplePickerRef = ref; }}
-              buttonChildren={<Icon name="folder-multiple-image" size={30} type="material-community" />}
+              buttonChildren={loadingMultiple ? <QuickView /> : <Icon name="folder-multiple-image" size={30} type="material-community" />}
               folderPrefix="images"
               pickSuccess={this.pickSuccess}
               uploadCallback={this.uploadCallback}
               multiple
+              width={200}
+              height={200}
+              center
+              loadingSize={60}
+            />
+
+            <Text type="title" center marginVertical={5}>{'Editable Image\n(Multiple with custom resizer)'}</Text>
+            {loadingMultiple ? <Loading marginBottom={10} /> : null}
+            <EditableImage
+              ref={(ref: any) => { this.multiplePickerRef = ref; }}
+              buttonChildren={loadingMultiple ? <QuickView /> : <Icon name="folder-multiple-image" size={30} type="material-community" />}
+              folderPrefix="images"
+              pickSuccess={this.pickSuccess}
+              uploadCallback={this.uploadCallback}
+              multiple
+              resizedImageWidth={{
+                origin: 800,
+                medium: 400,
+                thumbnail: 200,
+              }}
               width={200}
               height={200}
               center

@@ -126,11 +126,19 @@ export const exampleList = [
   },
   {
     name: 'Loading',
-    iconName: 'circle-slice-7',
+    iconName: 'circle-slice-6',
     subtitle: 'Support Theme',
     linearGradientColors: ['#c250df', '#dd525b'],
     stack: exampleStack.commonExampleStack,
     screen: commonStack.loading,
+  },
+  {
+    name: 'Map',
+    iconName: 'menu',
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#431895', '#85057b'],
+    stack: exampleStack.commonExampleStack,
+    screen: commonStack.map,
   },
   {
     name: 'ListCheckbox',

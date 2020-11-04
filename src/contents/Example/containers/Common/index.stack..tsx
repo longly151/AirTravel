@@ -18,6 +18,7 @@ import ImagePickerButtonExample from './ImagePickerButton';
 import WebViewExample from './WebView';
 import FileExample from './File';
 import LoadingExample from './Loading';
+import MapExample from './Map';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.webView} component={WebViewExample} />
       <Stack.Screen name={commonStack.file} component={FileExample} />
       <Stack.Screen name={commonStack.loading} component={LoadingExample} />
+      <Stack.Screen name={commonStack.map} component={MapExample} />
     </Stack.Navigator>
   );
 }
