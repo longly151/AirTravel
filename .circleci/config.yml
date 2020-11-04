@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   rn: react-native-community/react-native@4.4.2
 
-
 jobs:
   analyse_js:
     executor: rn/linux_js
@@ -13,7 +12,8 @@ jobs:
           name: Remove postinstall from package.json
           command: |
               cp .env.example .env
-              grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json 
+              grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+              ls -la
       - rn/yarn_install
       - run:
           command: yarn lint
@@ -30,24 +30,24 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
-  fastlane_android_release:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - rn/yarn_install
-      - run:
-          command: echo
-          name: Run Fastlane
-  fastlane_ios_release:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - rn/yarn_install
-      - run:
-          command: echo 1
-          name: Run Fastlane
+  # fastlane_android_release:
+  #   executor: rn/linux_js
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - rn/yarn_install
+  #     - run:
+  #         command: echo
+  #         name: Run Fastlane
+  # fastlane_ios_release:
+  #   executor: rn/linux_js
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - rn/yarn_install
+  #     - run:
+  #         command: echo 1
+  #         name: Run Fastlane
 
 workflows:
   test:
