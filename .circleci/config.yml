@@ -10,7 +10,7 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: grep -v "   \"postinstall\": \"cd ios && pod install && cd ..\"" package.json > temp-package.json; mv temp-package.json package.json
+          command:   grep -v '   "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
           name: Remove postinstall in package.json
       - rn/yarn_install
       - run:
