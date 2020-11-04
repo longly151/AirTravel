@@ -3,6 +3,9 @@
  */
 const mainBottomTab = {
   homeStack: 'HomeStack',
-  moreStack: 'MoreStack',
+  favoriteStack: 'FavoriteStack',
+  tripStack: 'TripStack',
+  notificationStack: 'NotificationStack',
+  meStack: 'MeStack',
 };
 export default mainBottomTab;
