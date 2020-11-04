@@ -22,5 +22,6 @@ LogBox.ignoreLogs([
   'Warning: Cannot update a component from inside the function body of a different component',
   "'Card.imageProps'",
   "'Card.image'",
+  'Require cycle: node_modules/react-native-maps'
 ]);
 AppRegistry.registerComponent(appName, () => App);
