@@ -12,6 +12,7 @@ jobs:
       - run: 
           name: Remove postinstall from package.json
           command: |
+              cp .env.example .env
               grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json 
       - rn/yarn_install
       - run:
