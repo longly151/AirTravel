@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import homeStack from './routes';
-import HomeScreen from './screens';
+import TripListScreen from './screens';
+import tripStack from './routes';
 
 const Stack = createStackNavigator();
 
-export default function HomeStack() {
+export default function TripStack() {
   return (
     <Stack.Navigator headerMode="none">
-      <Stack.Screen name={homeStack.index} component={HomeScreen} />
+      <Stack.Screen name={tripStack.index} component={TripListScreen} />
     </Stack.Navigator>
   );
 }

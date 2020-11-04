@@ -6,7 +6,6 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "postinstall": "cd ios && pod install && cd ..",
     "test:pre": "cd ./node_modules/react-native-elements/src/config && mv ThemeProvider.js ThemeProvider-root.js && cp ../../../../config/TestHelper/ThemeProvider.js ThemeProvider.js && cd ../../../../",
     "test:after": "cd ./node_modules/react-native-elements/src/config && rm ThemeProvider.js && mv ThemeProvider-root.js ThemeProvider.js",
     "test:handle": "jest",
