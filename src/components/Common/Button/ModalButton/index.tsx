@@ -162,12 +162,14 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     } = this.props;
 
     const defaultModalProps: ModalProps = _.merge({
-      swipeDirection: ['up', 'down'],
       backdropClose: true,
       type: 'notification',
     }, modalProps);
     // eslint-disable-next-line max-len
-    // defaultModalProps.swipeDirection = (defaultModalProps.type === 'notification' || defaultModalProps.type === 'confirmation') ? ['up', 'down'] : undefined;
+    defaultModalProps.swipeDirection = (defaultModalProps.type === 'notification' || defaultModalProps.type === 'confirmation') ? ['up', 'down'] : undefined;
+    // eslint-disable-next-line max-len
+    if (modalProps && !_.isUndefined(modalProps.swipeDirection)) defaultModalProps.swipeDirection = modalProps.swipeDirection;
+
     if (defaultModalProps.swipeDirection) {
       defaultModalProps.onSwipeComplete = () => this.setState({ isVisible: false });
     }

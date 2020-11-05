@@ -20,7 +20,7 @@ class ImagePickerButtonExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Image Picker Button" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginVertical: 10 }}>
             <Text type="title" center marginVertical={5}>With Camera</Text>
             <ImagePickerButton title="Select Single Image" />

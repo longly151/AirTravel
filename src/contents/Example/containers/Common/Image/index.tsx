@@ -38,7 +38,7 @@ class ImageExample extends PureComponent<any, State> {
     return (
       <Container>
         <Header backIcon title="Image" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView>
             <Text type="header" marginTop={10} marginBottom={10}>Editable Image</Text>
             <Text type="title" center marginVertical={5}>Default Editable Image (Single)</Text>

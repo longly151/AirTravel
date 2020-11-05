@@ -123,7 +123,7 @@ class MapExample extends PureComponent<any, State> {
     return (
       <Container>
         <Header backIcon title="Map" shadow switchTheme />
-        <Body scroll fullWidth>
+        <Body scrollable fullWidth>
           <QuickView marginVertical={8} center>
             <Text type="title" bold marginVertical={5}>Default Map</Text>
             <MapView defaultMarkerProps={{

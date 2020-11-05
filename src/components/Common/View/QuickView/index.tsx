@@ -80,7 +80,7 @@ export interface QuickViewProps extends ViewProps, TouchableOpacityProps, Scroll
   sharp?: boolean;
   rounded?: boolean;
   circle?: boolean;
-  scroll?: boolean;
+  scrollable?: boolean;
   touchableComponent?: 'TouchableOpacity' | 'TouchableWithoutFeedback';
   dismissKeyboard?: boolean;
   shadow?: boolean;
@@ -141,7 +141,7 @@ class QuickView extends PureComponent<QuickViewProps> {
       sharp: sharpProp,
       rounded: roundedProp,
       circle: circleProp,
-      scroll,
+      scrollable,
       touchableComponent: touchableComponentProp,
       dismissKeyboard,
       shadow,
@@ -274,7 +274,7 @@ class QuickView extends PureComponent<QuickViewProps> {
           Component = TouchableOpacity;
           break;
       }
-    } else if (scroll) {
+    } else if (scrollable) {
       Component = ScrollView;
     } else {
       Component = View;

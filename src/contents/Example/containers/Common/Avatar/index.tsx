@@ -9,7 +9,7 @@ class AvatarExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Avatar" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Avatar
               source={{

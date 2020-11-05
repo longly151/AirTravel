@@ -10,7 +10,7 @@ class TextExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Text" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Text t="auth:login" />
             <Text margin={10}>Text Component with margin=10</Text>

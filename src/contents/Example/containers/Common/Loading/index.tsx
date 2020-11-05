@@ -18,7 +18,7 @@ class LoadingExample extends Component<any, State> {
     return (
       <Container>
         <Header backIcon title="Loading" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginVertical: 5 }}>
             <Text type="title" center marginVertical={5}>Default Loading</Text>
             <Loading marginVertical={5} />

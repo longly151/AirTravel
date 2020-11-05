@@ -42,7 +42,7 @@ class ExampleList extends PureComponent<Props> {
   render() {
     const { t } = this.props;
     return (
-      <Container scroll>
+      <Container scrollable>
         <StatusBar backgroundColor="#FD6B78" />
         <QuickView flex={1}>
           <View style={styles.headerContainer}>

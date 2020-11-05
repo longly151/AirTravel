@@ -9,7 +9,7 @@ class WebViewExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="HTML" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <HTML html={html} />
           </QuickView>

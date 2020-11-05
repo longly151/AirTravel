@@ -21,7 +21,7 @@ class InputExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Input" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Text type="header" marginBottom={10}>Basic Input</Text>
             <Input tLabel="auth:input_first_name" marginVertical={5} />

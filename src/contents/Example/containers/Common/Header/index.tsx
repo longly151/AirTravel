@@ -9,7 +9,7 @@ class HeaderExample extends PureComponent {
   render() {
     return (
       <>
-        <Container scroll>
+        <Container scrollable>
           <Header backIcon title="Header 1" />
           <QuickView height={10} />
           <Header closeIcon title="Header 2" placement="left" />

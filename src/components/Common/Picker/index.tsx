@@ -23,6 +23,7 @@ export interface PickerProps extends RNPickerProps, Omit<ModalButtonProps, 'styl
   placeholder?: string;
   width?: number | string;
   modalHeight?: number | string;
+  modalHeightLevel?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ;
   iconColor?: string;
   themeName?: ThemeEnum;
   language?: LanguageEnum;
@@ -37,7 +38,6 @@ class Picker extends PureComponent<PickerProps, State> {
   static defaultProps = {
     width: 100,
     height: 50,
-    modalHeight: 0.75 * AppView.screenHeight,
     mode: 'dropdown',
     rounded: true,
   };
@@ -197,7 +197,8 @@ class Picker extends PureComponent<PickerProps, State> {
       titleCenter,
       iconColor,
       modal,
-      modalHeight,
+      modalHeight: modalHeightProp,
+      modalHeightLevel,
       themeName,
       modalProps: modalPropsProp,
       ...otherProps
@@ -259,6 +260,7 @@ class Picker extends PureComponent<PickerProps, State> {
     const icon = _.merge(defaultIcon, iconProp);
 
     const modalProps = _.merge({ type: 'bottom-half' }, modalPropsProp);
+    const modalHeight = modalHeightProp || ((modalHeightLevel || 7) / 10) * AppView.screenHeight;
     if (modal) {
       return (
         <ModalButton

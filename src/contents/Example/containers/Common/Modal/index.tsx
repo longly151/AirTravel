@@ -5,6 +5,7 @@ import {
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
+import { ScrollView } from 'react-native';
 
 interface State {
   isVisible: boolean
@@ -30,7 +31,7 @@ class ModalExample extends PureComponent<any, State> {
     return (
       <Container>
         <Header backIcon title="Modal" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView marginTop={10} marginBottom={15}>
             <Text type="header" marginBottom={10}>Modal with Children</Text>
             <Button title="Native Modal" onPress={() => this.setState({ isVisible: !isVisible })} />
@@ -93,7 +94,24 @@ class ModalExample extends PureComponent<any, State> {
                 center
                 style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10, }}
               >
-                <Text center>Hi 👋!</Text>
+                <ScrollView>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                  <Text center>Hi 👋!</Text>
+                </ScrollView>
               </QuickView>
             </ModalButton>
             <ModalButton

@@ -78,7 +78,7 @@ class ListCheckBoxExample extends Component<Props, State> {
             data={data}
           />
         </Body> */}
-        <Body scroll marginBottom={50}>
+        <Body scrollable marginBottom={50}>
           <Text primary type="title" bold marginLeft={20} marginTop={20}>Multiple check</Text>
           <ListCheckBox
             data={data}

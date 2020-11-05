@@ -16,7 +16,7 @@ class PickerExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Picker" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView center style={{ marginBottom: 15, marginTop: 10 }}>
             <Text type="header">Default Picker</Text>
             <Picker
@@ -52,7 +52,7 @@ class PickerExample extends PureComponent {
               height={40}
               shadow
               modal
-              // placeholder="Chọn tỉnh thành"
+              placeholder="Chọn tỉnh thành"
               ref={(ref: any) => { this.pickerModalRef = ref; }}
               onValueChange={(value) => {
                 console.log('onValueChange: ', value);

@@ -20,7 +20,7 @@ class FileExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="File" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView marginTop={15}>
             <Text type="header">Editable File</Text>
             <FilePickerButton

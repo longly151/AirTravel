@@ -12,7 +12,7 @@ class DateTimePickerExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="DateTimePicker" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView center style={{ marginBottom: 15, marginTop: 10 }}>
             <DateTimePicker
               ref={(ref) => { this.dateTimePickerRef = ref; }}

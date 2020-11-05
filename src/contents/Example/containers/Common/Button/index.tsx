@@ -24,7 +24,7 @@ class ButtonExample extends PureComponent {
     return (
       <Container>
         <Header backIcon title="Button" shadow switchTheme />
-        <Body scroll>
+        <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Text type="header">Default Button</Text>
           </QuickView>
