@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { NavigationService } from '@utils/navigation';
-import rootStack from '@contents/routes';
+import exampleStack from '@contents/Example/routes';
 import Button from '../../Common/Button/DefaultButton';
 
 class GoToExampleButton extends PureComponent {
@@ -11,7 +11,7 @@ class GoToExampleButton extends PureComponent {
         height={50}
         bold
         onPress={
-        () => NavigationService.navigate(rootStack.exampleStack)
+        () => NavigationService.navigate(exampleStack.exampleList)
       }
       />
     );

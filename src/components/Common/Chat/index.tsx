@@ -11,6 +11,7 @@ import _ from 'lodash';
 import ActionBar from './Children/ActionBar';
 import Image from '../Image/DefaultImage';
 import Loading from '../Loading';
+import CustomView from './Children/CustomView';
 
 export interface IMessage extends IDefaultMessage{
   room?: string;
@@ -63,7 +64,6 @@ interface State {
   total: number,
   loadEarlier: boolean;
   seen: boolean;
-  input: string;
   hasSentTyping: boolean;
   loadingImage: boolean;
 }
@@ -93,7 +93,6 @@ class Chat extends Component<ChatProps, State> {
       total: 0,
       loadEarlier: true,
       seen: false,
-      input: '',
       hasSentTyping: false,
       loadingImage: false,
     };
@@ -127,7 +126,7 @@ class Chat extends Component<ChatProps, State> {
     const result: any = await this.getMessageApi();
 
     let messages = result[apiMessageField];
-    messages = Helper.selectFields(messages, ['_id', 'text', 'user', 'createdAt']);
+    messages = Helper.selectFields(messages, ['_id', 'text', 'image', 'user', 'createdAt']);
     messages.forEach((item: IMessage, index: number) => {
       messages[index] = this.addUserIntoMessage(item, result.users, item.user._id);
     });
@@ -177,10 +176,10 @@ class Chat extends Component<ChatProps, State> {
     }));
   };
 
-  emitTyping = (text: string) => {
+  emitTyping = () => {
     const { sender } = this.props;
     const { hasSentTyping } = this.state;
-    this.setState({ input: text });
+    // this.setState({ input: text });
     if (!hasSentTyping) {
       Global.socket.emit('typing', {
         user: {
@@ -190,17 +189,31 @@ class Chat extends Component<ChatProps, State> {
     }
     this.setState({ hasSentTyping: true });
 
-    setTimeout(() => {
-      const { input } = this.state;
-      if (input === text) {
-        Global.socket.emit('stop_typing', {
-          user: {
-            _id: sender._id
-          }
-        });
-        this.setState({ hasSentTyping: false });
-      }
-    }, 1000);
+    // setTimeout(() => {
+    //   const { input } = this.state;
+    //   if (input === text) {
+    //     Global.socket.emit('stop_typing', {
+    //       user: {
+    //         _id: sender._id
+    //       }
+    //     });
+    //     this.setState({ hasSentTyping: false });
+    //   }
+    // }, 1000);
+  };
+
+  emitStopTyping = () => {
+    const { sender } = this.props;
+    const { hasSentTyping } = this.state;
+    // this.setState({ input: text });
+    if (hasSentTyping) {
+      Global.socket.emit('stop_typing', {
+        user: {
+          _id: sender._id
+        }
+      });
+      this.setState({ hasSentTyping: false });
+    }
   };
 
   onSeen = (data: any) => {
@@ -313,6 +326,8 @@ class Chat extends Component<ChatProps, State> {
     />
   );
 
+  renderCustomView = (props: any) => <CustomView {...props} />;
+
   renderSend = (props: Send['props']) => (
     <Send {...props} containerStyle={{ justifyContent: 'center' }}>
       <MaterialIcons size={30} color="tomato" name="send" />
@@ -360,7 +375,12 @@ class Chat extends Component<ChatProps, State> {
           renderSend={this.renderSend}
           timeTextStyle={{ left: { color: 'red' }, right: { color: 'yellow' } }}
           infiniteScroll
-          onInputTextChanged={this.emitTyping}
+          textInputProps={{
+            onFocus: this.emitTyping,
+            onBlur: this.emitStopTyping,
+          }}
+          renderCustomView={this.renderCustomView}
+          // onInputTextChanged={this.emitTyping}
           isTyping={isTyping}
           renderActions={this.renderActions}
           renderMessageImage={this.renderMessageImage}

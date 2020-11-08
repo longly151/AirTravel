@@ -24,7 +24,7 @@ const Stack = createStackNavigator();
 
 export default function CommonExampleStack() {
   return (
-    <Stack.Navigator headerMode="none">
+    <>
       <Stack.Screen name={commonStack.text} component={TextExample} />
       <Stack.Screen name={commonStack.header} component={HeaderExample} />
       <Stack.Screen name={commonStack.button} component={ButtonExample} />
@@ -43,6 +43,6 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.file} component={FileExample} />
       <Stack.Screen name={commonStack.loading} component={LoadingExample} />
       <Stack.Screen name={commonStack.map} component={MapExample} />
-    </Stack.Navigator>
+    </>
   );
 }

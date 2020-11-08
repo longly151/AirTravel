@@ -5,7 +5,6 @@ import {
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
-import { ScrollView } from 'react-native';
 
 interface State {
   isVisible: boolean
@@ -87,7 +86,11 @@ class ModalExample extends PureComponent<any, State> {
               title="Bottom-Half Modal"
               modalProps={{ type: 'bottom-half' }}
             >
-              <QuickView
+              <QuickView backgroundColor="white">
+                <Text>okok</Text>
+
+              </QuickView>
+              {/* <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 padding={30}
                 width="100%"
@@ -112,7 +115,7 @@ class ModalExample extends PureComponent<any, State> {
                   <Text center>Hi 👋!</Text>
                   <Text center>Hi 👋!</Text>
                 </ScrollView>
-              </QuickView>
+              </QuickView> */}
             </ModalButton>
             <ModalButton
               ref={(ref: any) => { this.customBackdrop = ref; }}

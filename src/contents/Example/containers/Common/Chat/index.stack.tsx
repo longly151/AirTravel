@@ -8,9 +8,9 @@ const Stack = createStackNavigator();
 
 export default function ChatStack() {
   return (
-    <Stack.Navigator headerMode="none">
+    <>
       <Stack.Screen name={chatStack.chatList} component={ChatListScreen} />
       <Stack.Screen name={chatStack.chatDetail} component={ChatDetailScreen} />
-    </Stack.Navigator>
+    </>
   );
 }

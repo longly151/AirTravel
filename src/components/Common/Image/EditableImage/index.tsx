@@ -29,7 +29,7 @@ export interface EditableImageProps extends ImageProps {
     'origin': number,
     'medium': number,
     'thumbnail': number
-  };
+  } | number;
   multiple?: any;
   ref?: any;
 }
@@ -69,60 +69,102 @@ class EditableImage extends Component<EditableImageProps, State> {
 
     const {
       pickSuccess: pickSuccessProp,
-      resizedImageWidth,
+      resizedImageWidth: resizedImageWidthProp,
       folderPrefix,
       uploadCallback,
     } = this.props;
     if (pickSuccessProp) pickSuccessProp(medias);
     // console.log('medias', medias[0].path);
-    if (resizedImageWidth) {
-      this.setState({ loading: true });
-      await Promise.all(medias.map(async (media: ImageOrVideo) => {
-        const originImage = await AppHelper.resize(media, resizedImageWidth.origin);
-        const mediumImage = await AppHelper.resize(media, resizedImageWidth.medium);
-        const thumbnailImage = await AppHelper.resize(media, resizedImageWidth.thumbnail);
-        const resizedImage: IResizedImage = {
-          origin: originImage,
-          medium: mediumImage,
-          thumbnail: thumbnailImage,
-        };
-        resizedImage.origin.name = `${resizedImage.origin.name.replace(`.${resizedImage.origin.name.split('.').pop()}` || '', `-origin.${resizedImage.origin.name.split('.').pop()}`)}`;
-        resizedImage.medium.name = `${resizedImage.medium.name.replace(`.${resizedImage.medium.name.split('.').pop()}` || '', `-medium.${resizedImage.medium.name.split('.').pop()}`)}`;
-        resizedImage.thumbnail.name = `${resizedImage.thumbnail.name.replace(`.${resizedImage.thumbnail.name.split('.').pop()}` || '', `-thumbnail.${resizedImage.thumbnail.name.split('.').pop()}`)}`;
+    if (resizedImageWidthProp) {
+      // Resize the photo to 3 different sizes
+      if (_.has(resizedImageWidthProp, 'origin') && _.has(resizedImageWidthProp, 'medium') && _.has(resizedImageWidthProp, 'thumbnail')) {
+        this.setState({ loading: true });
+        const resizedImageWidth: any = resizedImageWidthProp;
+        await Promise.all(medias.map(async (media: ImageOrVideo) => {
+          const originImage = await AppHelper.resize(media, resizedImageWidth.origin);
+          const mediumImage = await AppHelper.resize(media, resizedImageWidth.medium);
+          const thumbnailImage = await AppHelper.resize(media, resizedImageWidth.thumbnail);
+          const resizedImage: IResizedImage = {
+            origin: originImage,
+            medium: mediumImage,
+            thumbnail: thumbnailImage,
+          };
+          resizedImage.origin.name = `${resizedImage.origin.name.replace(`.${resizedImage.origin.name.split('.').pop()}` || '', `-origin.${resizedImage.origin.name.split('.').pop()}`)}`;
+          resizedImage.medium.name = `${resizedImage.medium.name.replace(`.${resizedImage.medium.name.split('.').pop()}` || '', `-medium.${resizedImage.medium.name.split('.').pop()}`)}`;
+          resizedImage.thumbnail.name = `${resizedImage.thumbnail.name.replace(`.${resizedImage.thumbnail.name.split('.').pop()}` || '', `-thumbnail.${resizedImage.thumbnail.name.split('.').pop()}`)}`;
 
-        const { data } = this.state;
-        // Upload to S3
-        const resizedReturnUrl = await AppHelper.uploadResizedImageToS3(folderPrefix, resizedImage);
+          const { data } = this.state;
+          // Upload to S3
+          // eslint-disable-next-line max-len
+          const resizedReturnUrl = await AppHelper.uploadResizedImageToS3(folderPrefix, resizedImage);
 
-        const name: string = media.filename || media.path.split('/').pop() || '';
+          const name: string = media.filename || media.path.split('/').pop() || '';
 
-        // For Setting State
-        const image: IImage = {
-          name,
-          mime: media.mime,
-          width: media.width,
-          height: media.height,
-          size: media.size,
-          path: media.path,
-          sourceUrl: media.sourceURL,
-        };
+          // For Setting State
+          const image: IImage = {
+            name,
+            mime: media.mime,
+            width: media.width,
+            height: media.height,
+            size: media.size,
+            path: media.path,
+            sourceUrl: media.sourceURL,
+          };
 
-        data.push({
-          ...image,
-          remoteUrl: resizedReturnUrl.medium,
-          resizedImageUrl: resizedReturnUrl,
-        });
+          data.push({
+            ...image,
+            remoteUrl: resizedReturnUrl.medium,
+            resizedImageUrl: resizedReturnUrl,
+          });
 
-        // Clear Cache
-        RNFetchBlob.fs.unlink(originImage.path);
-        RNFetchBlob.fs.unlink(mediumImage.path);
-        RNFetchBlob.fs.unlink(thumbnailImage.path);
+          // Clear Cache
+          RNFetchBlob.fs.unlink(originImage.path);
+          RNFetchBlob.fs.unlink(mediumImage.path);
+          RNFetchBlob.fs.unlink(thumbnailImage.path);
 
-        this.setState((previousState: any) => ({
-          data,
-          imageUrls: [...previousState.imageUrls, resizedReturnUrl.thumbnail]
+          this.setState((previousState: any) => ({
+            data,
+            imageUrls: [...previousState.imageUrls, resizedReturnUrl.thumbnail]
+          }));
         }));
-      }));
+      }
+
+      // Resize the photo to 1 size
+      if (typeof resizedImageWidthProp === 'number') {
+        this.setState({ loading: true });
+        const resizedImageWidth: any = resizedImageWidthProp;
+        await Promise.all(medias.map(async (media: ImageOrVideo) => {
+          const resizedImage: IImage = await AppHelper.resize(media, resizedImageWidth);
+          const name: string = media.filename || media.path.split('/').pop() || '';
+
+          // For Setting State
+          const image: IImage = {
+            name,
+            mime: media.mime,
+            width: media.width,
+            height: media.height,
+            size: media.size,
+            path: media.path,
+            sourceUrl: media.sourceURL,
+          };
+          const { data } = this.state;
+          // Upload to S3
+          const returnUrl = await AppHelper.uploadImageToS3(folderPrefix, resizedImage);
+
+          data.push({
+            ...image,
+            remoteUrl: returnUrl,
+          });
+
+          this.setState((previousState: any) => ({
+            data,
+            imageUrls: [...previousState.imageUrls, returnUrl],
+          }));
+
+          // Clear Cache
+          RNFetchBlob.fs.unlink(resizedImage.path);
+        }));
+      }
     } else {
       this.setState({ loading: true });
       await Promise.all(medias.map(async (media: ImageOrVideo) => {
@@ -167,9 +209,9 @@ class EditableImage extends Component<EditableImageProps, State> {
     this.pickerRef?.pickerModal?.close();
   };
 
-  openCamera = () => this.pickerCamera.defaultOnPress(null);
+  openCamera = () => this.pickerCamera.open(null);
 
-  openGallery = () => this.pickerGallery.defaultOnPress(null);
+  openGallery = () => this.pickerGallery.open(null);
 
   removeImageItem = (imageUrl: string) => {
     const { imageUrls, data } = this.state;

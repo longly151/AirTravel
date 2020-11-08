@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import rootStack from '@contents/routes';
 import { NavigationService } from '@utils/navigation';
 import AuthButton, { AuthButtonProps } from '../../Shared/AuthButton';
 import authStack from '../../routes';
@@ -18,9 +17,7 @@ class RegisterButton extends PureComponent<Props> {
       <AuthButton
         t="auth:register"
         {...otherProps}
-        onPress={() => NavigationService.navigate(rootStack.authStack, {
-          screen: authStack.registerStack,
-        })}
+        onPress={() => NavigationService.navigate(authStack.registerStack)}
       />
     );
   }

@@ -9,8 +9,8 @@ import _ from 'lodash';
 import { OrNull } from 'react-native-modal/dist/types';
 import { Animation, CustomAnimation } from 'react-native-animatable';
 import { NavigationService } from '@utils/navigation';
-import rootStack from '@contents/routes';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import modalStack from '@contents/Modal/routes';
 import QuickView from '../../View/QuickView';
 import Button, { ButtonProps } from '../DefaultButton';
 import Text from '../../Text';
@@ -18,7 +18,7 @@ import Text from '../../Text';
 interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' | 'onSwipeComplete' | 'onSwipeCancel' | 'style' | 'swipeDirection' | 'onDismiss' | 'onShow' | 'hardwareAccelerated' | 'onOrientationChange' | 'presentationStyle' | 'supportedOrientations'> {
   children?: ReactNode;
   backdropClose?: boolean;
-  type?: 'notification' | 'confirmation' | 'bottom-half' | 'fullscreen' ;
+  type?: 'notification' | 'confirmation' | 'bottom-half' | 'bottom-sheet' | 'fullscreen' ;
   title?: string;
   t?: string;
   onOkButtonPress?: () => any;
@@ -74,7 +74,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     };
   }
 
-  defaultOnPress = (event: GestureResponderEvent) => {
+  open = (event: GestureResponderEvent) => {
     const { onPress } = this.props;
     this.setState({ isVisible: true });
     if (onPress) onPress(event);
@@ -192,7 +192,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       const onPressFn = () => {
         const content = children;
         const id = AppHelper.setModalIntoGlobal(content);
-        NavigationService.navigate(rootStack.modalStack, { id });
+        NavigationService.navigate(modalStack.defaultModal, { id });
       };
       if (invisible) {
         return (
@@ -221,15 +221,16 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       customStyle = _.merge(bottomHalfStyle, style);
     }
     return (
-      <QuickView>
+      <>
         {
           invisible ? (
-            <TouchableOpacity onPress={this.defaultOnPress}>
+            <TouchableOpacity onPress={this.open}>
               {buttonChildren}
             </TouchableOpacity>
           )
-            : <Button {...otherProps} onPress={this.defaultOnPress} />
+            : <Button {...otherProps} onPress={this.open} />
         }
+
         <Modal
           {...otherModalProps}
           isVisible={isVisible}
@@ -240,7 +241,8 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
         >
           {this.renderChildren()}
         </Modal>
-      </QuickView>
+
+      </>
     );
   }
 }

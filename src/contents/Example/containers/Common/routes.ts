@@ -1,7 +1,4 @@
-/**
- * commonStack
- */
-const commonStack = {
+const commonExampleStack = {
   text: 'TextExampleScreen',
   header: 'HeaderExampleScreen',
   button: 'ButtonExampleScreen',
@@ -23,4 +20,4 @@ const commonStack = {
   map: 'MapExampleScreen',
 };
 
-export default commonStack;
+export default commonExampleStack;

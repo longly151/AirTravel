@@ -86,8 +86,22 @@ class ImageExample extends PureComponent<any, State> {
               center
               loadingSize={60}
             />
-
-            <Text type="title" center marginVertical={5}>{'Editable Image\n(Multiple with custom resizer)'}</Text>
+            <Text type="title" center marginVertical={5}>{'Editable Image\n(Multiple with custom resizer => 1 size)'}</Text>
+            {loadingMultiple ? <Loading marginBottom={10} /> : null}
+            <EditableImage
+              ref={(ref: any) => { this.multiplePickerRef = ref; }}
+              buttonChildren={loadingMultiple ? <QuickView /> : <Icon name="folder-multiple-image" size={30} type="material-community" />}
+              folderPrefix="images"
+              pickSuccess={this.pickSuccess}
+              uploadCallback={this.uploadCallback}
+              multiple
+              resizedImageWidth={500}
+              width={200}
+              height={200}
+              center
+              loadingSize={60}
+            />
+            <Text type="title" center marginVertical={5}>{'Editable Image\n(Multiple with custom resizer => 3 sizes)'}</Text>
             {loadingMultiple ? <Loading marginBottom={10} /> : null}
             <EditableImage
               ref={(ref: any) => { this.multiplePickerRef = ref; }}

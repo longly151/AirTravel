@@ -1,8 +1,5 @@
-/**
- * moreStack
- */
 const moreStack = {
-  index: 'MoreStackIndex',
+  index: 'MoreScreenIndex',
 };
 
 export default moreStack;

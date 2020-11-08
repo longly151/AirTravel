@@ -1,9 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Icon } from 'react-native-elements';
 import { View } from 'react-native';
+import { IImage } from '@utils/appHelper';
 import QuickView from '../../View/QuickView';
 import Picker from '../../Picker';
 import EditableImage from '../../Image/EditableImage';
+import ModalButton from '../../Button/ModalButton';
+import Container from '../../View/Container';
+import Header from '../../Header';
+import Body from '../../View/Body';
+import Text from '../../Text';
 
 interface Props {
   onSend: (messages: any) => any;
@@ -15,11 +21,13 @@ class ActionBar extends PureComponent<Props> {
 
   editableImageRef: any;
 
-  uploadCallback = (urls: string[]) => {
+  mapView: any;
+
+  uploadCallback = ((data: IImage[]) => {
     const { onSend, setImageLoading } = this.props;
-    onSend([{ image: urls[0] }]);
+    onSend([{ image: data[0].remoteUrl }]);
     setImageLoading(false);
-  };
+  });
 
   pickSuccess = () => {
     const { setImageLoading } = this.props;
@@ -41,8 +49,15 @@ class ActionBar extends PureComponent<Props> {
         this.editableImageRef.openGallery();
         break;
       default:
+        this.openMapModal();
         break;
     }
+  };
+
+  openMapModal = () => {
+    // console.log('okok', this.mapView.open);
+
+    this.mapView.open(null);
   };
 
   render() {
@@ -51,6 +66,21 @@ class ActionBar extends PureComponent<Props> {
         row
         height={44}
       >
+        <ModalButton
+          ref={(ref: any) => { this.mapView = ref; }}
+          title="Full Screen Modal"
+          modalProps={{ type: 'fullscreen' }}
+          // invisible
+        >
+          <Container>
+            <Header backIcon title="ExampleScreen" />
+            <Body>
+              <QuickView>
+                <Text center>Example Screen</Text>
+              </QuickView>
+            </Body>
+          </Container>
+        </ModalButton>
         <Picker
           values={['📷 Chụp ảnh', '🏞 Chọn ảnh từ thư viện', '📍 Chọn vị trí']}
           modalHeight={180}
@@ -72,6 +102,7 @@ class ActionBar extends PureComponent<Props> {
           handleException={this.handleException}
           width={500}
         />
+
       </QuickView>
     );
   }

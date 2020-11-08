@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import exampleStack from './routes';
 import commonStack from './containers/Common/routes';
+import chatStack from './containers/Common/Chat/routes';
 
 export const exampleList = [
   {
@@ -8,7 +8,6 @@ export const exampleList = [
     subtitle: 'Support Theme',
     iconName: 'comment-text-outline',
     linearGradientColors: ['#FF9800', '#F44336'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.text,
   },
   {
@@ -16,7 +15,6 @@ export const exampleList = [
     subtitle: 'Support Theme',
     iconName: 'page-layout-header',
     linearGradientColors: ['#F44336', '#E91E63'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.header,
   },
   {
@@ -24,7 +22,6 @@ export const exampleList = [
     iconName: 'account',
     iconSize: 30,
     linearGradientColors: ['#9a16dd', '#009b9b'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.avatar,
   },
   {
@@ -33,7 +30,6 @@ export const exampleList = [
     iconName: 'gesture-tap',
     iconSize: 35,
     linearGradientColors: ['#3F51B5', '#2196F3'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.button,
   },
   {
@@ -42,7 +38,6 @@ export const exampleList = [
     iconName: 'arrow-down-drop-circle-outline',
     iconSize: 35,
     linearGradientColors: ['#99121d', '#e69e5b'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.picker,
   },
   {
@@ -51,7 +46,6 @@ export const exampleList = [
     iconName: 'calendar-month-outline',
     iconSize: 35,
     linearGradientColors: ['#d14763', '#ac7278'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.dateTimePicker,
   },
   {
@@ -60,7 +54,6 @@ export const exampleList = [
     iconName: 'format-letter-case',
     iconSize: 35,
     linearGradientColors: ['#37bc04', '#5bec88'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.input,
   },
   {
@@ -68,7 +61,6 @@ export const exampleList = [
     iconName: 'view-list',
     iconSize: 35,
     linearGradientColors: ['#7168c7', '#9edd14'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.flatList,
   },
   {
@@ -76,7 +68,6 @@ export const exampleList = [
     iconName: 'image',
     iconSize: 35,
     linearGradientColors: ['#6d6bff', '#c50790'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.image,
   },
   {
@@ -84,7 +75,6 @@ export const exampleList = [
     iconName: 'image-edit',
     iconSize: 35,
     linearGradientColors: ['#c50790', '#6d6bff'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.imagePickerButton,
   },
   {
@@ -98,7 +88,6 @@ export const exampleList = [
     name: 'Modal',
     iconName: 'arrange-bring-forward',
     linearGradientColors: ['#d0cd25', '#d3037c'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.modal,
   },
   {
@@ -106,14 +95,13 @@ export const exampleList = [
     iconName: 'message-text-outline',
     subtitle: 'Support Theme',
     linearGradientColors: ['#064ad2', '#7444bb'],
-    stack: commonStack.chat,
+    screen: chatStack.chatList
   },
   {
     name: 'WebView',
     iconName: 'web',
     subtitle: 'Support Theme',
     linearGradientColors: ['#02e7a3', '#8fce85'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.webView,
   },
   {
@@ -121,7 +109,6 @@ export const exampleList = [
     iconName: 'attachment',
     subtitle: 'Support Theme',
     linearGradientColors: ['#187c9d', '#4743ff'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.file,
   },
   {
@@ -129,7 +116,6 @@ export const exampleList = [
     iconName: 'circle-slice-6',
     subtitle: 'Support Theme',
     linearGradientColors: ['#c250df', '#dd525b'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.loading,
   },
   {
@@ -137,7 +123,6 @@ export const exampleList = [
     iconName: 'menu',
     subtitle: 'Support Theme',
     linearGradientColors: ['#431895', '#85057b'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.map,
   },
   {
@@ -145,7 +130,6 @@ export const exampleList = [
     subtitle: 'Support Theme',
     iconName: 'checkbox-multiple-marked',
     linearGradientColors: ['#FFA69E', '#861657'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.listCheckBox,
   },
   {
@@ -153,7 +137,6 @@ export const exampleList = [
     iconName: 'menu',
     subtitle: 'Support Theme',
     linearGradientColors: ['#FFFF45', '#FF5858'],
-    stack: exampleStack.commonExampleStack,
     screen: commonStack.dropdown,
   },
 ];

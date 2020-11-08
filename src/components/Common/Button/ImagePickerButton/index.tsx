@@ -264,7 +264,7 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
     if (handleException) handleException(e);
   };
 
-  defaultOnPress = (event: GestureResponderEvent) => {
+  open = (event: GestureResponderEvent) => {
     const { dataSource, multiple, onPress } = this.props;
     if (multiple) {
       this.pickMultipleWithGallery();
@@ -288,11 +288,11 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       <QuickView>
         {
           invisible ? (
-            <TouchableOpacity onPress={this.defaultOnPress}>
+            <TouchableOpacity onPress={this.open}>
               {buttonChildren}
             </TouchableOpacity>
           )
-            : <Button {...otherProps} onPress={this.defaultOnPress} />
+            : <Button {...otherProps} onPress={this.open} />
         }
       </QuickView>
     );

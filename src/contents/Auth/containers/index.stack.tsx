@@ -7,8 +7,8 @@ const Stack = createStackNavigator();
 
 export default function AuthStack() {
   return (
-    <Stack.Navigator mode="modal" headerMode="none">
+    <>
       <Stack.Screen name={authStack.loginScreen} component={LoginScreen} />
-    </Stack.Navigator>
+    </>
   );
 }

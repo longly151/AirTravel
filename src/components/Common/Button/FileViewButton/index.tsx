@@ -80,14 +80,6 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
     await this.setState({ loading: true });
     const { data } = this.props;
     if (data.remoteUrl) {
-      // if (_.startsWith(data.mime, 'image') && Platform.OS === 'android') {
-      //   this.setState({ loading: false });
-      //   // NavigationService.navigate(rootStack.modalStack, {
-      //   //   screen: modalStack.imageModal,
-      //   //   params: { title, uri: link, mimeType },
-      //   // });
-      //   return;
-      // }
       const fileExtension = data.remoteUrl.split('.').pop();
       const { dirs } = RNFetchBlob.fs;
       RNFetchBlob

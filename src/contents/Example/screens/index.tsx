@@ -71,10 +71,8 @@ class ExampleList extends PureComponent<Props> {
                 borderRadius: 8,
               }}
               onPress={() => {
-                if (l.stack || l.screen) {
-                  NavigationService.navigate(l.stack, {
-                    screen: l.screen,
-                  });
+                if (l.screen) {
+                  NavigationService.navigate(l.screen);
                 }
               }}
             >

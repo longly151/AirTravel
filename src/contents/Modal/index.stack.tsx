@@ -1,19 +1,21 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import modal from './routes';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import modalStack from './routes';
 import DefaultModal from './DefaultModal';
 
 const Stack = createStackNavigator();
 
-export default function ModalStack(props: any) {
-  const { route } = props;
+export default function ModalStack() {
   return (
-    <Stack.Navigator mode="modal" headerMode="none">
+    <>
       <Stack.Screen
-        name={modal.defaultModal}
+        name={modalStack.defaultModal}
         component={DefaultModal}
-        initialParams={route.params}
+        options={{
+          gestureDirection: 'vertical',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+        }}
       />
-    </Stack.Navigator>
+    </>
   );
 }

@@ -1,8 +1,5 @@
-/**
- * moreStack
- */
 const homeStack = {
-  index: 'NewsStack',
+  index: 'HomeScreen',
 };
 
 export default homeStack;

@@ -9,9 +9,10 @@ import { useSelector } from 'react-redux';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import Selector from '@utils/selector';
 import AppView from '@utils/appView';
-import mainBottomTab from './routes';
-import HomeStack from './containers/Home/index.stack';
-import MoreStack from './containers/More/index.stack';
+import MoreScreen from './containers/More/screens/index';
+import ExampleListScreen from '../Example/screens/index';
+import moreStack from './containers/More/routes';
+import homeStack from './containers/Home/routes';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -46,8 +47,8 @@ function MainBottomTab(props: any) {
       }}
     >
       <BottomTabs.Screen
-        name={mainBottomTab.homeStack}
-        component={HomeStack}
+        name={homeStack.index}
+        component={ExampleListScreen}
         options={{
           tabBarLabel: t('bottom_tab:home'),
           tabBarIcon: ({ focused, color, size }) => (focused ? (
@@ -63,8 +64,8 @@ function MainBottomTab(props: any) {
         }}
       />
       <BottomTabs.Screen
-        name={mainBottomTab.moreStack}
-        component={MoreStack}
+        name={moreStack.index}
+        component={MoreScreen}
         options={{
           tabBarLabel: t('bottom_tab:more'),
           tabBarIcon: ({ focused, color, size }) => (focused ? (
