@@ -1,6 +1,3 @@
-/**
- * exampleStack
- */
 const exampleStack = {
   exampleList: 'ExampleListScreen',
 };

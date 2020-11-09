@@ -20,7 +20,7 @@ import AppView from '@utils/appView';
 import Selector from '@utils/selector';
 import { productGetList } from '../redux/slice';
 import { productListSelector } from '../redux/selector';
-import productStack from '../routes';
+import productStack from '../../routes';
 
 interface Props {
   loading: boolean;

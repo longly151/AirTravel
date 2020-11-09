@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import config from '@contents/Config/redux/slice';
 import auth from '@contents/Auth/redux/reducer';
-import product from '@contents/Example/containers/Common/FlatList/redux/slice';
+import product from '@contents/Example/containers/Common/FlatList/WithRedux/redux/slice';
 import { Global } from '@utils/appHelper';
 import _ from 'lodash';
 

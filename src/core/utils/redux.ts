@@ -1,3 +1,4 @@
+import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
@@ -6,6 +7,7 @@ import AppHelper from '@utils/appHelper';
 import _ from 'lodash';
 import Config from 'react-native-config';
 import qs from 'qs';
+import i18next from 'i18next';
 import Filter from './filter';
 // eslint-disable-next-line import/no-cycle
 import Api from './api';
@@ -13,7 +15,7 @@ import Api from './api';
 /**
  * Type
  */
-const dataPrefix = 'data';
+export const dataPrefix = 'data'; // Config it depend on current API
 export type TError = {
   code: number;
   messages: Array<string>;
@@ -49,10 +51,20 @@ export type TQuery = {
 /**
  * Interface
  */
+
+export interface BaseProps {
+  loading: boolean;
+  data: any;
+  metadata?: TMetadata;
+  error: TError | null;
+  themeName?: ThemeEnum;
+}
+
 export interface BaseState {
   loading: boolean;
   data: any;
-  error: any;
+  metadata?: TMetadata;
+  error: TError | null;
 }
 
 /**
@@ -267,7 +279,7 @@ class CRedux {
       const response = await Api.get(api);
       return {
         loading: false,
-        data: response.data,
+        data: response[dataPrefix],
         error: null,
       };
     } catch (error) {
@@ -277,6 +289,14 @@ class CRedux {
         error,
       };
     }
+  }
+
+  handleException(error: any) {
+    const handledError: TError = {
+      code: error.code,
+      messages: [i18next.t(`exception:${error.code}`)],
+    };
+    return handledError;
   }
 }
 const Redux = CRedux.Instance;

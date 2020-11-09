@@ -42,6 +42,7 @@ import PrimaryInput from './Custom/Input/PrimaryInput';
 import BackIcon from './Custom/Icon/BackIcon';
 import NavigatorButtonGroup from './Custom/Button/NavigatorButtonGroup';
 import EditableImage from './Common/Image/EditableImage';
+import withPureList from './Hoc/withPureList';
 
 export {
   /**
@@ -86,4 +87,9 @@ export {
   PrimaryInput,
   BackIcon,
   NavigatorButtonGroup,
+
+  /**
+   *  HOC
+   */
+  withPureList
 };

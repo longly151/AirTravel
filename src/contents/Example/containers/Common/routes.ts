@@ -7,7 +7,6 @@ const commonExampleStack = {
   imagePickerButton: 'ImagePickerButtonExampleScreen',
   dateTimePicker: 'DateTimePickerExampleScreen',
   input: 'InputExampleScreen',
-  flatList: 'FlatListExample',
   image: 'ImageExample',
   listCheckBox: 'ListCheckBoxExample',
   bottomModalSelect: 'BottomModalSelectExample',

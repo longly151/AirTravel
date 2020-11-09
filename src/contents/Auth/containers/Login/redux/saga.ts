@@ -1,12 +1,12 @@
 import {
   put, call, takeLatest, select,
 } from 'redux-saga/effects';
-import { handleException } from '@utils/exception';
 import { Global } from '@utils/appHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 import { requireLoginSelector } from '@contents/Config/redux/selector';
 import { NavigationService } from '@utils/navigation';
 import exampleStack from '@contents/Example/routes';
+import Redux from '@utils/redux';
 import {
   loginSuccess, loginFail, login, logout,
 } from './slice';
@@ -24,7 +24,7 @@ export function* realtorLoginSaga({ payload }: { payload: any }) {
     }
     return true;
   } catch (error) {
-    yield put(loginFail(yield* handleException(error)));
+    yield put(loginFail(Redux.handleException(error)));
     return false;
   }
 }

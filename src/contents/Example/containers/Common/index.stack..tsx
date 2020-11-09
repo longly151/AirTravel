@@ -9,7 +9,7 @@ import PickerExample from './Picker';
 import InputExample from './Input';
 import ListCheckBoxExample from './ListCheckBox';
 import BottomModalSelectExample from './BottomModalSelect';
-import FlatListExampleStack from './FlatList/index.stack';
+import FlatListStack from './FlatList/index.stack';
 import ImageExample from './Image';
 import DropdownExample from './Dropdown';
 import ModalExample from './Modal';
@@ -33,7 +33,7 @@ export default function CommonExampleStack() {
       <Stack.Screen name={commonStack.imagePickerButton} component={ImagePickerButtonExample} />
       <Stack.Screen name={commonStack.dateTimePicker} component={DateTimePickerExample} />
       <Stack.Screen name={commonStack.input} component={InputExample} />
-      <Stack.Screen name={commonStack.flatList} component={FlatListExampleStack} />
+      {FlatListStack()}
       <Stack.Screen name={commonStack.image} component={ImageExample} />
       <Stack.Screen name={commonStack.listCheckBox} component={ListCheckBoxExample} />
       <Stack.Screen name={commonStack.bottomModalSelect} component={BottomModalSelectExample} />

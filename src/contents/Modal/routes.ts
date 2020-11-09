@@ -1,6 +1,3 @@
-/**
- * modalStack
- */
 const modalStack = {
   defaultModal: 'DefaultModal',
 };

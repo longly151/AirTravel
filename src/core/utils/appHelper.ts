@@ -9,7 +9,9 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Platform } from 'react-native';
 import { Image } from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
+import i18next from 'i18next';
 import Api from './api';
+import { TError } from './redux';
 
 export const Global: any = global;
 
@@ -311,6 +313,14 @@ export class CAppHelper {
       path: data.path,
       sourceUrl: image.sourceURL
     };
+  }
+
+  handleException(error: any) {
+    const handledError: TError = {
+      code: error.code,
+      messages: [i18next.t(`exception:${error.code}`)],
+    };
+    return handledError;
   }
 }
 

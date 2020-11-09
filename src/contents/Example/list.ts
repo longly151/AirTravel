@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import commonStack from './containers/Common/routes';
 import chatStack from './containers/Common/Chat/routes';
+import productStack from './containers/Common/FlatList/routes';
 
 export const exampleList = [
   {
@@ -57,11 +58,18 @@ export const exampleList = [
     screen: commonStack.input,
   },
   {
-    name: 'FlatList',
+    name: 'FlatList (Pure React)',
     iconName: 'view-list',
     iconSize: 35,
     linearGradientColors: ['#7168c7', '#9edd14'],
-    screen: commonStack.flatList,
+    screen: productStack.pureProductList,
+  },
+  {
+    name: 'FlatList (With Redux)',
+    iconName: 'view-list',
+    iconSize: 35,
+    linearGradientColors: ['#9edd14', '#7168c7'],
+    screen: productStack.productList,
   },
   {
     name: 'Image',

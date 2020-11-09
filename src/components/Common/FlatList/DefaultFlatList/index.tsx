@@ -29,6 +29,7 @@ export interface FlatListProps
   textColor?: string;
   language?: string;
   themeName?: string;
+  ref?: any;
 }
 interface State {
   refreshing: boolean;
@@ -190,7 +191,7 @@ class FlatList extends PureComponent<FlatListProps, State> {
       const theme: any = themeName === ThemeEnum.DARK ? darkTheme : lightTheme;
       const loadingColor = loadingColorProp || theme.colors.secondaryText;
 
-      if (!list.loading) this.setState({ refreshing: false });
+      if (!list.loading) setTimeout(() => this.setState({ refreshing: false }), 500);
       return (
         <RNFlatList
           ref={(ref) => {
@@ -210,6 +211,7 @@ class FlatList extends PureComponent<FlatListProps, State> {
               tintColor={loadingColor}
             />
           )}
+          extraData={refreshing || list.loading}
         />
       );
     }

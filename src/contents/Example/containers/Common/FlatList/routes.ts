@@ -1,9 +1,8 @@
-/**
-  * productStack
-  */
 const productStack = {
+  pureProductList: 'PureProductListScreen',
+  pureProductDetail: 'PureProductDetailScreen',
   productList: 'ProductListScreen',
-  productDetail: 'ProductDetailStack',
+  productDetail: 'ProductDetailScreen',
 };
 
 export default productStack;

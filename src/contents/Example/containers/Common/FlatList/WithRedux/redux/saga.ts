@@ -1,5 +1,4 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { handleException } from '@utils/exception';
 import Redux from '@utils/redux';
 import {
   productGetList,
@@ -14,7 +13,7 @@ export function* getListSaga({ payload }: { payload: any }) {
     yield put(productGetListSuccess(response));
     return true;
   } catch (error) {
-    yield put(productGetListFail(yield* handleException(error)));
+    yield put(productGetListFail(Redux.handleException(error)));
     return false;
   }
 }
