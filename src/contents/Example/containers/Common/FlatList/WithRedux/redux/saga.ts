@@ -23,7 +23,7 @@ export function* getListSaga({ payload }: { payload: any }) {
 
 export function* getDetailSaga({ payload }: { payload: any }) {
   try {
-    const response = yield call(fetchProductById, payload.id);
+    const response = yield call(fetchProductById, payload?.id);
     yield put(productGetDetailSuccess(response));
     return true;
   } catch (error) {

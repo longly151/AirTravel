@@ -1,5 +1,6 @@
 {
   "exception": {
+    "400": "Invalid Input. Please check again",
     "401": "Email or password is incorrect",
     "403": "Forbidden",
     "404": "Cannot find Item",

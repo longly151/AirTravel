@@ -1,5 +1,6 @@
 {
   "exception": {
+    "400": "Thông tin không hợp lệ. Vui Lòng kiểm tra lại",
     "401": "Số điện thoại hoặc mật khẩu không chính xác",
     "403": "Tài khoản hiện tại không có quyền truy cập vào trang này",
     "404": "Nội dung hiện không có sẵn. Vui lòng thử lại sau",
