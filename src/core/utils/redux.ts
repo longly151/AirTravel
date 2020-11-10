@@ -16,6 +16,7 @@ import Api from './api';
  * Type
  */
 export const dataPrefix = 'data'; // Config it depend on current API
+
 export type TError = {
   code: number;
   messages: Array<string>;
@@ -84,15 +85,17 @@ class CRedux {
     return CRedux._instance;
   }
 
-  createObjectInitialState(parentKey?: string) {
+  createObjectInitialState(key?: string) {
     const result: TObjectRedux = {
       loading: false,
       data: {},
       error: null,
     };
-    if (parentKey) {
+    if (key) {
       const parentResult: any = {};
-      parentResult[parentKey] = result;
+      parentResult[`${key}Loading`] = result.loading;
+      parentResult[`${key}Data`] = result.data;
+      parentResult[`${key}Error`] = result.error;
       return parentResult;
     }
     return result;
@@ -133,7 +136,7 @@ class CRedux {
         state[`${key}Error`] = null;
       };
       result[`${action}Success`] = (state: any, action: any) => {
-        const data = action.payload;
+        const data = action.payload[dataPrefix];
         state[`${key}Data`] = data;
         state[`${key}Loading`] = false;
         state[`${key}Error`] = null;
@@ -178,13 +181,14 @@ class CRedux {
         const { metadata } = action.payload;
         const dataGet = action.payload[dataPrefix];
         let data = dataGet;
+
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
           data = currentPage === 1 || !currentPage
             ? dataGet
-            : state[key].data.concat(
+            : state[`${key}Data`].concat(
               dataGet.filter(
-                (item: any) => state[key].data.indexOf(item) < 0,
+                (item: any) => state[`${key}Data`].indexOf(item) < 0,
               ),
             );
         }

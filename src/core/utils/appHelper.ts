@@ -118,11 +118,11 @@ export class CAppHelper {
     const {
       route,
     } = props;
-    return route?.params?.id;
+    return route?.params?.item?.id;
   }
 
   setIdIntoParams(item: any) {
-    return ({ id: item.id });
+    return ({ item: { id: item.id } });
   }
 
   setModalIntoGlobal(content: any): number {

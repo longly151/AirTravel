@@ -48,17 +48,23 @@ class Filter {
     newFilter[key] = valueWithCondition;
 
     if (conditionalOperator === 'AND') {
-      this.filterObject = _.merge(this.filterObject, newFilter);
+      this.filterObject = { ...this.filterObject, ...newFilter };
     } else {
       const orNewFilter: any = {};
-      orNewFilter.$or = _.merge(this.filterObject[key], newFilter[key]);
+      orNewFilter.$or = { ...this.filterObject[key], ...newFilter[key] };
       this.filterObject[key] = orNewFilter;
     }
+
     return this.filterObject;
   }
 
   public clearFilter(): void {
     this.filterObject = {};
+  }
+
+  public deleteFilterByKey(key: string): void {
+    this.filterObject = _.omit(this.filterObject, key);
+    // delete this.filterObject[key];
   }
 }
 

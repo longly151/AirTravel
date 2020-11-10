@@ -3,16 +3,17 @@ import Redux, { BaseState } from '@utils/redux';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 
-export interface WithPureInfoProps {
+export interface WithPureDetailProps {
   themeName?: any;
 }
+interface State extends BaseState {}
 
-const withPureInfo = (
-  { url }: {url: string}
+const withPureDetail = (
+  { url }: { url: string }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
-  class WithPureInfo extends React.Component<P & WithPureInfoProps, BaseState> {
+  class WithPureDetail extends React.Component<P & WithPureDetailProps, State> {
     constructor(props: any) {
       super(props);
       this.state = Redux.initDetail(props);
@@ -34,6 +35,6 @@ const withPureInfo = (
 
   return connect(
     mapStateToProps
-  )(WithPureInfo as any);
+  )(WithPureDetail as any);
 };
-export default withPureInfo;
+export default withPureDetail;

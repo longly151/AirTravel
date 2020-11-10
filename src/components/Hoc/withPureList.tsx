@@ -22,7 +22,6 @@ export interface WithPureListProps {
 }
 
 interface State extends BaseState {
-  filter: Filter,
 }
 
 // function getDisplayName(WrappedComponent: React.ComponentType) {
@@ -39,6 +38,8 @@ const withPureList = (
   class WithPureList extends React.Component<P & WithPureListProps, State> {
     flatList: any;
 
+    filter: Filter;
+
     constructor(props: any) {
       super(props);
       this.state = {
@@ -51,8 +52,8 @@ const withPureList = (
           pageCount: 1,
         },
         error: null,
-        filter: new Filter(),
       };
+      this.filter = new Filter();
     }
 
     fetch = (queryString: string): any => Api.get(`${url}?${queryString}`);
@@ -97,8 +98,8 @@ const withPureList = (
     };
 
     render() {
-      const { loading, data, metadata, error, filter } = this.state;
-      const { themeName, ...props } = this.props;
+      const { loading, data, metadata, error } = this.state;
+      const { themeName, ...otherProps } = this.props;
       const list = {
         data,
         metadata,
@@ -107,7 +108,7 @@ const withPureList = (
       };
       return (
         <Container>
-          {WrappedComponent ? <WrappedComponent {...props as P} filter={filter} applyFilter={this.applyFilter} /> : null}
+          {WrappedComponent ? <WrappedComponent {...otherProps as P} filter={this.filter} applyFilter={this.applyFilter} /> : null}
           <Body>
             <QuickView>
               <FlatList
@@ -115,7 +116,7 @@ const withPureList = (
                 list={list}
                 ListHeaderComponent={ListHeaderComponent}
                 getList={(query?: TQuery) => {
-                  this.getList({ ...query, fields, filter: filter?.filterObject });
+                  this.getList({ ...query, fields, filter: this.filter?.filterObject });
                 }}
                 renderItem={(data) => renderItem(data, themeName)}
               />

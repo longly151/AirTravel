@@ -3,7 +3,13 @@ import { StyleSheet } from 'react-native';
 import AppHelper from '@utils/appHelper';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppView from '@utils/appView';
-import { QuickView, Text, withPureList, Header, Button } from '@components';
+import {
+  QuickView,
+  Text,
+  Header,
+  Button,
+  withPureList,
+} from '@components';
 import { Card } from 'react-native-elements';
 import { FilterProps } from '@components/Hoc/withPureList';
 import { NavigationService } from '@utils/navigation';

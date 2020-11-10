@@ -43,6 +43,9 @@ import BackIcon from './Custom/Icon/BackIcon';
 import NavigatorButtonGroup from './Custom/Button/NavigatorButtonGroup';
 import EditableImage from './Common/Image/EditableImage';
 import withPureList from './Hoc/withPureList';
+import withPureDetail from './Hoc/withPureDetail';
+import withReduxList from './Hoc/withReduxList';
+import withReduxDetail from './Hoc/withReduxDetail';
 
 export {
   /**
@@ -91,5 +94,8 @@ export {
   /**
    *  HOC
    */
-  withPureList
+  withPureList,
+  withPureDetail,
+  withReduxList,
+  withReduxDetail,
 };

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
   Container,
   Body,
@@ -9,35 +9,25 @@ import {
   Header,
   HTML,
   Loading,
+  withReduxDetail,
 } from '@components';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
-import { withTheme } from 'react-native-elements';
-import Redux, { BaseState } from '@utils/redux';
+import { BaseProps, BaseState } from '@utils/redux';
+import AppHelper from '@utils/appHelper';
+import { productGetDetail, CONSTANT } from '../redux/slice';
 
 interface Props {
-  detail: any;
-  getDetail: (item: any) => any;
   theme?: any;
 }
+interface Props extends BaseProps {}
 interface State extends BaseState {}
 
-class ProductDetail extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = Redux.initDetail(props);
-  }
-
-  async componentDidMount() {
-    const result = await Redux.fetchDetail(this.props, '/services/:id');
-    this.setState(result);
-  }
-
+class ProductDetailScreen extends Component<Props, State> {
   renderForeground = () => {
     const height = 80;
     const marginTop = parallaxHeaderHeight - height;
-    const { theme } = this.props;
-    const { data } = this.state;
-
+    const { themeName, data } = this.props;
+    const theme = AppHelper.getThemeByName(themeName);
     return (
       <QuickView
         height={height}
@@ -57,12 +47,14 @@ class ProductDetail extends PureComponent<Props, State> {
   };
 
   renderStickyHeader = () => {
-    const { data } = this.state;
+    const { data } = this.props;
     return <Header title={data.name} />;
   };
 
   render() {
-    const { loading, data } = this.state;
+    const { loading, data } = this.props;
+    // console.log('this.props.themeName', this.props.themeName);
+
     return (
       <Container>
         <ParallaxScrollView
@@ -89,17 +81,15 @@ class ProductDetail extends PureComponent<Props, State> {
   }
 }
 
-// const mapStateToProps = (state: any) => ({
-//   detail: Selector.getObject(productDetailSelector, state),
-// });
+export default withReduxDetail({
+  dispatchGetDetail: productGetDetail,
+  constant: {
+    PARENT_NAME: CONSTANT.PARENT_NAME,
+    NAME: CONSTANT.NAME,
+    KEY: CONSTANT.PRODUCT_DETAIL,
+  },
+})(ProductDetailScreen);
 
-// const mapDispatchToProps = (dispatch: any) => ({
-//   getDetail: (item: any) => dispatch(productGetDetail(item)),
-// });
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(withTheme(ProductDetail as any));
-
-export default withTheme(ProductDetail as any);
+// export default withPureDetail({
+//   url: '/services/:id',
+// })(ProductDetailScreen);

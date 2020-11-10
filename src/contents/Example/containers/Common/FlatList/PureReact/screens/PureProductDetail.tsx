@@ -9,10 +9,10 @@ import {
   Header,
   HTML,
   Loading,
+  withPureDetail
 } from '@components';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
 import { BaseProps, BaseState } from '@utils/redux';
-import withPureInfo from '@components/Hoc/withPureInfo';
 import AppHelper from '@utils/appHelper';
 
 interface Props {
@@ -80,6 +80,6 @@ class PureProductDetailScreen extends PureComponent<Props, State> {
   }
 }
 
-export default withPureInfo({
+export default withPureDetail({
   url: '/services/:id',
 })(PureProductDetailScreen);
