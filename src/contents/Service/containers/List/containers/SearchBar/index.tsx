@@ -31,7 +31,8 @@ class SearchBar extends PureComponent<Props> {
             NavigationService.navigate(rootRoutes.serviceStack, {
               screen: serviceRoutes.search,
             });
-          }}>
+          }}
+        >
           <QuickView row alignItems="center">
             <Icon name="magnify" size={24} />
             {/* <Text marginLeft={10}>Ho Chi Minh</Text> */}

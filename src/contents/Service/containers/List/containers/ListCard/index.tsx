@@ -21,12 +21,14 @@ class ListCard extends PureComponent<Props> {
         marginTop={300}
         borderTopLeftRadius={20}
         borderTopRightRadius={20}
-        paddingHorizontal={18}>
+        paddingHorizontal={18}
+      >
         <QuickView
           row
           alignItems="center"
           justifyContent="space-between"
-          marginTop={22}>
+          marginTop={22}
+        >
           <Icon
             name="arrow-left"
             size={24}

@@ -134,7 +134,8 @@ class SliderEntry extends PureComponent<Props> {
             {
               backgroundColor: theme.Modal.backgroundColor || backgroundColor,
             },
-          ]}>
+          ]}
+        >
           <QuickView
             style={styles.imageOverlay}
             backgroundColor={overlayColor}
@@ -147,12 +148,14 @@ class SliderEntry extends PureComponent<Props> {
           alignItems="center"
           justifyContent="space-between"
           style={styles.detailContainer}
-          backgroundColor={backgroundColor}>
+          backgroundColor={backgroundColor}
+        >
           <View style={styles.textContainer}>
             {data.enTitle ? (
               <Text
                 style={[styles.title, { color: theme.Modal.textColor }]}
-                numberOfLines={1}>
+                numberOfLines={1}
+              >
                 {data.enTitle}
               </Text>
             ) : (
@@ -160,21 +163,25 @@ class SliderEntry extends PureComponent<Props> {
             )}
             <Text
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={1}>
+              numberOfLines={1}
+            >
               {data.note}
             </Text>
           </View>
           <QuickView
             flex={1}
             alignItems="flex-end"
-            style={styles.reviewContainer}>
+            style={styles.reviewContainer}
+          >
             <AirbnbRating size={20} showRating={false} />
             <Text
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={1}>
+              numberOfLines={1}
+            >
               <Text style={[styles.score, { color: theme.Modal.textColor }]}>
                 4.3
-              </Text>{' '}
+              </Text>
+              {' '}
               (3456 views)
             </Text>
           </QuickView>

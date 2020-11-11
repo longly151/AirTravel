@@ -35,7 +35,8 @@ class CardService extends PureComponent<Props> {
           NavigationService.navigate(rootRoutes.serviceStack, {
             screen: serviceRoutes.detail,
           });
-        }}>
+        }}
+      >
         <Image
           source={{ uri: data.thumbnail }}
           height={130}
@@ -49,7 +50,8 @@ class CardService extends PureComponent<Props> {
         <QuickView
           width={(viewportWidth - 32) / 2 - 15}
           marginLeft={15}
-          justifyContent="space-between">
+          justifyContent="space-between"
+        >
           <QuickView>
             <Text numberOfLines={2} fontSize={20} bold>
               {data.enTitle}

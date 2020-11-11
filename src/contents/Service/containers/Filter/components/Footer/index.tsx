@@ -47,7 +47,8 @@ class Footer extends PureComponent<Props> {
         row
         paddingHorizontal={18}
         alignItems="center"
-        justifyContent="space-between">
+        justifyContent="space-between"
+      >
         <QuickView width="30%">
           <Text fontSize={16} bold>
             Clear all

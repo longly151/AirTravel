@@ -13,7 +13,8 @@ class Body extends PureComponent<Props> {
       <QuickView marginHorizontal={18} marginBottom={150}>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <Text bold fontSize={26}>
             Private villa with private pool for loved couples
           </Text>
@@ -31,12 +32,14 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <QuickView
             row
             alignItems="center"
             justifyContent="space-between"
-            marginBottom={20}>
+            marginBottom={20}
+          >
             <QuickView>
               <Text bold fontSize={26}>
                 Entire villa
@@ -61,7 +64,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <QuickView row marginBottom={15}>
             <Icon name="spray" size={36} />
             <QuickView marginLeft={10} width="80%">
@@ -98,7 +102,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <Text fontSize={18} numberOfLines={5} marginBottom={10}>
             This is your PRIVATE VILLA of 150 square meter included a pool, a
             garden surrounded by a fence to create an absolute privacy and
@@ -114,7 +119,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <Text bold fontSize={26} marginBottom={20}>
             Amenities
           </Text>
@@ -122,7 +128,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>Wifi</Text>
             <Icon name="wifi" size={28} />
           </QuickView>
@@ -130,7 +137,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>Wifi</Text>
             <Icon name="wifi" size={28} />
           </QuickView>
@@ -138,7 +146,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>Wifi</Text>
             <Icon name="wifi" size={28} />
           </QuickView>
@@ -146,7 +155,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>Wifi</Text>
             <Icon name="wifi" size={28} />
           </QuickView>
@@ -162,7 +172,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <Text bold fontSize={26} marginBottom={20}>
             Accessibility
           </Text>
@@ -173,7 +184,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>No stairs or steps to enter</Text>
             <Image
               source={{
@@ -190,7 +202,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>No stairs or steps to enter</Text>
             <Image
               source={{
@@ -207,7 +220,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>No stairs or steps to enter</Text>
             <Image
               source={{
@@ -224,7 +238,8 @@ class Body extends PureComponent<Props> {
             row
             marginBottom={15}
             alignItems="center"
-            justifyContent="space-between">
+            justifyContent="space-between"
+          >
             <Text fontSize={18}>No stairs or steps to enter</Text>
             <Image
               source={{
@@ -249,7 +264,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={30}
-          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e5e5e5' }}
+        >
           <Text bold fontSize={26} marginBottom={20}>
             Location
           </Text>

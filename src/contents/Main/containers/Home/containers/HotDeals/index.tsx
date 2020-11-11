@@ -31,12 +31,14 @@ class HotDeals extends PureComponent<Props> {
         cardWidth={0.8 * viewportWidth}
         cardHeight={350}
         marginHorizontal={18}
-        backgroundColor={theme.Card.backgroundColor}>
+        backgroundColor={theme.Card.backgroundColor}
+      >
         <QuickView
           row
           marginTop={20}
           justifyContent="space-between"
-          alignItems="center">
+          alignItems="center"
+        >
           <QuickView row>
             <Text fontSize={18} color="#bf081f" marginRight={8}>
               {`${item.currentPrice} vnd`}
@@ -45,7 +47,8 @@ class HotDeals extends PureComponent<Props> {
               fontSize={16}
               style={{
                 textDecorationLine: 'line-through',
-              }}>
+              }}
+            >
               {`${item.price} vnd`}
             </Text>
           </QuickView>
@@ -65,7 +68,8 @@ class HotDeals extends PureComponent<Props> {
     return (
       <LinearGradient
         colors={['#f49d02', '#f97501', '#ff5f00']}
-        style={hotDealStyles.container}>
+        style={hotDealStyles.container}
+      >
         <Text
           style={hotDealStyles.title}
           t="home:hot_deal_title"

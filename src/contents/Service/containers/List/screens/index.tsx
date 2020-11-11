@@ -82,8 +82,8 @@ class ListServicesScreen extends PureComponent<Props, State> {
     let paddingToBottom = 10;
     paddingToBottom += event.nativeEvent.layoutMeasurement.height;
     if (
-      event.nativeEvent.contentOffset.y >=
-      event.nativeEvent.contentSize.height - paddingToBottom
+      event.nativeEvent.contentOffset.y
+      >= event.nativeEvent.contentSize.height - paddingToBottom
     ) {
       const { list } = this.props;
       if (list.metadata.page < list.metadata.pageCount) {
@@ -106,12 +106,14 @@ class ListServicesScreen extends PureComponent<Props, State> {
         onScroll={this.handleScroll}
         backgroundColor="#000"
         scroll
-        stickyHeaderIndices={[0]}>
+        stickyHeaderIndices={[0]}
+      >
         {isSearchBarFixed ? (
           <QuickView
             backgroundColor="#fff"
             width={viewportWidth}
-            style={styles.headerContainer}>
+            style={styles.headerContainer}
+          >
             <SearchBar
               serviceCategoryId={AppHelper.getIdFromParams(this.props)}
             />

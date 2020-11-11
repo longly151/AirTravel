@@ -63,7 +63,8 @@ class Header extends PureComponent<Props, State> {
           backgroundColor="#fff"
           padding={12}
           borderRadius={50}
-          onPress={() => NavigationService.goBack()}>
+          onPress={() => NavigationService.goBack()}
+        >
           <Icon name="arrow-left" size={24} />
         </QuickView>
         <QuickView
@@ -72,7 +73,8 @@ class Header extends PureComponent<Props, State> {
           right={18}
           backgroundColor="#fff"
           padding={12}
-          borderRadius={50}>
+          borderRadius={50}
+        >
           <Icon name="heart-outline" size={24} />
         </QuickView>
         <QuickView
@@ -83,7 +85,8 @@ class Header extends PureComponent<Props, State> {
           paddingVertical={5}
           width={70}
           borderRadius={4}
-          alignItems="center">
+          alignItems="center"
+        >
           <Text color="#fff" fontSize={14} bold>
             {`${activeSlide} / ${data.length}`}
           </Text>

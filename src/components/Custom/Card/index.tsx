@@ -107,7 +107,8 @@ class Card extends PureComponent<Props> {
       <TouchableOpacity
         activeOpacity={1}
         style={containerStyle}
-        onPress={onPress}>
+        onPress={onPress}
+      >
         <View
           style={[
             styles.imageContainer,
@@ -117,7 +118,8 @@ class Card extends PureComponent<Props> {
               borderTopRightRadius: entryBorderRadius,
               height: imageHeight,
             },
-          ]}>
+          ]}
+        >
           <Image
             source={{ uri: data.illustration }}
             height={imageHeight}
@@ -139,11 +141,13 @@ class Card extends PureComponent<Props> {
               borderBottomLeftRadius: entryBorderRadius,
               borderBottomRightRadius: entryBorderRadius,
             },
-          ]}>
+          ]}
+        >
           {data.enName && (
             <Text
               style={[styles.title, { color: theme.Modal.textColor }]}
-              numberOfLines={2}>
+              numberOfLines={2}
+            >
               {data.enName.toUpperCase()}
             </Text>
           )}
@@ -151,7 +155,8 @@ class Card extends PureComponent<Props> {
           {data.subtitle && (
             <Text
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={2}>
+              numberOfLines={2}
+            >
               {data.subtitle}
             </Text>
           )}

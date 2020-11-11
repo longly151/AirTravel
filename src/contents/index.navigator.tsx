@@ -22,15 +22,12 @@ const Stack = createStackNavigator();
 
 export default function RootStack() {
   const requireLogin = useSelector((state) => requireLoginSelector(state));
-  const loginSelectorData = useSelector((state) =>
-    Selector.getObject(loginSelector, state),
-  );
+  const loginSelectorData = useSelector((state) => Selector.getObject(loginSelector, state),);
   const themeSelectorData = useSelector((state) => themeSelector(state));
   const isNotLogin = !!(requireLogin && !loginSelectorData.data.token);
-  const backgroundColor =
-    themeSelectorData === ThemeEnum.LIGHT
-      ? Color.lightPrimaryBackground
-      : Color.darkPrimaryBackground;
+  const backgroundColor = themeSelectorData === ThemeEnum.LIGHT
+    ? Color.lightPrimaryBackground
+    : Color.darkPrimaryBackground;
   return (
     <Stack.Navigator
       headerMode="none"
@@ -38,7 +35,8 @@ export default function RootStack() {
         headerShown: false,
         cardStyle: { backgroundColor },
         gestureEnabled: true,
-      }}>
+      }}
+    >
       {isNotLogin ? (
         <Stack.Screen name={rootStack.authStack} component={AuthStack} />
       ) : (

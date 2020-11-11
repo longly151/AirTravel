@@ -16,7 +16,8 @@ class Body extends PureComponent<Props> {
           alignItems="center"
           row
           paddingVertical={40}
-          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}
+        >
           <Image
             source={{ uri: 'https://i.imgur.com/UYiroysl.jpg' }}
             height={125}
@@ -27,7 +28,8 @@ class Body extends PureComponent<Props> {
             marginLeft={20}
             width="50%"
             justifyContent="space-between"
-            height={125}>
+            height={125}
+          >
             <Text numberOfLines={2} fontSize={20} bold>
               {data.title}
             </Text>
@@ -45,7 +47,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={40}
-          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}
+        >
           <Text fontSize={22} bold>
             Your trip
           </Text>
@@ -78,7 +81,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={40}
-          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}
+        >
           <Text fontSize={22} bold>
             Price details
           </Text>
@@ -109,7 +113,8 @@ class Body extends PureComponent<Props> {
         </QuickView>
         <QuickView
           paddingVertical={40}
-          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}>
+          style={{ borderBottomWidth: 5, borderBottomColor: '#e5e5e5' }}
+        >
           <Text fontSize={22} bold>
             Your information
           </Text>

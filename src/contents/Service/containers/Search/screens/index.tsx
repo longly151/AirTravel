@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { PureComponent } from 'react';
@@ -37,9 +38,6 @@ class SearchServicesScreen extends PureComponent<any, State> {
 
   render() {
     const { text } = this.state;
-    console.log('====================================');
-    console.log(text);
-    console.log('====================================');
     return (
       <Container>
         <QuickView
