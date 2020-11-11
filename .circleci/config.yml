@@ -39,7 +39,7 @@ jobs:
           at: .
       - add_ssh_keys:
           fingerprints:
-            - "7a:2e:cf:0c:7e:ec:17:54:2a:90:73:88:68:55:23:d6"
+            - "00:fb:3a:63:99:e7:03:d5:4d:27:70:2e:bd:56:8e:d4"
       - run: 
           name: Merge Master
           command: |
