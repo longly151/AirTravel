@@ -4,7 +4,6 @@ import {
   Header,
   Text,
   Button,
-  withPureList,
 } from '@components';
 import { Card } from 'react-native-elements';
 import { StyleSheet } from 'react-native';

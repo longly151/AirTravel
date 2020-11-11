@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
-import { createSelector } from 'reselect';
 import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
 import _ from 'lodash';
 import Container from '../Common/View/Container';

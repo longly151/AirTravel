@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import Redux, { BaseState, TQuery, dataPrefix } from '@utils/redux';
+import Redux, { TQuery, dataPrefix } from '@utils/redux';
 import AppHelper from '@utils/appHelper';
 import Filter from '@utils/filter';
 import Api from '@utils/api';
@@ -8,8 +8,7 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
-import Selector from '@utils/selector';
-import HocHelper, { IReduxExtraItem, IExtraItem, IHocConstant } from '@utils/hocHelper';
+import HocHelper, { IReduxExtraItem, IExtraItem } from '@utils/hocHelper';
 import Container from '../Common/View/Container';
 import Body from '../Common/View/Body';
 import QuickView from '../Common/View/QuickView';
