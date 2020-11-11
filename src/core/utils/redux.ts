@@ -44,6 +44,7 @@ export type TQuery = {
   page?: number;
   limit?: number;
   filter?: Filter;
+  s?: string;
 };
 
 /**
@@ -109,10 +110,7 @@ class CRedux {
     return result;
   }
 
-  createObjectReducer<T>(
-    action: string,
-    key?: string,
-  ): T {
+  createObjectReducer<T>(action: string, key?: string): T {
     const result: any = {};
     if (key) {
       result[`${action}`] = (state: any, action: any) => {
@@ -170,9 +168,9 @@ class CRedux {
           const currentPage = action.payload.metadata?.page;
           data = currentPage === 1 || !currentPage
             ? dataGet
-            : state[key].data.concat(
+            : state[`${key}Data`].concat(
               dataGet.filter(
-                (item: any) => state[key].data.indexOf(item) < 0,
+                (item: any) => state[`${key}Data`].indexOf(item) < 0,
               ),
             );
         }
@@ -200,9 +198,7 @@ class CRedux {
           data = currentPage === 1
             ? dataGet
             : state.data.concat(
-              dataGet.filter(
-                (item: any) => state.data.indexOf(item) < 0,
-              ),
+              dataGet.filter((item: any) => state.data.indexOf(item) < 0),
             );
           state.data = data;
           state.metadata = metadata;

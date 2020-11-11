@@ -1,8 +1,9 @@
 /**
- * moreStack
+ * meStack
  */
 const homeStack = {
-  index: 'NewsStack',
+  index: 'HomeStacks',
+  service: 'ListServiceScreen',
 };
 
 export default homeStack;

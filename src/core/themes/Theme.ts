@@ -7,7 +7,11 @@ import { darkInput, lightInput } from './ThemeComponent/Input';
 import { darkCheckBox, lightCheckBox } from './ThemeComponent/ListCheckBox';
 import { darkDropdown, lightDropdown } from './ThemeComponent/Dropdown';
 import { darkModal, lightModal } from './ThemeComponent/Modal';
-import { darkParallaxScrollView, lightParallaxScrollView } from './ThemeComponent/ParallaxScrollView';
+import {
+  darkParallaxScrollView,
+  lightParallaxScrollView,
+} from './ThemeComponent/ParallaxScrollView';
+import { darkCard, lightCard } from './ThemeComponent/Card';
 import Color from './Color';
 
 /**
@@ -44,6 +48,7 @@ export const darkTheme = {
   Modal: darkModal,
   ParallaxScrollView: darkParallaxScrollView,
   Map: darkMap,
+  Card: darkCard,
 };
 
 export const lightTheme = {
@@ -77,4 +82,5 @@ export const lightTheme = {
   Modal: lightModal,
   ParallaxScrollView: lightParallaxScrollView,
   Map: lightMap,
+  Card: lightCard,
 };

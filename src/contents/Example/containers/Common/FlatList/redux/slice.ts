@@ -16,9 +16,9 @@ export type TList = {
   productGetListFail: (state: any, action: any) => any;
 };
 
-export const INITIAL_STATE = ({
+export const INITIAL_STATE = {
   ...Redux.createArrayInitialState(LIST),
-});
+};
 
 /**
  * --- SLICE ---
@@ -42,7 +42,9 @@ const slice = createSlice({
 });
 
 export const {
-  productGetList, productGetListSuccess, productGetListFail,
+  productGetList,
+  productGetListSuccess,
+  productGetListFail,
 } = slice.actions;
 
 export default slice.reducer;

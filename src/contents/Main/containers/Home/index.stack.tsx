@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import homeStack from './routes';
 import HomeScreen from './screens';
+import ListServicesScreen from '../../../Service/containers/List/screens';
+import homeStack from './routes';
 
 const Stack = createStackNavigator();
 
@@ -9,6 +10,7 @@ export default function HomeStack() {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen name={homeStack.index} component={HomeScreen} />
+      <Stack.Screen name={homeStack.service} component={ListServicesScreen} />
     </Stack.Navigator>
   );
 }
