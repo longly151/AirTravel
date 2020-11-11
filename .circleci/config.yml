@@ -41,6 +41,8 @@ jobs:
           name: Merge Master
           command: |
               rm -rf android config ios core src/app src/assets contents/Auth contents/Config contents/Main contents/Modal contents/index.navigator.tsx
+              git config --global user.email "you@example.com"
+              git config --global user.name "Your Name"
               git add .
               git commit -m "Merge Master"
               git pull origin master
@@ -79,6 +81,7 @@ workflows:
             branches:
               ignore:
                 - master
+                - dev
       - merge_master:
           requires:
             - checkout_code
