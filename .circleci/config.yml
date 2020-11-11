@@ -46,7 +46,9 @@ jobs:
               git config --global user.name "Your Name"
               rm -rf android config ios core src/app src/assets contents/Auth contents/Config contents/Main contents/Modal contents/index.navigator.tsx
               git checkout -b master
+              git add . && git commit -m "Merge"
               git pull origin master
+              git push origin master
   # fastlane_android_release:
   #   executor: rn/linux_js
   #   steps:
