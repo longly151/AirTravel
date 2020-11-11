@@ -8,10 +8,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: 
-          name: Remove postinstall from package.json
-          command: |
-              grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
       - rn/yarn_install
       - run:
           command: yarn lint
@@ -29,6 +25,10 @@ jobs:
           name: Copy .env.example to .env
           command: |
               cp .env.example .env
+      - run: 
+          name: Remove postinstall from package.json
+          command: |
+              grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
       - persist_to_workspace:
           paths: .
           root: .
