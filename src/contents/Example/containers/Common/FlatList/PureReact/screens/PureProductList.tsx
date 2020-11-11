@@ -13,7 +13,12 @@ import {
 import { Card } from 'react-native-elements';
 import { FilterProps } from '@components/Hoc/withPureList';
 import { NavigationService } from '@utils/navigation';
+import { BaseProps } from '@utils/redux';
 import productStack from '../../routes';
+
+interface Props extends FilterProps, BaseProps {
+  // detailDemo: BaseState // [Optional] ExtraData
+}
 
 const renderItem = ({ item }: { item: any }, themeName: ThemeEnum) => {
   const theme = AppHelper.getThemeByName(themeName);
@@ -96,7 +101,7 @@ const renderItem = ({ item }: { item: any }, themeName: ThemeEnum) => {
   );
 };
 
-function PureProductListScreen(props: FilterProps) {
+function PureProductListScreen(props: Props) {
   function handleFilter() {
     const { filter, applyFilter } = props;
     filter.mergeFilter('viTitle', '$contL', 'Sunny');
@@ -108,6 +113,9 @@ function PureProductListScreen(props: FilterProps) {
     filter.clearFilter();
     applyFilter();
   }
+
+  // // [Optional] ExtraData || ReduxExtraData
+  // console.log('props.moreDetail', props.moreDetail);
 
   return (
     <>
@@ -124,4 +132,25 @@ export default withPureList({
   url: '/services',
   fields: ['id', 'enTitle', 'viTitle', 'price', 'thumbnail'],
   renderItem,
+
+  // // [Optional] extraData
+  // extraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     url: '/services/1'
+  //   }
+  // ]
+
+  // // [Optional] reduxExtraData
+  // reduxExtraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     dispatch: productGetDetail,
+  //     constant: {
+  //       PARENT_NAME: CONSTANT.PARENT_NAME,
+  //       NAME: CONSTANT.NAME,
+  //       KEY: CONSTANT.PRODUCT_DETAIL,
+  //     }
+  //   }
+  // ]
 })(PureProductListScreen);

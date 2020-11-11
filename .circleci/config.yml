@@ -44,7 +44,7 @@ jobs:
               ssh-keyscan github.com >> ~/.ssh/known_hosts
               git config --global user.email "you@example.com"
               git config --global user.name "Your Name"
-              rm -rf android config ios core src/app src/assets contents/Auth contents/Config contents/Main contents/Modal contents/index.navigator.tsx
+              rm -rf .circleci android config ios core package.json package-lock.json app.json App.tsx yarn.lock src/app src/assets contents/Auth contents/Config contents/Main contents/Modal contents/index.navigator.tsx
               git checkout -b master
               git add . && git commit -m "Merge"
               git push origin master --force

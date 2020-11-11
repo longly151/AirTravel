@@ -4,6 +4,7 @@ import {
   Header,
   Text,
   Button,
+  withPureList,
 } from '@components';
 import { Card } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
@@ -109,6 +110,9 @@ function ProductListScreen(props: FilterProps) {
     applyFilter();
   }
 
+  // // [Optional] ExtraData || ReduxExtraData
+  // console.log('props.moreDetail', props.moreDetail);
+
   return (
     <>
       <Header backIcon title="FlatList" shadow switchTheme />
@@ -131,4 +135,32 @@ export default withReduxList({
   },
   fields: ['id', 'enTitle', 'viTitle', 'price', 'thumbnail'],
   renderItem,
+
+  // // [Optional] extraData
+  // extraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     url: '/services/1'
+  //   }
+  // ]
+
+  // // [Optional] reduxExtraData
+  // reduxExtraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     dispatch: productGetDetail,
+  //     constant: {
+  //       PARENT_NAME: CONSTANT.PARENT_NAME,
+  //       NAME: CONSTANT.NAME,
+  //       KEY: CONSTANT.PRODUCT_DETAIL,
+  //     }
+  //   }
+  // ]
+
 })(ProductListScreen);
+
+// export default withPureList({
+//   url: '/services',
+//   fields: ['id', 'enTitle', 'viTitle', 'price', 'thumbnail'],
+//   renderItem,
+// })(ProductListScreen);

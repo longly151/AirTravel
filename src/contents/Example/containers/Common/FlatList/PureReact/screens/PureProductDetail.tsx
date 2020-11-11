@@ -54,6 +54,9 @@ class PureProductDetailScreen extends PureComponent<Props, State> {
     const { loading, data } = this.props;
     // console.log('this.props.themeName', this.props.themeName);
 
+    // // [Optional] ExtraData || ReduxExtraData
+    // console.log('props.moreDetail', this.props.moreDetail);
+
     return (
       <Container>
         <ParallaxScrollView
@@ -82,4 +85,25 @@ class PureProductDetailScreen extends PureComponent<Props, State> {
 
 export default withPureDetail({
   url: '/services/:id',
+
+  // // [Optional] extraData
+  // extraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     url: '/services/:id'
+  //   }
+  // ]
+
+  // // [Optional] reduxExtraData
+  // reduxExtraData: [
+  //   {
+  //     key: 'moreDetail',
+  //     dispatch: productGetDetail,
+  //     constant: {
+  //       PARENT_NAME: CONSTANT.PARENT_NAME,
+  //       NAME: CONSTANT.NAME,
+  //       KEY: CONSTANT.PRODUCT_DETAIL,
+  //     }
+  //   }
+  // ]
 })(PureProductDetailScreen);

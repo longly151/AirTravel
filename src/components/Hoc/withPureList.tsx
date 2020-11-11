@@ -7,6 +7,9 @@ import Api from '@utils/api';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
+import _ from 'lodash';
+import Selector from '@utils/selector';
+import HocHelper, { IReduxExtraItem, IExtraItem, IHocConstant } from '@utils/hocHelper';
 import Container from '../Common/View/Container';
 import Body from '../Common/View/Body';
 import QuickView from '../Common/View/QuickView';
@@ -21,28 +24,30 @@ export interface WithPureListProps {
   themeName?: any;
 }
 
-interface State extends BaseState {
-}
-
 // function getDisplayName(WrappedComponent: React.ComponentType) {
 //   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 // };
 
 const withPureList = (
-  { url, fields, ListHeaderComponent, renderItem }: {
-    url: string, fields?: Array<string>, ListHeaderComponent?: React.ComponentType<any>, renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any
+  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData }: {
+    url: string,
+    fields?: Array<string>,
+    ListHeaderComponent?: React.ComponentType<any>,
+    renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
+    extraData?: IExtraItem[],
+    reduxExtraData?: IReduxExtraItem[]
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
-  class WithPureList extends React.Component<P & WithPureListProps, State> {
+  class WithPureList extends React.Component<P & WithPureListProps, any> {
     flatList: any;
 
     filter: Filter;
 
     constructor(props: any) {
       super(props);
-      this.state = {
+      const state: any = {
         loading: true,
         data: [],
         metadata: {
@@ -53,7 +58,27 @@ const withPureList = (
         },
         error: null,
       };
+
+      // Merge State for ExtraData
+      HocHelper.mergeStateForExtraData(state, extraData);
+
+      this.state = state;
       this.filter = new Filter();
+    }
+
+    async componentDidMount() {
+      // Fetch Data for ExtraData
+      if (extraData && !_.isEmpty(extraData)) {
+        await Promise.all(extraData.map(async (item: { key: string, url: string }) => {
+          const result = await Redux.fetchDetail(this.props, item.url);
+          this.setState({
+            [item.key]: result
+          });
+        }));
+      }
+
+      // Trigger Fetch Action for ReduxExtraData
+      await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
     }
 
     fetch = (queryString: string): any => Api.get(`${url}?${queryString}`);
@@ -99,7 +124,7 @@ const withPureList = (
 
     render() {
       const { loading, data, metadata, error } = this.state;
-      const { themeName, ...otherProps } = this.props;
+      const { themeName } = this.props;
       const list = {
         data,
         metadata,
@@ -108,7 +133,7 @@ const withPureList = (
       };
       return (
         <Container>
-          {WrappedComponent ? <WrappedComponent {...otherProps as P} filter={this.filter} applyFilter={this.applyFilter} /> : null}
+          {WrappedComponent ? <WrappedComponent {...this.props as P} {...this.state} filter={this.filter} applyFilter={this.applyFilter} /> : null}
           <Body>
             <QuickView>
               <FlatList
@@ -127,12 +152,25 @@ const withPureList = (
     }
   }
 
-  const mapStateToProps = (state: any) => ({
-    themeName: themeSelector(state)
-  });
+  const mapStateToProps = (state: any) => {
+    let result: any = {
+      themeName: themeSelector(state)
+    };
+    // Map State for ReduxExtraData
+    result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
+    return result;
+  };
+
+  const mapDispatchToProps = (dispatch: any) => {
+    // Map Dispatch for ReduxExtraData
+    let result: any = {};
+    result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
+    return result;
+  };
 
   return connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
   )(WithPureList as any);
 };
 export default withPureList;
