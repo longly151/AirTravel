@@ -32,6 +32,15 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
+  merge_master:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - run: 
+          name: Merge Master
+          command: |
+              rm -rf android config ios core src/app src/assets contents/Auth contents/Config contents/Main contents/Modal contents/index.navigator.tsx
   # fastlane_android_release:
   #   executor: rn/linux_js
   #   steps:
@@ -68,6 +77,13 @@ workflows:
               ignore:
                 - dev
                 - master
+      - merge_master:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only:
+                - dev
       - rn/android_build:
           build_type: debug
           name: build_android_debug
