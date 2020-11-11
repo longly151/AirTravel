@@ -45,8 +45,8 @@ jobs:
               git config --global user.email "you@example.com"
               git config --global user.name "Your Name"
               mv .gitignore.master .gitignore
+              git rm -r --cached .
               git checkout -b master
-              cat .gitignore
               git add . && git commit -m "Merge"
               git push origin master --force
   # fastlane_android_release:
