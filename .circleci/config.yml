@@ -71,7 +71,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - dev
                 - master
       - analyse_js:
           requires:
@@ -79,7 +78,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - dev
                 - master
       - merge_master:
           requires:
