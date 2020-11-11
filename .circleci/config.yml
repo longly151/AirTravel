@@ -28,6 +28,7 @@ jobs:
       - run: 
           name: Copy .env.example to .env
           command: |
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
               cp .env.example .env
       - persist_to_workspace:
           paths: .
@@ -37,9 +38,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - add_ssh_keys:
-          fingerprints:
-            - "00:fb:3a:63:99:e7:03:d5:4d:27:70:2e:bd:56:8e:d4"
       - run: 
           name: Merge Master
           command: |
