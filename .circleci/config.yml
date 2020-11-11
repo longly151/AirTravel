@@ -48,8 +48,7 @@ jobs:
               git config --global user.email "you@example.com"
               git config --global user.name "Your Name"
               git add .
-              git pull origin master
-              git commit -m "Merge Master"
+              git pull --no-commit && git commit -m "Merge"
               git push origin master
   # fastlane_android_release:
   #   executor: rn/linux_js
