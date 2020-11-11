@@ -24,6 +24,9 @@ jobs:
       name: rn/linux_js
       node_version: '10'
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "00:fb:3a:63:99:e7:03:d5:4d:27:70:2e:bd:56:8e:d4"
       - checkout
       - run: 
           name: Copy .env.example to .env
