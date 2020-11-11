@@ -1,5 +1,6 @@
 const homeStack = {
-  index: 'HomeScreen',
+  index: 'HomeStacks',
+  service: 'ListServiceScreen',
 };
 
 export default homeStack;

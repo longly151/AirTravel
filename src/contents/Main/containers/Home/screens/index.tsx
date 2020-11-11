@@ -1,31 +1,57 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import {
-  QuickView, Text, Container, Header, Body,
-} from '@components';
+import { Container, Loading } from '@components';
+import { TQuery, TArrayRedux } from '@utils/redux';
+import Selector from '@utils/selector';
+import { serviceListSelector } from '@contents/Service/redux/selector';
+import { serviceGetList } from '@contents/Service/redux/slice';
 
-class HomeScreen extends PureComponent {
+import Greeting from '../containers/Greeting';
+import CrucialCategory from '../containers/CrucialCategory';
+import Categories from '../containers/Categories';
+import HotDeals from '../containers/HotDeals';
+import Destinations from '../containers/Destinations';
+// import MapButton from '../containers/Map/containers/MapButton';
+
+interface Props {
+  list: TArrayRedux;
+  getList: (query?: TQuery) => any;
+}
+
+class HomeScreen extends PureComponent<Props> {
+  componentDidMount() {
+    const { getList } = this.props;
+    getList({ limit: 5 });
+  }
+
   render() {
-    return (
-      <Container>
-        <Header title="HomeScreen" />
-        <Body>
-          <QuickView>
-            <Text center>Example Screen</Text>
-          </QuickView>
-        </Body>
+    const { list } = this.props;
+
+    const listProps = {
+      list,
+    };
+    return list.loading ? (
+      <Loading />
+    ) : (
+      <Container scrollable>
+        <Greeting {...listProps} />
+        <CrucialCategory />
+        <Categories />
+        <HotDeals {...listProps} />
+        <Destinations />
+        {/* <MapButton /> */}
       </Container>
     );
   }
 }
 
 const mapStateToProps = (state: any) => ({
-
+  list: Selector.getArray(serviceListSelector, state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-
+  getList: (query?: TQuery) => dispatch(serviceGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

@@ -1,6 +1,3 @@
-/**
- * notificationStack
- */
 const notificationStack = {
   index: 'NotificationListScreen',
 };

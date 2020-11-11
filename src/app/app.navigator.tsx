@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { withTheme } from 'react-native-elements';
 import { themeSelector, requireLoginSelector } from '@contents/Config/redux/selector';
 import { INITIAL_STATE, ThemeEnum, resetRequireLogin } from '@contents/Config/redux/slice';
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import RootStack from '@contents/index.navigator';
+import MainStack from '@contents/index.navigator';
 import { NavigationService } from '@utils/navigation';
 
 import { lightTheme, darkTheme } from '@themes/Theme';
+import ModalStack from '@contents/Modal/index.stack';
 
 interface Props {
   theme: any;
@@ -24,6 +25,17 @@ interface State {
 }
 
 const Stack = createStackNavigator();
+
+function RootStack() {
+  return (
+    <Stack.Navigator
+      headerMode="none"
+    >
+      <Stack.Screen name="mainStack" component={MainStack} />
+      {ModalStack()}
+    </Stack.Navigator>
+  );
+}
 
 class AppNavigator extends Component<Props, State> {
   constructor(props: Props) {
@@ -48,9 +60,16 @@ class AppNavigator extends Component<Props, State> {
     }
     StatusBar.setBarStyle(barStyle, true);
 
+    const navigationTheme: Theme = {
+      ...DarkTheme,
+      colors: {
+        ...DarkTheme.colors,
+        // background: 'transparent'
+      }
+    };
     return (
-      <NavigationContainer theme={DarkTheme} ref={NavigationService.navigationRef}>
-        <Stack.Navigator>
+      <NavigationContainer theme={navigationTheme} ref={NavigationService.navigationRef}>
+        <Stack.Navigator headerMode="none">
           <Stack.Screen
             name="rootStack"
             component={RootStack}

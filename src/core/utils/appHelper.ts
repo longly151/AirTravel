@@ -118,7 +118,7 @@ export class CAppHelper {
     const {
       route,
     } = props;
-    return route?.params?.item?.id;
+    return route?.params?.item?.id || route?.params?.id;
   }
 
   setIdIntoParams(item: any) {

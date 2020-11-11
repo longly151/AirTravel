@@ -6,11 +6,11 @@ import {
   Container, Header, QuickView
 } from '@components';
 import { ListItem, Divider, Icon } from 'react-native-elements';
-import { withTranslation } from 'react-i18next';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
 import PickerChangeLanguage from '@contents/Config/Shared/PickerChangeLanguage';
 import LogoutButton from '@contents/Auth/containers/Login/Shared/LogoutButton';
 import LoginButton from '@contents/Auth/containers/Login/Shared/LoginButton';
+import i18next from 'i18next';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -34,7 +34,7 @@ interface Props {
   t: any;
 }
 
-class Settings extends React.PureComponent<Props> {
+class MoreScreen extends React.PureComponent<Props> {
   renderItem = ({
     item: {
       title, backgroundColor, icon, rightElement,
@@ -78,19 +78,18 @@ class Settings extends React.PureComponent<Props> {
   keyExtractor = (item: any, index: any) => index;
 
   render() {
-    const { t } = this.props;
     const sections = [
       {
         data: [
           {
-            title: t('theme'),
+            title: i18next.t('theme'),
             backgroundColor: BLUE,
             icon: 'ios-bulb',
             hideChevron: true,
             rightElement: <SwitchChangeTheme />,
           },
           {
-            title: t('language'),
+            title: i18next.t('language'),
             icon: 'ios-settings',
             backgroundColor: GREY,
             hideChevron: true,
@@ -102,7 +101,7 @@ class Settings extends React.PureComponent<Props> {
 
     return (
       <Container>
-        <Header title={t('header:setting')} />
+        <Header title={i18next.t('header:setting')} />
         <QuickView height={120}>
           <SectionList
             contentContainerStyle={{ marginTop: -30 }}
@@ -124,4 +123,4 @@ class Settings extends React.PureComponent<Props> {
     );
   }
 }
-export default withTranslation()(Settings as any);
+export default MoreScreen;

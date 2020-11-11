@@ -7,8 +7,8 @@ const Stack = createStackNavigator();
 
 export default function FavoriteStack() {
   return (
-    <Stack.Navigator headerMode="none">
+    <>
       <Stack.Screen name={favoriteStack.index} component={FavoriteListScreen} />
-    </Stack.Navigator>
+    </>
   );
 }

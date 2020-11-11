@@ -11,6 +11,11 @@ import { loginSelector } from './Auth/containers/Login/redux/selector';
 import { ThemeEnum } from './Config/redux/slice';
 import ChatStack from './Example/containers/Common/Chat/index.stack';
 import MoreStack from './Main/containers/More/index.stack';
+import ServiceStack from './Service/index.stack';
+import HomeStack from './Main/containers/Home/index.stack';
+import FavoriteStack from './Main/containers/Favorite/index.stack';
+import TripStack from './Main/containers/Trip/index.stack';
+import NotificationStack from './Main/containers/Notification/index.stack';
 
 const Stack = createStackNavigator();
 
@@ -48,8 +53,13 @@ export default function MainStack() {
     >
       {NavigationCase()}
       {ExampleStack()}
+      {HomeStack()}
+      {FavoriteStack()}
+      {TripStack()}
+      {NotificationStack()}
       {MoreStack()}
       {ChatStack()}
+      {ServiceStack()}
     </Stack.Navigator>
   );
 }

@@ -7,8 +7,8 @@ const Stack = createStackNavigator();
 
 export default function TripStack() {
   return (
-    <Stack.Navigator headerMode="none">
+    <>
       <Stack.Screen name={tripStack.index} component={TripListScreen} />
-    </Stack.Navigator>
+    </>
   );
 }

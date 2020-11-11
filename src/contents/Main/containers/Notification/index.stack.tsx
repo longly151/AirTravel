@@ -8,9 +8,9 @@ const Stack = createStackNavigator();
 
 export default function NotificationStack() {
   return (
-    <Stack.Navigator headerMode="none">
+    <>
       {/* <Stack.Screen name={notificationStack.index} component={NotificationListScreen} /> */}
       <Stack.Screen name={notificationStack.index} component={ExampleStack} />
-    </Stack.Navigator>
+    </>
   );
 }

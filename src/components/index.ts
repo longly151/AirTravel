@@ -30,6 +30,7 @@ import FileViewButton from './Common/Button/FileViewButton';
 import FilePickerButton from './Common/Button/FilePickerButton';
 import Loading from './Common/Loading';
 import MapView from './Common/MapView';
+import Card from './Custom/Card';
 
 /**
  * Custom
@@ -79,7 +80,6 @@ export {
   FilePickerButton,
   Loading,
   MapView,
-
   /**
    * Custom
    */
@@ -90,6 +90,7 @@ export {
   PrimaryInput,
   BackIcon,
   NavigatorButtonGroup,
+  Card,
 
   /**
    *  HOC
