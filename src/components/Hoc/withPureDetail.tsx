@@ -1,5 +1,5 @@
 import React from 'react';
-import Redux, { BaseState } from '@utils/redux';
+import Redux from '@utils/redux';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import HocHelper, { IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
