@@ -105,7 +105,6 @@ class AppContainer extends React.Component<Props, State> {
     } = this.props;
 
     const { isConnected } = this.state;
-
     /**
      * Change language
      */
