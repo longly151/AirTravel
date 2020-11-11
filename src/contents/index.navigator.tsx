@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 import MainBottomTab from '@contents/Main/index.bottomtab';
 import AuthStack from '@contents/Auth/containers/index.stack';
 import { useSelector } from 'react-redux';
@@ -13,17 +16,21 @@ import { loginSelector } from './Auth/containers/Login/redux/selector';
 import { ThemeEnum } from './Config/redux/slice';
 import commonStack from './Example/containers/Common/routes';
 import ChatExampleStack from './Example/containers/Common/Chat/index.stack';
+import ServiceStack from './Service/index.stack';
 
 const Stack = createStackNavigator();
 
 export default function RootStack() {
   const requireLogin = useSelector((state) => requireLoginSelector(state));
-  const loginSelectorData = useSelector((state) => Selector.getObject(loginSelector, state));
+  const loginSelectorData = useSelector((state) =>
+    Selector.getObject(loginSelector, state),
+  );
   const themeSelectorData = useSelector((state) => themeSelector(state));
   const isNotLogin = !!(requireLogin && !loginSelectorData.data.token);
-  const backgroundColor = themeSelectorData === ThemeEnum.LIGHT
-    ? Color.lightPrimaryBackground
-    : Color.darkPrimaryBackground;
+  const backgroundColor =
+    themeSelectorData === ThemeEnum.LIGHT
+      ? Color.lightPrimaryBackground
+      : Color.darkPrimaryBackground;
   return (
     <Stack.Navigator
       headerMode="none"
@@ -31,33 +38,19 @@ export default function RootStack() {
         headerShown: false,
         cardStyle: { backgroundColor },
         gestureEnabled: true,
-      }}
-    >
-      {
-        isNotLogin ? (
-          <Stack.Screen
-            name={rootStack.authStack}
-            component={AuthStack}
-          />
-        ) : (
-          <Stack.Screen
-            name={rootStack.mainBottomTab}
-            component={MainBottomTab}
-          />
-        )
-      }
-      {
-        !requireLogin ? (
-          <Stack.Screen
-            name={rootStack.authStack}
-            component={AuthStack}
-          />
-        ) : null
-      }
-      <Stack.Screen
-        name={rootStack.exampleStack}
-        component={ExampleStack}
-      />
+      }}>
+      {isNotLogin ? (
+        <Stack.Screen name={rootStack.authStack} component={AuthStack} />
+      ) : (
+        <Stack.Screen
+          name={rootStack.mainBottomTab}
+          component={MainBottomTab}
+        />
+      )}
+      {!requireLogin ? (
+        <Stack.Screen name={rootStack.authStack} component={AuthStack} />
+      ) : null}
+      <Stack.Screen name={rootStack.exampleStack} component={ExampleStack} />
       <Stack.Screen
         name={rootStack.modalStack}
         component={ModalStack}
@@ -67,6 +60,7 @@ export default function RootStack() {
         }}
       />
       <Stack.Screen name={commonStack.chat} component={ChatExampleStack} />
+      <Stack.Screen name={rootStack.serviceStack} component={ServiceStack} />
     </Stack.Navigator>
   );
 }

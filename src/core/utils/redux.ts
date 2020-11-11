@@ -44,6 +44,7 @@ export type TQuery = {
   page?: number;
   limit?: number;
   filter?: Filter;
+  s?: string;
 };
 
 /**
@@ -109,10 +110,7 @@ class CRedux {
     return result;
   }
 
-  createObjectReducer<T>(
-    action: string,
-    key?: string,
-  ): T {
+  createObjectReducer<T>(action: string, key?: string): T {
     const result: any = {};
     if (key) {
       result[`${action}`] = (state: any, action: any) => {
@@ -168,13 +166,14 @@ class CRedux {
         let data = dataGet;
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
-          data = currentPage === 1 || !currentPage
-            ? dataGet
-            : state[key].data.concat(
-              dataGet.filter(
-                (item: any) => state[key].data.indexOf(item) < 0,
-              ),
-            );
+          data =
+            currentPage === 1 || !currentPage
+              ? dataGet
+              : state[`${key}Data`].concat(
+                  dataGet.filter(
+                    (item: any) => state[`${key}Data`].indexOf(item) < 0,
+                  ),
+                );
         }
         state[`${key}Loading`] = false;
         state[`${key}Data`] = data;
@@ -197,13 +196,12 @@ class CRedux {
         let data = dataGet;
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
-          data = currentPage === 1
-            ? dataGet
-            : state.data.concat(
-              dataGet.filter(
-                (item: any) => state.data.indexOf(item) < 0,
-              ),
-            );
+          data =
+            currentPage === 1
+              ? dataGet
+              : state.data.concat(
+                  dataGet.filter((item: any) => state.data.indexOf(item) < 0),
+                );
           state.data = data;
           state.metadata = metadata;
           state.error = null;
@@ -231,7 +229,8 @@ class CRedux {
       defaultLimit = 10;
     }
     const limit = query?.limit ? query.limit : defaultLimit;
-    const offset = query?.page && query.page >= 1 ? (query.page - 1) * limit : 0;
+    const offset =
+      query?.page && query.page >= 1 ? (query.page - 1) * limit : 0;
     let handledQuery: any = _.omit(query, ['page']);
     handledQuery.offset = offset;
     handledQuery.limit = limit;
