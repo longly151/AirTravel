@@ -62,3 +62,22 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+
+# Master Ignore
+android/
+config/
+ios/
+core/
+package.json
+package-lock.json
+app.json
+App.tsx
+yarn.lock
+src/app/
+src/assets/
+contents/Auth/
+contents/Config/
+contents/Main/
+contents/Modal/
+contents/index.navigator.tsx
