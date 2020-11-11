@@ -12,7 +12,8 @@
     "test:handle": "jest",
     "test": "yarn test:pre && yarn test:handle && yarn test:after",
     "test:update": "yarn test:pre && yarn test:handle -- -u && yarn test:after",
-    "lint": "eslint . --ext .ts,.tsx --fix --max-warnings 0"
+    "lint": "eslint . --ext .ts,.tsx --fix --max-warnings 0",
+    "upstream": "git merge upstream/master --allow-unrelated-histories"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "2.0.0-alpha.0",

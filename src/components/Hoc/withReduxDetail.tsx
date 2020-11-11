@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import Selector from '@utils/selector';
 import AppHelper from '@utils/appHelper';
+import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
+import _ from 'lodash';
+import Redux from '@utils/redux';
 
 export interface WithReduxDetailProps {
   themeName?: any;
@@ -11,24 +14,46 @@ export interface WithReduxDetailProps {
 interface State {}
 
 const withReduxDetail = (
-  { dispatchGetDetail, constant }:
-  { dispatchGetDetail: any, constant: {PARENT_NAME?: string, NAME: string, KEY: string} }
+  { dispatchGetDetail, constant, extraData, reduxExtraData }:{
+    dispatchGetDetail: any,
+    constant: IHocConstant,
+    extraData?: IExtraItem[],
+    reduxExtraData?: IReduxExtraItem[]
+  }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   // Selector
-  const { PARENT_NAME, NAME, KEY } = constant;
-  const root = (state: any) => {
-    if (PARENT_NAME) return state[PARENT_NAME][NAME];
-    return state[NAME];
-  };
-  const detailSelector = Selector.createObjectSelector(root, KEY);
+  const detailSelector: any = HocHelper.createObjectSelectorHOC(constant);
 
   // HOC Class
   class WithReduxDetail extends React.Component<P & WithReduxDetailProps, State> {
-    componentDidMount() {
+    constructor(props: any) {
+      super(props);
+      const state = {};
+
+      // Merge State for ExtraData
+      HocHelper.mergeStateForExtraData(state, extraData);
+
+      this.state = state;
+    }
+
+    async componentDidMount() {
       const { getDetail } = this.props;
       getDetail(AppHelper.getItemFromParams(this.props));
+
+      // Fetch Data for ExtraData
+      if (extraData && !_.isEmpty(extraData)) {
+        await Promise.all(extraData.map(async (item: { key: string, url: string }) => {
+          const result = await Redux.fetchDetail(this.props, item.url);
+          this.setState({
+            [item.key]: result
+          });
+        }));
+      }
+
+      // Trigger Fetch Action for ReduxExtraData
+      await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
     }
 
     render() {
@@ -36,14 +61,24 @@ const withReduxDetail = (
     }
   }
 
-  const mapStateToProps = (state: any) => ({
-    themeName: themeSelector(state),
-    ...Selector.getObject(detailSelector, state),
-  });
+  const mapStateToProps = (state: any) => {
+    let result: any = {
+      themeName: themeSelector(state),
+      ...Selector.getObject(detailSelector, state),
+    };
+    // Map State for ReduxExtraData
+    result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
+    return result;
+  };
 
-  const mapDispatchToProps = (dispatch: any) => ({
-    getDetail: (item: any) => dispatch(dispatchGetDetail(item)),
-  });
+  const mapDispatchToProps = (dispatch: any) => {
+    // Map Dispatch for ReduxExtraData
+    let result: any = {
+      getDetail: (item: any) => dispatch(dispatchGetDetail(item)),
+    };
+    result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
+    return result;
+  };
 
   return connect(
     mapStateToProps,
