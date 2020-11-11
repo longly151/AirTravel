@@ -6,12 +6,12 @@ jobs:
   analyse_js:
     executor: rn/linux_js
     steps:
-      - attach_workspace:
-          at: .
       - run: 
           name: Remove postinstall from package.json
           command: |
               grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+      - attach_workspace:
+          at: .
       - rn/yarn_install
       - run:
           command: yarn lint
