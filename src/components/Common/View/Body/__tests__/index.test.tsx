@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import TestHelper, { EnumComponent } from '@utils/testHelper';
-import { lightTheme } from '@themes/Theme';
 import AppView from '@utils/appView';
 import Body from '..';
 

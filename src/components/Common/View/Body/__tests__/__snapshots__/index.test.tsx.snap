@@ -14,7 +14,7 @@ exports[`Body Component should render without issues 1`] = `
     primary={true}
     style={
       Object {
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "transparent",
         "flex": 1,
         "paddingHorizontal": 20,
       }
