@@ -12,11 +12,12 @@ const commonExampleStack = {
   bottomModalSelect: 'BottomModalSelectExample',
   dropdown: 'DropdownExample',
   modal: 'ModalExampleScreen',
-  chat: 'ChatExampleScreen',
   webView: 'WebViewExampleScreen',
   file: 'FileExampleScreen',
   loading: 'LoadingExampleScreen',
+
   map: 'MapExampleScreen',
+  socialAuthentication: 'SocialAuthenticationScreen',
 };
 
 export default commonExampleStack;

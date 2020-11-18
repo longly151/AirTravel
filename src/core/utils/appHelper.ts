@@ -1,15 +1,16 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
 import AsyncStorage from '@react-native-community/async-storage';
 import { darkTheme, lightTheme } from '@themes/Theme';
-import En from '@locales/en.json';
-import Vi from '@locales/vi.json';
-import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
+import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Platform } from 'react-native';
 import { Image } from 'react-native-image-crop-picker';
 import ImageResizer from 'react-native-image-resizer';
 import i18next from 'i18next';
+import { showMessage } from 'react-native-flash-message';
+import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import Api from './api';
 import { TError } from './redux';
 
@@ -72,6 +73,8 @@ export class CAppHelper {
     return CAppHelper._instance;
   }
 
+  isConnected = true;
+
   async viewAsyncStorageData() {
     const keys = await AsyncStorage.getAllKeys();
     const itemsArray = await AsyncStorage.multiGet(keys);
@@ -108,10 +111,6 @@ export class CAppHelper {
 
   getThemeByName(themeName: ThemeEnum = ThemeEnum.LIGHT): any {
     return themeName === ThemeEnum.DARK ? darkTheme : lightTheme;
-  }
-
-  getLanguageByName(languageName: LanguageEnum = LanguageEnum.EN): any {
-    return languageName === LanguageEnum.EN ? En : Vi;
   }
 
   getIdFromParams(props: any) {
@@ -322,6 +321,34 @@ export class CAppHelper {
     };
     return handledError;
   }
+
+  /**
+   * showMessage
+   */
+  showNoConnectionMessage = () => {
+    showMessage({
+      message: i18next.t('no_internet'),
+      type: 'danger',
+    });
+  };
+
+  showNotificationMessage = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+    if (remoteMessage.notification) {
+      showMessage({
+        message: remoteMessage.notification.title || '',
+        description: remoteMessage.notification.body,
+        backgroundColor: '#315DF7',
+        icon: 'info',
+        duration: 5000,
+        hideStatusBar: true,
+        titleStyle: { fontWeight: 'bold', fontSize: 15 },
+        onPress: () => {
+          // eslint-disable-next-line no-console
+          console.log('Message Click');
+        },
+      });
+    }
+  };
 }
 
 const AppHelper = CAppHelper.Instance;

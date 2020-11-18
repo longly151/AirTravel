@@ -2,7 +2,7 @@ import React from 'react';
 import Redux from '@utils/redux';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
-import HocHelper, { IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
+import HocHelper, { IExtraItem, IReduxExtraItem, IHocLog } from '@utils/hocHelper';
 import _ from 'lodash';
 
 export interface WithPureDetailProps {
@@ -10,10 +10,11 @@ export interface WithPureDetailProps {
 }
 
 const withPureDetail = (
-  { url, extraData, reduxExtraData }: {
+  { url, extraData, reduxExtraData, log }: {
     url: string,
     extraData?: IExtraItem[],
-    reduxExtraData?: IReduxExtraItem[]
+    reduxExtraData?: IReduxExtraItem[],
+    log?: IHocLog
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -45,6 +46,11 @@ const withPureDetail = (
 
       // Trigger Fetch Action for ReduxExtraData
       await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
+
+      // [data & ExtraData] Log Events
+      if (log) {
+        await HocHelper.logScreenEvent(log, this.state);
+      }
     }
 
     render() {

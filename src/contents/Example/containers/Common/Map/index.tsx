@@ -125,11 +125,13 @@ class MapExample extends PureComponent<any, State> {
         <Header backIcon title="Map" shadow switchTheme />
         <Body scrollable fullWidth>
           <QuickView marginVertical={8} center>
-            <Text type="title" bold marginVertical={5}>Default Map</Text>
-            <MapView defaultMarkerProps={{
-              title: 'This is a title',
-              description: 'This is a description',
-            }}
+            <Text type="title" bold marginVertical={5}>Default Map (No GPS Required)</Text>
+            <MapView
+              defaultMarkerProps={{
+                title: 'This is a title',
+                description: 'This is a description',
+              }}
+              needGPS={false}
             />
           </QuickView>
           <QuickView marginVertical={8} center>

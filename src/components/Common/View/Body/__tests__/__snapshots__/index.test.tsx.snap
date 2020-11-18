@@ -16,7 +16,7 @@ exports[`Body Component should render without issues 1`] = `
       Object {
         "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "paddingHorizontal": 18,
+        "paddingHorizontal": 20,
       }
     }
     touchableComponent="TouchableOpacity"

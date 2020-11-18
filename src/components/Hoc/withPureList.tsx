@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
-import HocHelper, { IReduxExtraItem, IExtraItem } from '@utils/hocHelper';
+import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog } from '@utils/hocHelper';
 import Container from '../Common/View/Container';
 import Body from '../Common/View/Body';
 import QuickView from '../Common/View/QuickView';
@@ -28,13 +28,14 @@ export interface WithPureListProps {
 // };
 
 const withPureList = (
-  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData }: {
+  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, log }: {
     url: string,
     fields?: Array<string>,
     ListHeaderComponent?: React.ComponentType<any>,
     renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
-    reduxExtraData?: IReduxExtraItem[]
+    reduxExtraData?: IReduxExtraItem[],
+    log?: IHocLog
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -75,9 +76,13 @@ const withPureList = (
           });
         }));
       }
-
       // Trigger Fetch Action for ReduxExtraData
       await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
+
+      // [ExtraData] Log Events
+      if (log) {
+        await HocHelper.logScreenEvent(log, this.state);
+      }
     }
 
     fetch = (queryString: string): any => Api.get(`${url}?${queryString}`);
@@ -121,6 +126,15 @@ const withPureList = (
       }
     };
 
+    // isAllFetched = () => {
+    //   const propsAny: any = this.props;
+    //   if (!reduxExtraData || _.isEmpty(reduxExtraData)) return false;
+
+    //   return !reduxExtraData.some((e: IReduxExtraItem) => {
+    //     if (!propsAny[e.key]?.data || _.isEmpty(propsAny[e.key].data)) return true;
+    //   });
+    // };
+
     render() {
       const { loading, data, metadata, error } = this.state;
       const { themeName } = this.props;
@@ -130,6 +144,7 @@ const withPureList = (
         loading,
         error,
       };
+
       return (
         <Container>
           {WrappedComponent ? <WrappedComponent {...this.props as P} {...this.state} filter={this.filter} applyFilter={this.applyFilter} /> : null}

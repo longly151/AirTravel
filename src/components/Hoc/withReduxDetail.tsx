@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import Selector from '@utils/selector';
 import AppHelper from '@utils/appHelper';
-import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
+import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog } from '@utils/hocHelper';
 import _ from 'lodash';
 import Redux from '@utils/redux';
 
@@ -14,11 +14,12 @@ export interface WithReduxDetailProps {
 interface State {}
 
 const withReduxDetail = (
-  { dispatchGetDetail, constant, extraData, reduxExtraData }:{
+  { dispatchGetDetail, constant, extraData, reduxExtraData, log }:{
     dispatchGetDetail: any,
     constant: IHocConstant,
     extraData?: IExtraItem[],
-    reduxExtraData?: IReduxExtraItem[]
+    reduxExtraData?: IReduxExtraItem[],
+    log?: IHocLog
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -40,7 +41,8 @@ const withReduxDetail = (
 
     async componentDidMount() {
       const { getDetail } = this.props;
-      getDetail(AppHelper.getItemFromParams(this.props));
+      const detailFromParams = AppHelper.getItemFromParams(this.props);
+      getDetail(detailFromParams);
 
       // Fetch Data for ExtraData
       if (extraData && !_.isEmpty(extraData)) {
@@ -54,6 +56,15 @@ const withReduxDetail = (
 
       // Trigger Fetch Action for ReduxExtraData
       await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
+
+      // [data & ExtraData] Log Events
+      if (log) {
+        if (log.payload && !log.payload.key) {
+          await HocHelper.logScreenEvent(log, { data: detailFromParams });
+        } else {
+          await HocHelper.logScreenEvent(log, this.state);
+        }
+      }
     }
 
     render() {

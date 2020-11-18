@@ -6,11 +6,11 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationService } from '@utils/navigation';
 import {
-  QuickView, Body, Container, Avatar, StatusBar,
+  QuickView, Body, Container, Avatar
 } from '@components';
 import Color from '@themes/Color';
-import { withTranslation } from 'react-i18next';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
+import i18next from 'i18next';
 import { exampleList } from '../list';
 
 const styles = StyleSheet.create({
@@ -35,19 +35,17 @@ const styles = StyleSheet.create({
 
 interface Props {
   navigation: any;
-  t: any;
 }
 
 class ExampleList extends PureComponent<Props> {
   render() {
-    const { t } = this.props;
     return (
       <Container scrollable>
-        <StatusBar backgroundColor="#FD6B78" />
+        {/* <StatusBar backgroundColor="#FD6B78" /> */}
         <QuickView flex={1}>
           <View style={styles.headerContainer}>
             <Icon color="white" name="invert-colors" size={62} />
-            <Text style={styles.heading}>{t('header:example')}</Text>
+            <Text style={styles.heading}>{i18next.t('header:example')}</Text>
           </View>
           <QuickView row center position="absolute" right={15} top={160}>
             <Icon name="theme-light-dark" type="material-community" style={{ marginRight: 5 }} color={Color.white} />
@@ -98,4 +96,4 @@ class ExampleList extends PureComponent<Props> {
   }
 }
 
-export default withTranslation()(ExampleList as any);
+export default ExampleList;

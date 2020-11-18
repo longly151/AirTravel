@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
 import AppHelper, { IResizedImage, IImage } from '@utils/appHelper';
-import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
 import { FlatList, Platform, } from 'react-native';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import Helper from '@utils/helper';
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RNFetchBlob from 'rn-fetch-blob';
+import { withTheme, ThemeProps } from 'react-native-elements';
+import i18next from 'i18next';
 import Button from '../../Button/DefaultButton';
 import Icon from '../../Icon';
 import Image, { ImageProps } from '../DefaultImage';
@@ -18,8 +17,6 @@ import Picker from '../../Picker';
 
 export interface EditableImageProps extends ImageProps {
   imagePickerButtonProps?: ImagePickerButtonProps;
-  language?: LanguageEnum;
-  themeName?: ThemeEnum;
   folderPrefix?: string;
   uploadCallback?: (data: IImage[]) => Promise<any> | any;
   buttonChildren?: any;
@@ -31,6 +28,7 @@ export interface EditableImageProps extends ImageProps {
     'thumbnail': number
   } | number;
   multiple?: any;
+  theme?: any;
   ref?: any;
 }
 
@@ -223,7 +221,7 @@ class EditableImage extends Component<EditableImageProps, State> {
 
   renderImageItem = ({ item }: any) => {
     // Just for getting ...otherProps
-    const { language, multiple, source: sourceProp, buttonChildren, ...otherProps } = this.props;
+    const { multiple, source: sourceProp, buttonChildren, ...otherProps } = this.props;
     const { loading, imageUrls } = this.state;
     const source = { uri: item };
     return (
@@ -252,7 +250,6 @@ class EditableImage extends Component<EditableImageProps, State> {
 
   renderPickerOrFlatList = () => {
     const {
-      language,
       multiple,
       source: sourceProp,
       buttonChildren: buttonChildrenProp,
@@ -262,8 +259,6 @@ class EditableImage extends Component<EditableImageProps, State> {
 
     // Single Image
     if (!multiple) {
-      const takePictureText = language === LanguageEnum.EN ? 'Take photograph' : 'Chụp ảnh';
-      const selectFromAlbumText = language === LanguageEnum.EN ? 'Select from album' : 'Chọn từ Album';
       const source = !_.isEmpty(imageUrls) ? { uri: imageUrls[0] } : sourceProp;
 
       const buttonChildren = buttonChildrenProp || (
@@ -274,10 +269,11 @@ class EditableImage extends Component<EditableImageProps, State> {
           {...otherProps}
         />
       );
+      const values = [i18next.t('component:editable_image:take_photo'), i18next.t('component:editable_image:select_from_album')];
       return (
         <Picker
           ref={(ref: any) => { this.pickerRef = ref; }}
-          values={[takePictureText, selectFromAlbumText]}
+          values={values}
           width={150}
           height={40}
           shadow
@@ -357,9 +353,6 @@ class EditableImage extends Component<EditableImageProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-export default connect(mapStateToProps, null, null,
-  { forwardRef: true })(EditableImage as React.ComponentType<EditableImageProps>);
+export default withTheme(
+  EditableImage as any as React.ComponentType<EditableImageProps & ThemeProps<any>>
+);

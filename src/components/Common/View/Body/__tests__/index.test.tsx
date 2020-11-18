@@ -16,10 +16,10 @@ describe('Body Component', () => {
      * primary, secondary
      */
     const props1 = TestHelper.getComponent(target, { primary: true }, type).props();
-    expect(props1.children.props.style.backgroundColor).toBe(lightTheme.colors.primaryBackground);
+    expect(props1.children.props.style.backgroundColor).toBe('transparent');
 
     const props2 = TestHelper.getComponent(target, { secondary: true }, type).props();
-    expect(props2.children.props.style.backgroundColor).toBe(lightTheme.colors.secondaryBackground);
+    expect(props2.children.props.style.backgroundColor).toBe('transparent');
 
     /**
      * fullWidth, fullHeight, fullView

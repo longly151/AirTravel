@@ -9,16 +9,18 @@ exports[`Header Component should render without issues 1`] = `
       "borderBottomColor": undefined,
       "borderBottomWidth": undefined,
       "bottom": undefined,
-      "height": 70,
+      "height": 50,
       "left": undefined,
-      "paddingBottom": 10,
-      "paddingHorizontal": 18,
+      "paddingBottom": 0,
+      "paddingHorizontal": 20,
+      "paddingTop": 0,
       "position": undefined,
       "right": undefined,
       "top": undefined,
       "width": "100%",
     }
   }
+  height={50}
   leftContainerStyle={
     Object {
       "paddingRight": 0,

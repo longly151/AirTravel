@@ -3,15 +3,14 @@
 import * as React from 'react';
 import { Icon, withTheme, withBadge } from 'react-native-elements';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { compose } from 'recompose';
 import { useSelector } from 'react-redux';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { StyleSheet } from 'react-native';
 import Selector from '@utils/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppView from '@utils/appView';
-import Color from '@themes/Color';
 import i18next from 'i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import homeStack from './containers/Home/routes';
 import favoriteStack from './containers/Favorite/routes';
 import tripStack from './containers/Trip/routes';
@@ -26,11 +25,30 @@ import ExampleListScreen from '../Example/screens/index';
 const BottomTabs = createBottomTabNavigator();
 
 function MainBottomTab(props: any) {
-  const { theme: { colors: { primaryBackground, secondaryBackground, primary }, key }, t } = props;
+  const insets = useSafeAreaInsets();
+  const { theme: { colors: { primaryBackground, secondaryBackground, primary }, key } } = props;
   const loginSelectorData = useSelector((state) => Selector.getObject(loginSelector, state));
   const isNotLogin = !loginSelectorData.data.token;
+
   const backgroundColor = key === ThemeEnum.LIGHT ? primaryBackground : secondaryBackground;
   const BadgedIcon = withBadge(1)(Icon);
+
+  /**
+   * Handle Screen Metrics & SafeAreaInsets
+   */
+  const height = AppView.bottomNavigationBarHeight + insets.bottom;
+  const customStyle: any = {};
+  if (!insets.bottom && !AppView.isHorizontal) customStyle.paddingBottom = 5;
+  if (insets.bottom && !AppView.isHorizontal) {
+    customStyle.paddingTop = 10;
+  } else if (!insets.bottom && !AppView.isHorizontal) {
+    customStyle.paddingTop = 5;
+  }
+  if (insets.bottom && AppView.isHorizontal) {
+    customStyle.maxHeight = height - 15;
+  } else if (!insets.bottom && AppView.isHorizontal) {
+    customStyle.maxHeight = height - 10;
+  }
 
   return (
     <BottomTabs.Navigator
@@ -40,36 +58,17 @@ function MainBottomTab(props: any) {
         inactiveTintColor: primary,
         style: StyleSheet.flatten([
           {
-            height: AppView.bottomNavigationBarHeight,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            paddingTop: 5,
+            height,
+            borderTopLeftRadius: AppView.roundedBorderRadius,
+            borderTopRightRadius: AppView.roundedBorderRadius,
             borderTopColor: 'transparent',
-            padding: 10,
+            justifyContent: 'center',
             backgroundColor,
           },
-          key === ThemeEnum.LIGHT
-            ? {
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowOpacity: 0.32,
-              shadowRadius: 5.46,
-              elevation: 9,
-            }
-            : {
-              borderWidth: 1,
-              borderTopColor: Color.darkPrimary,
-              borderLeftColor: Color.darkPrimary,
-              borderRightColor: Color.darkPrimary,
-            },
+          customStyle,
+          AppView.shadow
         ]),
         tabStyle: {
-          backgroundColor,
-          height: 55,
-          paddingTop: 8,
           borderRadius: 20,
         },
         labelStyle: {

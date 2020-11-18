@@ -16,14 +16,13 @@ import {
 import {
   Input as ElementInput,
   InputProps as EInputProps,
+  withTheme,
+  ThemeProps,
 } from 'react-native-elements';
 import _ from 'lodash';
 import { darkInput } from '@themes/ThemeComponent/Input';
-import { connect } from 'react-redux';
-import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
-import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
-import AppHelper from '@utils/appHelper';
 import AppView from '@utils/appView';
+import i18next from 'i18next';
 import Button from '../Button/DefaultButton';
 import Text, { TextProps } from '../Text';
 import QuickView from '../View/QuickView';
@@ -75,17 +74,13 @@ export interface InputProps extends Omit<EInputProps, 'labelProps' | 'labelStyle
   paddingVertical?: number;
   type?: keyof typeof darkInput;
   shadow?: boolean;
-  language?: LanguageEnum;
-  themeName?: ThemeEnum;
   ref?: any;
-  tLabel?: string;
   labelProps?: TextProps;
   showLabel?: boolean;
   showPlaceholder?: boolean;
-  tPlaceholder?: string;
-  tErrorMessage?: string;
   pickerProps?: PickerProps;
   dateTimePickerProps?: DateTimePickerProps | boolean;
+  theme?: any;
 }
 
 interface State {
@@ -209,8 +204,7 @@ class Input extends React.Component<InputProps, State> {
   };
 
   onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    const { themeName } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
+    const { theme } = this.props;
     const { colors } = theme;
     const isValidated = this.validateInput();
     const { validationField, onBlur: onBlurProp } = this.props;
@@ -238,8 +232,7 @@ class Input extends React.Component<InputProps, State> {
   };
 
   onChangeText = (value: string) => {
-    const { onChangeText: onChangeTextProp, validationField, themeName } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
+    const { onChangeText: onChangeTextProp, validationField, theme } = this.props;
     const { colors } = theme;
     const { triggerError } = this.state;
     this.setState({ value });
@@ -328,50 +321,20 @@ class Input extends React.Component<InputProps, State> {
       onBlur: onBlurProp,
       placeholderTextColor: placeholderTextColorProp,
       shadow,
-      language,
-      themeName,
-      tLabel,
-      tPlaceholder,
-      tErrorMessage,
+      theme,
       pickerProps,
       dateTimePickerProps,
       ...otherProps
     } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
 
     /**
      * Language Handle
      */
-    let label: any = labelProp;
+    const label: any = labelProp;
     let placeholder: any = placeholderProp;
 
-    const inputText = language === LanguageEnum.VI ? 'Nhập' : 'Input';
-    const inputInfoText = language === LanguageEnum.VI ? 'Nhập thông tin' : 'Input Field';
-    const langSource = AppHelper.getLanguageByName(language);
-    if (tLabel) {
-      const keys = _.split(tLabel, ':');
-      label = langSource;
-      keys.forEach((key) => {
-        label = label[key];
-      });
-    }
-    if (tPlaceholder) {
-      const keys = _.split(tPlaceholder, ':');
-      placeholder = langSource;
-      keys.forEach((key) => {
-        placeholder = placeholder[key];
-      });
-    }
-    let errorMessage: any = errorMessageProp || `${language === LanguageEnum.EN ? 'Invalid' : ''} ${_.replace((label || placeholder)?.toString() || '', inputText, '')} ${language === LanguageEnum.VI ? 'không hợp lệ' : ''}`;
-    errorMessage = _.capitalize(_.trim(errorMessage));
+    const errorMessage = errorMessageProp || _.capitalize(_.trim(i18next.t('component:input:invalid', { field: label || placeholder || i18next.t('component:input:default_label') })));
 
-    if (tErrorMessage) {
-      const keys = _.split(tErrorMessage, ':');
-      errorMessage = langSource;
-      keys.forEach((key) => {
-        errorMessage = errorMessage[key];
-      });
-    }
     if (!showPlaceholder) placeholder = ' ';
 
     /**
@@ -528,7 +491,7 @@ class Input extends React.Component<InputProps, State> {
           !isValidated
             ? ''
             : placeholder
-              || (label ? `${inputText} ${label}` : inputInfoText)
+              || i18next.t('component:input:input', { field: label || i18next.t('component:input:default_label') })
         }
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={isSecure}
@@ -582,10 +545,10 @@ class Input extends React.Component<InputProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
+// const mapStateToProps = (state: any) => ({
+//   themeName: themeSelector(state),
+//   language: languageSelector(state),
+// });
 
 // const withReduce = connect(mapStateToProps, null, null,
 //   {
@@ -597,5 +560,9 @@ const mapStateToProps = (state: any) => ({
 //   withReduce,
 // )(Input as React.ComponentType<InputProps & ThemeProps<any>>);
 
-export default connect(mapStateToProps, null, null,
-  { forwardRef: true })(Input as React.ComponentType<InputProps>);
+// export default connect(mapStateToProps, null, null,
+//   { forwardRef: true })(Input as React.ComponentType<InputProps>);
+
+export default withTheme(
+  Input as any as React.ComponentType<InputProps & ThemeProps<any>>
+);

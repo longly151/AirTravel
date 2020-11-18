@@ -5,11 +5,10 @@ import {
 import _ from 'lodash';
 import moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import AppHelper, { IFile } from '@utils/appHelper';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
-import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
+import { IFile } from '@utils/appHelper';
 import AppView from '@utils/appView';
+import i18next from 'i18next';
+import { withTheme, ThemeProps } from 'react-native-elements';
 import Text from '../../Text';
 import QuickView from '../../View/QuickView';
 import Loading from '../../Loading';
@@ -19,8 +18,7 @@ export interface FileViewButtonProps {
   data: IFile;
   color?: string;
   backgroundColor?: string;
-  themeName?: ThemeEnum;
-  language?: LanguageEnum;
+  theme?: any;
   horizontal?: boolean;
 }
 interface State {
@@ -110,13 +108,10 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
       color,
       backgroundColor: backgroundColorProp,
       horizontal,
-      themeName,
-      language
+      theme,
     } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
     const backgroundColor = backgroundColorProp || theme.colors.secondaryBackground;
 
-    const updatedAtText = language === LanguageEnum.EN ? 'Updated at' : 'Cập nhật ngày';
     if (horizontal) {
       return (
         <TouchableOpacity onPress={this.onPress} style={{ marginVertical: 10 }}>
@@ -147,7 +142,7 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
               </QuickView>
               <QuickView flex={9} marginLeft={10}>
                 <Text fontSize={16} color={color} bold numberOfLines={2}>{data.name}</Text>
-                <Text fontSize={12} color={color} marginTop={5}>{`${updatedAtText} ${moment(data.updatedAt).format('DD/MM/YYYY')}`}</Text>
+                <Text fontSize={12} color={color} marginTop={5}>{i18next.t('component:file_view_button:updated_at', { updatedAt: moment(data.updatedAt).format('DD/MM/YYYY') })}</Text>
               </QuickView>
             </QuickView>
           </QuickView>
@@ -157,10 +152,6 @@ class FileViewButton extends Component<FileViewButtonProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-export default connect(mapStateToProps, null, null,
-  { forwardRef: true })(FileViewButton as React.ComponentType<FileViewButtonProps>);
+export default withTheme(
+  FileViewButton as any as React.ComponentType<FileViewButtonProps & ThemeProps<any>>
+);
