@@ -7,7 +7,6 @@ import {
   ThemeProps,
 } from 'react-native-elements';
 import _ from 'lodash';
-import { Translation } from 'react-i18next';
 import Color from '@themes/Color';
 import AppView from '@utils/appView';
 
@@ -21,16 +20,9 @@ export interface ButtonProps extends Omit<EButtonProps, 'raised' | 'type'> {
   marginRight?: number;
   marginHorizontal?: number;
   marginVertical?: number;
-  padding?: number;
   titlePadding?: number;
   titlePaddingVertical?: number;
   titlePaddingHorizontal?: number;
-  paddingTop?: number;
-  paddingBottom?: number;
-  paddingLeft?: number;
-  paddingRight?: number;
-  paddingHorizontal?: number;
-  paddingVertical?: number;
   primary?: boolean;
   secondary?: boolean;
   success?: boolean;
@@ -59,12 +51,10 @@ export interface ButtonProps extends Omit<EButtonProps, 'raised' | 'type'> {
   color?: string;
   reverseColor?: boolean;
   theme?: any;
-  t?: string;
 }
 
 class Button extends React.PureComponent<ButtonProps> {
   static defaultProps = {
-    padding: 0,
     margin: 0,
     active: false,
     rounded: true,
@@ -82,16 +72,9 @@ class Button extends React.PureComponent<ButtonProps> {
       marginRight,
       marginHorizontal: marginHorizontalProp,
       marginVertical: marginVerticalProp,
-      padding,
       titlePadding,
       titlePaddingVertical,
       titlePaddingHorizontal,
-      paddingTop,
-      paddingBottom,
-      paddingLeft,
-      paddingRight,
-      paddingHorizontal,
-      paddingVertical,
       borderRadius: borderRadiusProp,
       primary,
       secondary,
@@ -126,7 +109,6 @@ class Button extends React.PureComponent<ButtonProps> {
       color,
       reverseColor,
       theme,
-      t,
       ...otherProps
     } = this.props;
 
@@ -174,15 +156,9 @@ class Button extends React.PureComponent<ButtonProps> {
         marginRight,
         marginHorizontal,
         marginVertical,
-        padding,
-        paddingTop,
-        paddingLeft,
-        paddingRight,
-        paddingHorizontal,
-        paddingVertical,
         borderRadius,
       },
-      shadow && { paddingBottom: paddingBottom || 3 },
+      shadow && { paddingBottom: 3 },
       center && { alignSelf: 'center' },
       containerStyleProp,
     ]);
@@ -333,26 +309,6 @@ class Button extends React.PureComponent<ButtonProps> {
       titleStyle.color = reverseTitleColor;
     }
 
-    if (t) {
-      return (
-        <Translation>
-          {
-          (trans) => (
-            <ElementButton
-              {...otherProps}
-              icon={icon}
-              iconRight={iconRight}
-              containerStyle={containerStyle}
-              buttonStyle={buttonStyle}
-              title={trans(t)}
-              titleStyle={titleStyle}
-              iconContainerStyle={iconContainerStyle}
-            />
-          )
-          }
-        </Translation>
-      );
-    }
     return (
       <ElementButton
         {...otherProps}

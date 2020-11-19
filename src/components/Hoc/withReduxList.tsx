@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
-import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem } from '@utils/hocHelper';
+import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog } from '@utils/hocHelper';
 import _ from 'lodash';
 import Container from '../Common/View/Container';
 import Body from '../Common/View/Body';
@@ -28,7 +28,7 @@ interface State {
 }
 
 const withReduxList = (
-  { dispatchGetList, dispatchFilter, constant, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData }: {
+  { dispatchGetList, dispatchFilter, constant, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, log }: {
     dispatchGetList: any,
     dispatchFilter?: any,
     constant: IHocConstant,
@@ -36,7 +36,8 @@ const withReduxList = (
     ListHeaderComponent?: React.ComponentType<any>,
     renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
-    reduxExtraData?: IReduxExtraItem[]
+    reduxExtraData?: IReduxExtraItem[],
+    log?: IHocLog
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -78,6 +79,11 @@ const withReduxList = (
 
       // Trigger Fetch Action for ReduxExtraData
       await HocHelper.triggerActionForReduxExtraData(this.props, reduxExtraData);
+
+      // [ExtraData] Log Events
+      if (log) {
+        await HocHelper.logScreenEvent(log, this.state);
+      }
     }
 
     applyFilter = () => {

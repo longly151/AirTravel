@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-  StyleSheet, Image,
+  StyleSheet, Image, Dimensions
 } from 'react-native';
 import {
   withTheme, ThemeProps,
@@ -14,7 +14,7 @@ import AppView from '@utils/appView';
 import QuickView from '../View/QuickView';
 
 export interface HeaderProps extends EHeaderProps {
-  height?: number | string;
+  height?: number;
   width?: number | string;
   position?: 'relative' | 'absolute';
   top?: number;
@@ -50,8 +50,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+interface State {
+  height: number,
+  paddingTop: number,
+  paddingBottom: number,
+}
 
-class Header extends PureComponent<HeaderProps> {
+class Header extends PureComponent<HeaderProps, State> {
   static defaultProps = {
     placement: 'center',
     leftIconBackgroundColor: 'transparent',
@@ -59,10 +64,34 @@ class Header extends PureComponent<HeaderProps> {
     width: '100%',
   };
 
+  constructor(props: HeaderProps) {
+    super(props);
+    const { height } = this.props;
+    this.state = {
+      height: (height || 0) + (AppView.safeAreaInsets.top ? AppView.safeAreaInsets.top - 10 : 0),
+      paddingTop: AppView.safeAreaInsets.top,
+      paddingBottom: AppView.safeAreaInsets.top ? 5 : 0,
+    };
+  }
+
+  async componentDidMount() {
+    Dimensions.addEventListener('change', this.modifyHeight);
+  }
+
+  modifyHeight = () => {
+    const { height } = this.props;
+    setTimeout(() => {
+      this.setState({
+        height: (height || 0) + (AppView.safeAreaInsets.top ? AppView.safeAreaInsets.top - 10 : 0),
+        paddingTop: AppView.safeAreaInsets.top,
+        paddingBottom: AppView.safeAreaInsets.top ? 10 : 0
+      });
+    }, 250);
+  };
+
   render() {
     const {
       position,
-      height,
       width,
       top,
       left,
@@ -94,7 +123,7 @@ class Header extends PureComponent<HeaderProps> {
       theme,
       ...otherProps
     } = this.props;
-
+    const { height, paddingTop, paddingBottom } = this.state;
     const backgroundColor = transparent ? 'transparent' : (backgroundColorProp || theme.Header.backgroundColor);
     let leftColor = leftColorProp || theme.Header.leftColor;
     let centerColor = centerColorProp || theme.Header.centerColor;
@@ -117,10 +146,11 @@ class Header extends PureComponent<HeaderProps> {
         borderBottomColor,
         borderBottomWidth,
         backgroundColor,
-        paddingBottom: 10,
-        paddingHorizontal: AppView.headerPaddingHorizontal,
+        paddingTop,
+        paddingBottom,
+        paddingHorizontal: AppView.headerPaddingHorizontal
       },
-      shadow ? [{ marginBottom: 3 }, AppView.shadow] : undefined,
+      shadow ? AppView.shadow : {},
       containerStyleProp,
     ]);
 
@@ -220,4 +250,4 @@ class Header extends PureComponent<HeaderProps> {
   }
 }
 
-export default withTheme(Header as React.ComponentType<HeaderProps & ThemeProps<any>>);
+export default withTheme(Header as any as React.ComponentType<HeaderProps & ThemeProps<any>>);

@@ -92,6 +92,19 @@ export default withReduxDetail({
     KEY: CONSTANT.PRODUCT_DETAIL,
   },
 
+  // // [LOG] Support data (pass from previous screen (no API call)) & ExtraData
+  // log: {
+  //   name: 'PRODUCT_DETAIL_VIEW',
+  //   // extraPayload: {
+  //   //   extraPayload: 'extraPayload'
+  //   // },
+  //   payload: {
+  //     // if key is undefined, Log will use "this.props.data" instead of "this.props[key].data"
+  //     key: 'moreDetail',
+  //     fields: ['id']
+  //   }
+  // },
+
   // // [Optional] extraData
   // extraData: [
   //   {

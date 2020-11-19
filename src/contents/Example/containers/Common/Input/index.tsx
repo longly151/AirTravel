@@ -7,6 +7,7 @@ import {
   withTheme, ThemeProps,
 } from 'react-native-elements';
 import Color from '@themes/Color';
+import i18next from 'i18next';
 
 class InputExample extends PureComponent {
   input1: any;
@@ -24,9 +25,7 @@ class InputExample extends PureComponent {
         <Body scrollable>
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
             <Text type="header" marginBottom={10}>Basic Input</Text>
-            <Input tLabel="auth:input_first_name" marginVertical={5} />
-            <Input tPlaceholder="auth:input_first_name" marginVertical={5} />
-            <Input tPlaceholder="auth:input_email_address" tErrorMessage="validator:email" validationField="email" marginVertical={5} />
+            <Input placeholder="Email" errorMessage={i18next.t('validator:email')} validationField="email" marginVertical={5} />
             <Input
               ref={(ref: any) => {
                 this.input1 = ref;

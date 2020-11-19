@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
@@ -7,6 +8,7 @@ import _ from 'lodash';
 import qs from 'qs';
 // eslint-disable-next-line import/no-cycle
 import { TMetadata } from './redux';
+import AppHelper from './appHelper';
 
 export const Global: any = global;
 
@@ -44,6 +46,9 @@ async function xfetch(
   headerOptions: RequestInit,
   ops = { noParse: false },
 ) {
+  // Check Internet
+  if (!AppHelper.isConnected) AppHelper.showNoConnectionMessage();
+
   const normalFetch = fetch(path, headerOptions);
   if (ops.noParse) {
     return timeoutPromise(TIME_OUT, normalFetch);

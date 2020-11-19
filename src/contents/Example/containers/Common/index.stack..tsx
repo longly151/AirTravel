@@ -8,7 +8,6 @@ import AvatarExample from './Avatar';
 import PickerExample from './Picker';
 import InputExample from './Input';
 import ListCheckBoxExample from './ListCheckBox';
-import BottomModalSelectExample from './BottomModalSelect';
 import FlatListStack from './FlatList/index.stack';
 import ImageExample from './Image';
 import DropdownExample from './Dropdown';
@@ -19,6 +18,7 @@ import WebViewExample from './WebView';
 import FileExample from './File';
 import LoadingExample from './Loading';
 import MapExample from './Map';
+import SocialAuthentication from './SocialAuthentication';
 
 const Stack = createStackNavigator();
 
@@ -36,13 +36,14 @@ export default function CommonExampleStack() {
       {FlatListStack()}
       <Stack.Screen name={commonStack.image} component={ImageExample} />
       <Stack.Screen name={commonStack.listCheckBox} component={ListCheckBoxExample} />
-      <Stack.Screen name={commonStack.bottomModalSelect} component={BottomModalSelectExample} />
       <Stack.Screen name={commonStack.dropdown} component={DropdownExample} />
       <Stack.Screen name={commonStack.modal} component={ModalExample} />
       <Stack.Screen name={commonStack.webView} component={WebViewExample} />
       <Stack.Screen name={commonStack.file} component={FileExample} />
       <Stack.Screen name={commonStack.loading} component={LoadingExample} />
+
       <Stack.Screen name={commonStack.map} component={MapExample} />
+      <Stack.Screen name={commonStack.socialAuthentication} component={SocialAuthentication} />
     </>
   );
 }

@@ -54,9 +54,10 @@ class AppNavigator extends Component<Props, State> {
       updateTheme(newTheme);
     }
 
-    const barStyle = themeRedux === ThemeEnum.DARK ? 'dark-content' : 'light-content';
+    const barStyle = themeRedux === ThemeEnum.DARK ? 'light-content' : 'dark-content';
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor('transparent', true);
+      StatusBar.setTranslucent(true);
     }
     StatusBar.setBarStyle(barStyle, true);
 
@@ -77,6 +78,7 @@ class AppNavigator extends Component<Props, State> {
               headerShown: false,
             }}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
     );

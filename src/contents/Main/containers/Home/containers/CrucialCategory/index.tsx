@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { ThemeProps, withTheme } from 'react-native-elements';
 import { QuickView, Text, Button, Image } from '@components';
 import { NavigationService } from '@utils/navigation';
+import i18next from 'i18next';
 import homeStack from '../../routes';
 import crucialCategory from './data';
 import crucialCategoryStyle from './styles';
@@ -28,17 +29,19 @@ class CrucialCategory extends PureComponent<Props> {
           <Text
             style={crucialCategoryStyle.title}
             numberOfLines={3}
-            t="home:crucial_category_title"
             color={theme.Card.backgroundColor}
-          />
+          >
+            {i18next.t('home:crucial_category_title')}
+          </Text>
           <Text
             style={crucialCategoryStyle.subtitle}
             numberOfLines={3}
-            t="home:crucial_category_subTitle"
             color={theme.Card.backgroundColor}
-          />
+          >
+            {i18next.t('home:crucial_category_subTitle')}
+          </Text>
           <Button
-            t="home:crucial_category_btn_explore"
+            title={i18next.t('home:crucial_category_btn_explore')}
             backgroundColor={theme.Card.backgroundColor}
             titleColor={theme.Card.shadowColor}
             sharp

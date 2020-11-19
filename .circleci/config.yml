@@ -32,23 +32,25 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
-  merge_master:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - run: 
-          name: Merge Master
-          command: |
-              mkdir ~/.ssh
-              ssh-keyscan github.com >> ~/.ssh/known_hosts
-              git config --global user.email "you@example.com"
-              git config --global user.name "Your Name"
-              mv .gitignore.master .gitignore
-              git rm -r --cached .
-              git checkout -b master
-              git add . && git commit -m "Merge"
-              git push origin master --force
+
+  # merge_master:
+  #   executor: rn/linux_js
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - run: 
+  #         name: Merge Master
+  #         command: |
+  #             mkdir ~/.ssh
+  #             ssh-keyscan github.com >> ~/.ssh/known_hosts
+  #             git config --global user.email "you@example.com"
+  #             git config --global user.name "Your Name"
+  #             mv .gitignore.master .gitignore
+  #             git rm -r --cached .
+  #             git checkout -b master
+  #             git add . && git commit -m "Merge"
+  #             git push origin master --force
+  
   # fastlane_android_release:
   #   executor: rn/linux_js
   #   steps:
@@ -84,13 +86,13 @@ workflows:
               ignore:
                 - master
                 - dev
-      - merge_master:
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              only:
-                - dev
+      # - merge_master:
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         only:
+      #           - dev
       - rn/android_build:
           build_type: debug
           name: build_android_debug

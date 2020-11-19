@@ -4,6 +4,7 @@ import { requireLoginSelector } from '@contents/Config/redux/selector';
 import { QuickView } from '@components';
 import { NavigationService } from '@utils/navigation';
 import Selector from '@utils/selector';
+import i18next from 'i18next';
 import AuthButton, { AuthButtonProps } from '../../Shared/AuthButton';
 import authStack from '../../routes';
 import { loginSelector } from '../redux/selector';
@@ -26,7 +27,7 @@ class LoginButton extends PureComponent<Props> {
       return (
         <QuickView>
           <AuthButton
-            t="auth:login"
+            title={i18next.t('auth:login')}
             {...otherProps}
             onPress={() => NavigationService.navigate(authStack.loginScreen)}
           />

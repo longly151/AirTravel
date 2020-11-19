@@ -6,7 +6,6 @@ import FlatList, { FlatListProps } from '../../FlatList/DefaultFlatList';
 export interface ButtonGroupProps extends Omit<ButtonProps, 'title'|'t'|'onPress'|'margin'|'marginLeft'|'marginVertical'>{
   defaultIndexChange?: boolean;
   titleList?: Array<string>;
-  tList?: Array<string>;
   onItemPress?: (index: number) => any;
   flatListProps?: FlatListProps
   defaultActiveIndex?: number;
@@ -69,13 +68,12 @@ class ButtonGroup extends React.Component<ButtonGroupProps, State> {
     const {
       flatListProps,
       titleList,
-      tList,
       marginRight: marginRightProp,
       marginHorizontal,
       ...otherButtonProps
     } = this.props;
     const { activeIndex } = this.state;
-    const list = titleList || tList;
+    const list = titleList;
     const marginRight = marginRightProp || 10;
     if (list) {
       return (
@@ -83,7 +81,6 @@ class ButtonGroup extends React.Component<ButtonGroupProps, State> {
           outline
           {...otherButtonProps}
           title={titleList ? item : undefined}
-          t={tList ? item : undefined}
           marginRight={
             index === list.length - 1 ? (marginHorizontal || 0) : marginRight
           }

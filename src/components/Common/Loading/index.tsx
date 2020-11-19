@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { ActivityIndicatorProps, ActivityIndicator, StyleSheet } from 'react-native';
 import Spinner, { SpinnerProps } from 'react-native-loading-spinner-overlay';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
-import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
-import AppHelper from '@utils/appHelper';
+import { withTheme, ThemeProps } from 'react-native-elements';
+import i18next from 'i18next';
 
 export interface LoadingProps extends Omit<ActivityIndicatorProps, 'size'>, Omit<SpinnerProps, 'color' | 'size'> {
   size?: 'small' | 'large';
@@ -19,8 +17,7 @@ export interface LoadingProps extends Omit<ActivityIndicatorProps, 'size'>, Omit
   timeout?: number;
   visible?: boolean;
   textColor?: string;
-  themeName?: ThemeEnum;
-  language?: LanguageEnum;
+  theme?: any;
 }
 
 interface State {
@@ -67,20 +64,18 @@ class Loading extends Component<LoadingProps, State> {
       marginHorizontal,
       marginVertical,
       overlay,
-      themeName,
-      language,
       color: colorProp,
       textColor: textColorProp,
       style: styleProp,
       textStyle: textStyleProp,
       timeout,
+      theme,
       ...otherProps
     } = this.props;
     const { visibleState } = this.state;
     /**
      * Color & Style
      */
-    const theme = AppHelper.getThemeByName(themeName);
     const color = colorProp || theme.colors.loading;
     const textColor = textColorProp || theme.colors.primaryText;
 
@@ -108,7 +103,6 @@ class Loading extends Component<LoadingProps, State> {
     /**
      * TextContent
      */
-    const textContent = language === LanguageEnum.VI ? 'Vui lòng đợi' : 'Loading';
 
     if (visibleState) {
       if (!overlay) {
@@ -118,7 +112,7 @@ class Loading extends Component<LoadingProps, State> {
         <Spinner
           {...otherProps}
           visible={visibleState}
-          textContent={textContent}
+          textContent={i18next.t('component:loading:loading')}
           textStyle={textStyle}
           color={color}
         />
@@ -128,10 +122,6 @@ class Loading extends Component<LoadingProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-export default connect(mapStateToProps, null, null,
-  { forwardRef: true })(Loading as React.ComponentType<LoadingProps>);
+export default withTheme(
+  Loading as any as React.ComponentType<LoadingProps & ThemeProps<any>>
+);

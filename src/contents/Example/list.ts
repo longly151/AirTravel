@@ -147,4 +147,12 @@ export const exampleList = [
     linearGradientColors: ['#FFFF45', '#FF5858'],
     screen: commonStack.dropdown,
   },
+  {
+    name: 'Social Sign In',
+    iconName: 'github',
+    iconSize: 35,
+    subtitle: 'Support Theme',
+    linearGradientColors: ['#e62b88', '#802c46'],
+    screen: commonStack.socialAuthentication,
+  },
 ];

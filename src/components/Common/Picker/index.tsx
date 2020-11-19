@@ -1,16 +1,15 @@
 /* eslint-disable max-len */
-/* eslint-disable react/no-array-index-key */
 import React, { PureComponent } from 'react';
 import { PickerProps as RNPickerProps, ActionSheetIOS, StyleSheet, Platform, VirtualizedList } from 'react-native';
 import _ from 'lodash';
 import { Picker as RNPicker } from '@react-native-community/picker';
-import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
+import { ThemeEnum } from '@contents/Config/redux/slice';
 import { ItemValue } from '@react-native-community/picker/typings/Picker';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
-import AppHelper from '@utils/appHelper';
 import AppView from '@utils/appView';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withTheme, ThemeProps } from 'react-native-elements';
+import i18next from 'i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '../Icon';
 import Button from '../Button/DefaultButton';
 import QuickView from '../View/QuickView';
@@ -25,10 +24,9 @@ export interface PickerProps extends RNPickerProps, Omit<ModalButtonProps, 'styl
   modalHeight?: number | string;
   modalHeightLevel?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ;
   iconColor?: string;
-  themeName?: ThemeEnum;
-  language?: LanguageEnum;
   modal?: boolean;
   onValuePress?: (value: any, index?: number) => any;
+  theme?: any;
 }
 interface State {
   selectedIndex: number | null;
@@ -97,10 +95,9 @@ class Picker extends PureComponent<PickerProps, State> {
    */
 
   onPressActionSheetIOS = () => {
-    const { labels, values, language } = this.props;
+    const { labels, values } = this.props;
     const itemLabel = labels || values;
-    const cancelText = language === LanguageEnum.EN ? 'Cancel' : 'Huỷ bỏ';
-    const newLabel: any = [...itemLabel, cancelText];
+    const newLabel: any = [...itemLabel, i18next.t('cancel')];
     return (
       ActionSheetIOS.showActionSheetWithOptions(
         {
@@ -127,11 +124,10 @@ class Picker extends PureComponent<PickerProps, State> {
    */
   renderItemAndroid = () => {
     const {
-      titleColor: titleColorProp, themeName,
+      titleColor: titleColorProp, theme,
       primary, secondary, success, warning, error,
       labels: labelsProp, values: valuesProp, placeholder,
     } = this.props;
-    const theme: any = AppHelper.getThemeByName(themeName);
     let titleColor = titleColorProp || (theme.key === ThemeEnum.LIGHT ? theme.colors.grey5 : theme.colors.dark);
     if (primary || secondary || success || warning || error) titleColor = theme.dark;
     let labels: any = labelsProp;
@@ -141,7 +137,7 @@ class Picker extends PureComponent<PickerProps, State> {
       values = [placeholder, ...values];
     }
     return values.map(
-      (value: any, index: number) => (<RNPicker.Item key={index} color={titleColor} label={labels ? labels[index] : value} value={value} />),
+      (value: any, index: number) => (<RNPicker.Item key={index.toString()} color={titleColor} label={labels ? labels[index] : value} value={value} />),
     );
   };
 
@@ -199,13 +195,12 @@ class Picker extends PureComponent<PickerProps, State> {
       modal,
       modalHeight: modalHeightProp,
       modalHeightLevel,
-      themeName,
       modalProps: modalPropsProp,
+      theme,
       ...otherProps
     } = this.props;
     const { width: widthProp, height: heightProp } = this.props;
     const { selectedIndex } = this.state;
-    const theme: any = AppHelper.getThemeByName(themeName);
 
     /**
      * currentLabel (iOS)
@@ -275,31 +270,33 @@ class Picker extends PureComponent<PickerProps, State> {
           modalProps={modalProps}
           {...otherProps}
         >
-          <QuickView
-            backgroundColor={theme.colors.primaryBackground}
-            height={modalHeight}
-            style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-          >
-            {placeholder ? (
-              <QuickView row justifyContent="space-between" marginTop={20} marginHorizontal={AppView.bodyPaddingHorizontal}>
-                <QuickView />
-                <Text type="title" bold center>{placeholder}</Text>
-                <TouchableOpacity containerStyle={{ alignSelf: 'center' }} onPress={() => this.pickerModal.close()}>
-                  <Icon name="close" size={30} />
-                </TouchableOpacity>
-              </QuickView>
-            ) : null}
-            <VirtualizedList
-              data={itemLabel}
-              renderItem={this.renderModalItem}
-              initialNumToRender={20}
-              updateCellsBatchingPeriod={10}
-              keyExtractor={(item, index) => index.toString()}
-              getItemCount={this.getItemCount}
-              getItem={this.getItem}
-              style={{ marginVertical: 20 }}
-            />
-          </QuickView>
+          <SafeAreaView edges={['left', 'right']} mode="padding">
+            <QuickView
+              backgroundColor={theme.colors.primaryBackground}
+              height={modalHeight}
+              style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+            >
+              {placeholder ? (
+                <QuickView row justifyContent="space-between" marginVertical={15} marginHorizontal={AppView.bodyPaddingHorizontal}>
+                  <QuickView />
+                  <Text type="title" bold center>{placeholder}</Text>
+                  <TouchableOpacity containerStyle={{ alignSelf: 'center' }} onPress={() => this.pickerModal.close()}>
+                    <Icon name="close" size={30} />
+                  </TouchableOpacity>
+                </QuickView>
+              ) : null}
+              <VirtualizedList
+                data={itemLabel}
+                renderItem={this.renderModalItem}
+                initialNumToRender={20}
+                updateCellsBatchingPeriod={10}
+                keyExtractor={(item, index) => index.toString()}
+                getItemCount={this.getItemCount}
+                getItem={this.getItem}
+                style={{ marginBottom: AppView.safeAreaInsets.bottom }}
+              />
+            </QuickView>
+          </SafeAreaView>
         </ModalButton>
       );
     }
@@ -417,12 +414,6 @@ class Picker extends PureComponent<PickerProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-const Result: any = connect(mapStateToProps, null, null,
-  { forwardRef: true })(Picker as React.ComponentType<PickerProps>);
-
-export default Result as React.ComponentClass<PickerProps, any>;
+export default withTheme(
+  Picker as any as React.ComponentType<PickerProps & ThemeProps<any>>
+);

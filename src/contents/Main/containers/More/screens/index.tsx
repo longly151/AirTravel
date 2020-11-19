@@ -3,7 +3,7 @@ import {
   View, StyleSheet, SectionList,
 } from 'react-native';
 import {
-  Container, Header, QuickView
+  Container, Header, QuickView, Body
 } from '@components';
 import { ListItem, Divider, Icon } from 'react-native-elements';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
@@ -30,11 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
-  t: any;
-}
-
-class MoreScreen extends React.PureComponent<Props> {
+class Settings extends React.PureComponent {
   renderItem = ({
     item: {
       title, backgroundColor, icon, rightElement,
@@ -102,25 +98,27 @@ class MoreScreen extends React.PureComponent<Props> {
     return (
       <Container>
         <Header title={i18next.t('header:setting')} />
-        <QuickView height={120}>
-          <SectionList
-            contentContainerStyle={{ marginTop: -30 }}
-            keyExtractor={this.keyExtractor}
-            sections={sections}
-            renderItem={this.renderItem}
-            renderSectionHeader={this.renderSectionHeader}
-            ItemSeparatorComponent={this.ItemSeparatorComponent}
-            SectionSeparatorComponent={Divider}
-            stickySectionHeadersEnabled={false}
-          />
-        </QuickView>
-        <QuickView paddingHorizontal={10}>
-          {/* <GoToExampleButton /> */}
-          <LoginButton />
-          <LogoutButton />
-        </QuickView>
+        <Body fullWidth>
+          <QuickView height={120}>
+            <SectionList
+              contentContainerStyle={{ marginTop: -30 }}
+              keyExtractor={this.keyExtractor}
+              sections={sections}
+              renderItem={this.renderItem}
+              renderSectionHeader={this.renderSectionHeader}
+              ItemSeparatorComponent={this.ItemSeparatorComponent}
+              SectionSeparatorComponent={Divider}
+              stickySectionHeadersEnabled={false}
+            />
+          </QuickView>
+          <QuickView paddingHorizontal={10}>
+            {/* <GoToExampleButton /> */}
+            <LoginButton />
+            <LogoutButton />
+          </QuickView>
+        </Body>
       </Container>
     );
   }
 }
-export default MoreScreen;
+export default Settings;

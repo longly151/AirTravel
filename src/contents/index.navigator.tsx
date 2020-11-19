@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux';
 import Color from '@themes/Color';
 import Selector from '@utils/selector';
 import MainBottomTab from '@contents/Main/index.bottomtab';
+import AppView from '@utils/appView';
+import { useEffect } from 'react';
+import { Dimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ExampleStack from './Example/index.stack';
 import { requireLoginSelector, themeSelector } from './Config/redux/selector';
 import { loginSelector } from './Auth/containers/Login/redux/selector';
@@ -41,6 +45,20 @@ export default function MainStack() {
       </>
     );
   }
+
+  /**
+   * Handle Screen Metrics & SafeAreaInsets
+   */
+  function onDimensionChange({ window }: any) {
+    AppView.screenWidth = window.width;
+    AppView.screenHeight = window.height;
+    AppView.isHorizontal = window.width > window.height;
+  }
+  useEffect(() => {
+    Dimensions.addEventListener('change', onDimensionChange);
+  });
+  const insets = useSafeAreaInsets();
+  AppView.safeAreaInsets = insets;
 
   return (
     <Stack.Navigator
