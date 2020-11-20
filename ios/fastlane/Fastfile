@@ -45,7 +45,7 @@ platform :ios do
     )
     
     firebase_app_distribution(
-      app: "1:1023557421676:ios:f7b929fd868b3179f72649",
+      app: "1:1023557421676:ios:dd6266ddbd67e036f72649",
       # testers: "vietlongle0599@gmail.com",
       firebase_cli_token: '1//0gUSGEfAwSzVRCgYIARAAGBASNwF-L9IrEiizOSPN57rCfWpZjR0IZMg41fYJkidS1zsRC9Va9bE2fDX_RL6yUHb_SFthARQXhtc',
       release_notes: "Lots of amazing new features to test out!",

@@ -207,9 +207,9 @@ class EditableImage extends Component<EditableImageProps, State> {
     this.pickerRef?.pickerModal?.close();
   };
 
-  openCamera = () => this.pickerCamera.open(null);
+  openCamera = () => this.pickerCamera.open();
 
-  openGallery = () => this.pickerGallery.open(null);
+  openGallery = () => this.pickerGallery.open();
 
   removeImageItem = (imageUrl: string) => {
     const { imageUrls, data } = this.state;

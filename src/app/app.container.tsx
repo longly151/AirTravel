@@ -109,7 +109,12 @@ class AppContainer extends React.Component<Props, State> {
         // eslint-disable-next-line no-console
         console.log('fcmToken', fcmToken);
       } else {
-        await firebase.messaging().requestPermission();
+        const authorizationStatus = await firebase.messaging().requestPermission();
+        if (authorizationStatus) {
+          const fcmToken = await firebase.messaging().getToken();
+          // eslint-disable-next-line no-console
+          console.log('fcmToken', fcmToken);
+        }
       }
     }
   };

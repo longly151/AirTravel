@@ -2,21 +2,14 @@
 import React from 'react';
 import _ from 'lodash';
 import { Platform } from 'react-native';
-import RNPermissions, {
-  NotificationsResponse,
-  Permission,
-  PERMISSIONS,
-  PermissionStatus,
-  RESULTS,
-  IOSPermission,
-  AndroidPermission,
-} from 'react-native-permissions';
+import RNPermissions, { Permission } from 'react-native-permissions';
 import Helper from '@utils/helper';
 import i18next from 'i18next';
 import { IHocPermission } from '@utils/hocHelper';
 import ModalButton from '../Common/Button/ModalButton';
 
 export interface WithPermissionProps {
+  forwardedRef?: any;
 }
 
 const withPermission = (
@@ -74,10 +67,13 @@ const withPermission = (
     });
 
     render() {
+      const { forwardedRef, ...otherProps } = this.props;
+
       return (
         <>
           <WrappedComponent
-            {...this.props as P}
+            ref={forwardedRef}
+            {...otherProps as P}
             {...this.state}
             requestPermission={this.requestPermission}
           />
@@ -86,6 +82,10 @@ const withPermission = (
       );
     }
   }
-  return WithPermission;
+
+  return React.forwardRef((props: P & WithPermissionProps, ref) => (
+    <WithPermission {...props} forwardedRef={ref} />
+  ));
 };
+
 export default withPermission;
