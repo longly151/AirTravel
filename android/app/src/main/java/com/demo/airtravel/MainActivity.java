@@ -1,4 +1,4 @@
-package com.airtravel;
+package com.demo.airtravel;
 
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;

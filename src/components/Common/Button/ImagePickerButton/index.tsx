@@ -1,7 +1,7 @@
 import React from 'react';
 import RNImagePicker, { Image as TImage, ImageOrVideo as TImageOrVideo } from 'react-native-image-crop-picker';
 import { TouchableOpacity } from 'react-native';
-import { withTheme, ThemeProps } from 'react-native-elements';
+import { ThemeProps, withTheme } from 'react-native-elements';
 import { PERMISSIONS } from 'react-native-permissions';
 import i18next from 'i18next';
 import DeviceInfo from 'react-native-device-info';
@@ -316,11 +316,7 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
   }
 }
 
-// export default withTheme(
-//   ImagePickerButton as unknown as React.ComponentType<ImagePickerButtonProps & ThemeProps<any>>
-// );
-
-export default (withTheme(
+export default (
   withPermission(
     [
       {
@@ -334,5 +330,7 @@ export default (withTheme(
         deniedMessage: i18next.t('permission_denied:photo_library', { appName: DeviceInfo.getApplicationName() })
       }
     ]
-  )(ImagePickerButton as unknown as React.ComponentType<ImagePickerButtonProps & ThemeProps<any>>)
-));
+  )(withTheme(
+    ImagePickerButton as unknown as React.ComponentType<ImagePickerButtonProps & ThemeProps<any>>
+  ))
+);

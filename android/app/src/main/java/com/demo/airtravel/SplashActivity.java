@@ -1,4 +1,4 @@
-package com.airtravel;
+package com.demo.airtravel;
 
 import android.content.Intent;
 import android.os.Bundle;

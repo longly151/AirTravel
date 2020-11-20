@@ -34,7 +34,7 @@ platform :android do
     # You can also use other beta testing services here
 
     firebase_app_distribution(
-      app: "1:1023557421676:android:825f79d06d4825cbf72649",
+      app: "1:1023557421676:android:f741f78de3144f20f72649",
       # testers: "vietlongle0599@gmail.com",
       firebase_cli_token: '1//0g270_blxCjABCgYIARAAGBASNwF-L9IrQWKrUgwD60NewF9gydgdIUuoRURxMgIkpY2H8-N4Z9byBnLW4fHBFOJHUx40dTyMfU0',
       release_notes: "Lots of amazing new features to test out!",

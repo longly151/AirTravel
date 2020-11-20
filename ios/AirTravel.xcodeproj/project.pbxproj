@@ -839,7 +839,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.examples.airtravel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.airtravel;
 				PRODUCT_NAME = AirTravel;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -863,7 +863,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.examples.airtravel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.airtravel;
 				PRODUCT_NAME = AirTravel;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
