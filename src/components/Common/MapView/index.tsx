@@ -115,13 +115,10 @@ class MapView extends PureComponent<MapViewProps, State> {
 
   async componentDidMount() {
     const {
-      bottomItemData,
       bottomItemList,
       bottomItemGetList,
-      cardWidth: cardWidthProp,
       requestPermission,
       needGPS,
-      theme,
     } = this.props;
 
     // Request Permission
@@ -129,42 +126,6 @@ class MapView extends PureComponent<MapViewProps, State> {
 
     if (bottomItemList && bottomItemGetList) {
       bottomItemGetList();
-    }
-    const { scrollX } = this.state;
-    const cardWidth = cardWidthProp || theme.Map.cardWidth;
-    if (
-      (bottomItemData || bottomItemList)
-      && (!_.isEmpty(bottomItemData) || !_.isEmpty(bottomItemList?.data))
-    ) {
-      scrollX.addListener(({ value }:{value: any}) => {
-        // animate 30% away from landing on the next item
-        let index = Math.floor(value / cardWidth + 0.3);
-        const bottomData = bottomItemData || bottomItemList?.data;
-
-        if (index >= bottomData.length) {
-          index = bottomData.length - 1;
-        }
-        if (index <= 0) {
-          index = 0;
-        }
-
-        let regionTimeout: any;
-        clearTimeout(regionTimeout);
-        regionTimeout = setTimeout(() => {
-          if (this.mapIndex !== index) {
-            this.mapIndex = index;
-            const { coordinate } = bottomData[index].marker;
-            this.mapRef.current.animateToRegion(
-              {
-                ...coordinate,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-              },
-              350,
-            );
-          }
-        }, 10);
-      });
     }
   }
 
@@ -253,15 +214,29 @@ class MapView extends PureComponent<MapViewProps, State> {
     return null;
   };
 
-  onViewableItemsChanged = ({ viewableItems }: { viewableItems: any, changed: any }) => {
+  onViewableItemsChanged = ({ viewableItems }: { viewableItems: any }) => {
     const { viewableIndex } = this.state;
     if (!_.isEmpty(viewableItems)) {
       if (viewableItems[0].index !== viewableIndex) {
         this.setState({
           viewableIndex: viewableItems[0].index,
         });
+        this.animateToRegion(viewableItems[0].index);
       }
     }
+  };
+
+  animateToRegion = (index: number) => {
+    const { bottomItemData, bottomItemList } = this.props;
+    const bottomData = bottomItemData || bottomItemList?.data;
+    const { coordinate } = bottomData[index].marker;
+    this.mapRef.current.animateToRegion(
+      {
+        ...coordinate,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
+    );
   };
 
   renderBottomFlatList = () => {
@@ -302,7 +277,7 @@ class MapView extends PureComponent<MapViewProps, State> {
           }}
           onViewableItemsChanged={this.onViewableItemsChanged}
           viewabilityConfig={{
-            itemVisiblePercentThreshold: 70,
+            itemVisiblePercentThreshold: 100,
           }}
           onScroll={Animated.event(
             [

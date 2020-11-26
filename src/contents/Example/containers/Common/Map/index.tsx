@@ -224,7 +224,7 @@ class MapExample extends PureComponent<any, State> {
               bottomMarkerData={bottomMarkerData}
               markerType="tag"
               // google
-              animationEnable={false}
+              // animationEnable={false}
               markerActiveBackgroundColor="#74A7A8"
               renderBottomItem={this.renderBottomItem}
             />

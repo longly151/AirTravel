@@ -224,5 +224,5 @@ class MapScreen extends Component<Props, State> {
 
 export default withPureList({
   url: '/services',
-  fields: ['id', 'enTitle', 'viTitle', 'thumbnail', 'address', 'destinations', 'currentPrice']
+  fields: ['id', 'enTitle', 'viTitle', 'thumbnail', 'address', 'destinations', 'currentPrice'],
 })(MapScreen);
