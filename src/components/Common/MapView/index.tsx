@@ -605,7 +605,7 @@ class MapView extends PureComponent<MapViewProps, State> {
   }
 }
 
-export default (withTheme(
+export default (
   withPermission(
     [
       {
@@ -614,5 +614,5 @@ export default (withTheme(
         deniedMessage: i18next.t('permission_denied:location', { appName: DeviceInfo.getApplicationName() })
       }
     ]
-  )(MapView as any as React.ComponentType<MapViewProps & ThemeProps<any>>)
-));
+  )(withTheme(MapView as any as React.ComponentType<MapViewProps & ThemeProps<any>>))
+);

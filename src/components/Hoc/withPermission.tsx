@@ -53,7 +53,7 @@ const withPermission = (
       const thisAny: any = this;
       return (
         <ModalButton
-          key={index.toString()}
+          key={`withPermission_${index.toString()}`}
           ref={(ref: any) => { thisAny[`permission${index}`] = ref; }}
           modalProps={{
             title: permission.deniedMessage,
