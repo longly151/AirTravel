@@ -106,7 +106,7 @@ class ParallaxScrollView extends PureComponent<ParallaxScrollViewProps> {
         leftComponent={leftComponent}
         transparent
         position="absolute"
-        top={-1}
+        top={-5}
         // backIcon
         // switchTheme
       />

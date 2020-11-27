@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
-import { QuickView, Text, Image } from '@components';
+import { QuickView, Text, Image, Loading } from '@components';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
-import data from './data';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
 interface Props {
+  gallery: any;
+  loading: boolean;
   theme?: any;
 }
 
@@ -34,28 +35,34 @@ class Header extends PureComponent<Props, State> {
     };
   }
 
-  renderItem = ({ item }: { item: any }) => (
+  renderItem = ({ item, index }: { item: any, index: number }) => (
     <Image
-      source={{ uri: item.illustration }}
+      source={{ uri: item }}
       style={styles.image}
-      key={item.id}
+      key={index}
     />
   );
 
   render() {
     const { activeSlide } = this.state;
+    const { loading, gallery } = this.props;
     return (
-      <QuickView position="relative">
-        <Carousel
-          data={data}
-          renderItem={this.renderItem}
-          sliderWidth={viewportWidth}
-          itemWidth={viewportWidth}
-          inactiveSlideOpacity={1}
-          inactiveSlideScale={1}
-          onSnapToItem={(index) => this.setState({ activeSlide: index + 1 })}
-          vertical={false}
-        />
+      <QuickView position="relative" height={300}>
+        {
+          loading ? <Loading style={{ marginTop: 150 }} />
+            : (
+              <Carousel
+                data={gallery}
+                renderItem={this.renderItem}
+                sliderWidth={viewportWidth}
+                itemWidth={viewportWidth}
+                inactiveSlideOpacity={1}
+                inactiveSlideScale={1}
+                onSnapToItem={(index) => this.setState({ activeSlide: index + 1 })}
+                vertical={false}
+              />
+            )
+        }
         <QuickView
           position="absolute"
           top={40}
@@ -87,9 +94,14 @@ class Header extends PureComponent<Props, State> {
           borderRadius={4}
           alignItems="center"
         >
-          <Text color="#fff" fontSize={14} bold>
-            {`${activeSlide} / ${data.length}`}
-          </Text>
+          {
+            gallery ? (
+              <Text color="#fff" fontSize={14} bold>
+                {`${activeSlide} / ${gallery.length}`}
+              </Text>
+            ) : null
+          }
+
         </QuickView>
       </QuickView>
     );

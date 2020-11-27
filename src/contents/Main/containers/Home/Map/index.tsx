@@ -2,14 +2,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  QuickView, Text, Container, Header, Body, MapView, Button, Image, withPureList,
+  QuickView,
+  Text,
+  Container,
+  Header,
+  Body,
+  MapView,
+  Button,
+  Image,
+  withPureList,
 } from '@components';
 import { View, TouchableOpacity } from 'react-native';
 import { Icon, withTheme } from 'react-native-elements';
 import { NavigationService } from '@utils/navigation';
 import { TQuery, TArrayRedux, IBase } from '@utils/redux';
 import Filter from '@utils/filter';
-import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
+import {
+  languageSelector,
+  themeSelector,
+} from '@contents/Config/redux/selector';
 import { compose } from 'recompose';
 import _ from 'lodash';
 import i18next from 'i18next';
@@ -17,10 +28,15 @@ import Helper from '@utils/helper';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
 import { WithListProps } from '@utils/hocHelper';
+import Color from '@themes/Color';
+import productStack from '@contents/Example/containers/Common/FlatList/routes';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import AppView from '@utils/appView';
+import serviceStack from '@contents/Service/routes';
 
 interface Props extends WithListProps, IBase {}
 interface State {
-  displaySearchArea: boolean
+  displaySearchArea: boolean;
 }
 
 class MapScreen extends Component<Props, State> {
@@ -33,7 +49,7 @@ class MapScreen extends Component<Props, State> {
     };
   }
 
-  renderBottomItem = ({ item }: {item: any}) => {
+  renderBottomItem = ({ item }: { item: any }) => {
     const title = i18next.t('key') === LanguageEnum.EN ? item.enTitle : item.viTitle;
     let address = '';
     if (!_.isEmpty(item.destinations)) {
@@ -43,24 +59,25 @@ class MapScreen extends Component<Props, State> {
     const { themeName } = this.props;
     const theme = AppHelper.getThemeByName(themeName);
     return (
-      <View style={{
-        backgroundColor: theme.colors.primaryBackground,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      }}
+      <View
+        style={{
+          backgroundColor: theme.colors.primaryBackground,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderBottomLeftRadius: 5,
+          borderBottomRightRadius: 5,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}
       >
         <Image
-          source={{ uri: thumbnail, cache: 'web' }}
+          source={{ uri: thumbnail }}
           // style={{
           //   width: '100%',
           //   height: '60%',
@@ -70,9 +87,10 @@ class MapScreen extends Component<Props, State> {
           height={150}
           resizeMode="cover"
         />
-        <View style={{
-          padding: 15,
-        }}
+        <View
+          style={{
+            padding: 15,
+          }}
         >
           <Text
             numberOfLines={1}
@@ -91,13 +109,21 @@ class MapScreen extends Component<Props, State> {
           >
             {address}
           </Text>
-          <View style={{
-            alignItems: 'center',
-            marginTop: 5,
-          }}
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: 5,
+            }}
           >
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => NavigationService.navigate(
+                serviceStack.detail,
+                {
+                  screen: detailServiceStack.index,
+                  params: AppHelper.setItemIntoParams(item),
+                }
+              )}
+                // AppView
               style={[{
                 width: '100%',
                 padding: 5,
@@ -105,7 +131,7 @@ class MapScreen extends Component<Props, State> {
                 alignItems: 'center',
                 borderRadius: 3,
               }, {
-                borderColor: '#FF6347',
+                borderColor: Color.lightPrimary,
                 borderWidth: 1,
               }]}
             >
@@ -113,10 +139,10 @@ class MapScreen extends Component<Props, State> {
                 fontSize: 14,
                 fontWeight: 'bold',
               }, {
-                color: '#FF6347',
+                color: Color.lightPrimary,
               }]}
               >
-                Order Now
+                {i18next.t('map:view_detail')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -155,8 +181,14 @@ class MapScreen extends Component<Props, State> {
     const { filter } = this.props;
     this.setState({ displaySearchArea: true });
     const mapBoundaries = await this.mapRef.getMapBoundaries();
-    filter.mergeFilter('destinations.longitude', '$between', [mapBoundaries.southWest.longitude, mapBoundaries.northEast.longitude]);
-    filter.mergeFilter('destinations.latitude', '$between', [mapBoundaries.southWest.latitude, mapBoundaries.northEast.latitude]);
+    filter.mergeFilter('destinations.longitude', '$between', [
+      mapBoundaries.southWest.longitude,
+      mapBoundaries.northEast.longitude,
+    ]);
+    filter.mergeFilter('destinations.latitude', '$between', [
+      mapBoundaries.southWest.latitude,
+      mapBoundaries.northEast.latitude,
+    ]);
   };
 
   render() {
@@ -170,10 +202,15 @@ class MapScreen extends Component<Props, State> {
     };
 
     const bottomItemData = list.data;
-    const bottomMarkerData = Helper.selectDeepFields(bottomItemData, 'currentPrice');
+    const bottomMarkerData = Helper.selectDeepFields(
+      bottomItemData,
+      'currentPrice',
+    );
 
     bottomMarkerData.map((item: string, index: number) => {
-      bottomMarkerData[index] = `${Helper.numberWithCommas(parseInt(item, 10))} \u20AB`;
+      bottomMarkerData[index] = `${Helper.numberWithCommas(
+        parseInt(item, 10),
+      )} \u20AB`;
       return true;
     });
     if (!_.isEmpty(list.data)) {
@@ -194,7 +231,9 @@ class MapScreen extends Component<Props, State> {
       <Container>
         <QuickView>
           <MapView
-            ref={(ref: any) => { this.mapRef = ref; }}
+            ref={(ref: any) => {
+              this.mapRef = ref;
+            }}
             fullScreen
             // staticMap
             showDefaultMarker={false}
@@ -202,7 +241,9 @@ class MapScreen extends Component<Props, State> {
             bottomItemList={list}
             bottomItemGetList={(query?: TQuery) => {
               getList({
-                ...query, limit: 20, filter: filter.filterObject,
+                ...query,
+                limit: 20,
+                filter: filter.filterObject,
               });
             }}
             bottomMarkerData={bottomMarkerData}
@@ -224,5 +265,13 @@ class MapScreen extends Component<Props, State> {
 
 export default withPureList({
   url: '/services',
-  fields: ['id', 'enTitle', 'viTitle', 'thumbnail', 'address', 'destinations', 'currentPrice'],
+  fields: [
+    'id',
+    'enTitle',
+    'viTitle',
+    'thumbnail',
+    'address',
+    'destinations',
+    'currentPrice',
+  ],
 })(MapScreen);

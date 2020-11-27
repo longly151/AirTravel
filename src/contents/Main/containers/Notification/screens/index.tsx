@@ -2,17 +2,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import {
-  QuickView, Text, Container, Header, Body,
+  QuickView, Text, Container, Header, Body, Image,
 } from '@components';
+import i18next from 'i18next';
+import AppView from '@utils/appView';
 
 class NotificationListScreen extends PureComponent {
   render() {
     return (
       <Container>
-        <Header title="NotificationListScreen" />
+        <Header title="Notification" />
         <Body>
-          <QuickView>
-            <Text center>Example Screen</Text>
+          <QuickView center height="100%">
+            <Image source={require('@assets/images/empty-notification.png')} width={0.7 * AppView.screenWidth} />
+            <Text marginTop={30} primary type="xTitle" bold>{i18next.t('empty:notification')}</Text>
           </QuickView>
         </Body>
       </Container>

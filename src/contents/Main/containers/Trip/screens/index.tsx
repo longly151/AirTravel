@@ -2,17 +2,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import {
-  QuickView, Text, Container, Header, Body,
+  QuickView, Text, Container, Header, Body, Image,
 } from '@components';
+import AppView from '@utils/appView';
+import i18next from 'i18next';
 
 class TripListScreen extends PureComponent {
   render() {
     return (
       <Container>
-        <Header title="TripListScreen" />
+        <Header title="Your Trip" />
         <Body>
-          <QuickView>
-            <Text center>Example Screen</Text>
+          <QuickView center height="100%">
+            <Image source={require('@assets/images/empty-trip.png')} width={0.7 * AppView.screenWidth} />
+            <Text marginTop={30} primary type="xTitle" bold center>{i18next.t('empty:empty_trip')}</Text>
           </QuickView>
         </Body>
       </Container>
