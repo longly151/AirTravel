@@ -4,6 +4,8 @@ import {
   Header,
   Text,
   Button,
+  Container,
+  Body
 } from '@components';
 import { Card } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
@@ -11,7 +13,8 @@ import { NavigationService } from '@utils/navigation';
 import AppHelper from '@utils/appHelper';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppView from '@utils/appView';
-import withReduxList, { FilterProps } from '@components/Hoc/withReduxList';
+import withReduxList from '@components/Hoc/withReduxList';
+import { WithListProps } from '@utils/hocHelper';
 import { productGetList, productSetFilter, CONSTANT } from '../redux/slice';
 import productStack from '../../routes';
 
@@ -96,7 +99,7 @@ const renderItem = ({ item }: { item: any }, themeName: ThemeEnum) => {
   );
 };
 
-function ProductListScreen(props: FilterProps) {
+function ProductListScreen(props: WithListProps) {
   function handleFilter() {
     const { filter, applyFilter } = props;
     filter.mergeFilter('viTitle', '$contL', 'Sunny');
@@ -111,15 +114,18 @@ function ProductListScreen(props: FilterProps) {
 
   // // [Optional] ExtraData || ReduxExtraData
   // console.log('props.moreDetail', props.moreDetail);
-
+  const { renderFlatList } = props;
   return (
-    <>
+    <Container>
       <Header backIcon title="FlatList" shadow switchTheme />
-      <QuickView row center>
-        <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
-        <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
-      </QuickView>
-    </>
+      <Body>
+        <QuickView row center>
+          <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
+          <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
+        </QuickView>
+        {renderFlatList()}
+      </Body>
+    </Container>
   );
 }
 
@@ -136,11 +142,11 @@ export default withReduxList({
   renderItem,
 
   // // [LOG] Only support ExtraData
-  // log: {
-  //   name: 'PRODUCT_LIST_VIEW',
-  //   extraPayload: {
-  //     extraPayload: 'extraPayload'
-  //   },
+  log: {
+    name: 'PRODUCT_LIST_VIEW',
+    // extraPayload: {
+    //   extraPayload: 'extraPayload'
+  },
   //   payload: {
   //     key: 'moreDetail', // Log will use "this.props[key].data"
   //     fields: ['id']

@@ -78,7 +78,7 @@ class AppContainer extends React.Component<Props, State> {
     /**
      * Hide Splash Screen
      */
-    await setTimeout(() => {
+    setTimeout(() => {
       SplashScreen.hide();
     }, 1000);
   }

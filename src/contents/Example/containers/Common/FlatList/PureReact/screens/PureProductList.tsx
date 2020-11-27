@@ -9,15 +9,17 @@ import {
   Header,
   Button,
   withPureList,
+  Container,
+  Body,
 } from '@components';
 import { Card } from 'react-native-elements';
-import { FilterProps } from '@components/Hoc/withPureList';
 import { NavigationService } from '@utils/navigation';
-import { BaseProps } from '@utils/redux';
+import { IBase } from '@utils/redux';
+import { WithListProps } from '@utils/hocHelper';
 import productStack from '../../routes';
 
-interface Props extends FilterProps, BaseProps {
-  // detailDemo: BaseState // [Optional] ExtraData
+interface Props extends WithListProps, IBase {
+  // detailDemo: IBase // [Optional] ExtraData
 }
 
 const renderItem = ({ item }: { item: any }, themeName: ThemeEnum) => {
@@ -103,7 +105,7 @@ const renderItem = ({ item }: { item: any }, themeName: ThemeEnum) => {
 
 function PureProductListScreen(props: Props) {
   function handleFilter() {
-    const { filter, applyFilter } = props;
+    const { filter, applyFilter, } = props;
     filter.mergeFilter('viTitle', '$contL', 'Sunny');
     applyFilter();
   }
@@ -116,15 +118,19 @@ function PureProductListScreen(props: Props) {
 
   // // [Optional] ExtraData || ReduxExtraData
   // console.log('props.moreDetail', props.moreDetail);
+  const { renderFlatList } = props;
 
   return (
-    <>
+    <Container>
       <Header backIcon title="FlatList" shadow switchTheme />
-      <QuickView row center>
-        <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
-        <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
-      </QuickView>
-    </>
+      <Body>
+        <QuickView row center>
+          <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
+          <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
+        </QuickView>
+        {renderFlatList()}
+      </Body>
+    </Container>
   );
 }
 
@@ -133,16 +139,16 @@ export default withPureList({
   fields: ['id', 'enTitle', 'viTitle', 'price', 'thumbnail'],
   renderItem,
   // // [LOG] Only support ExtraData
-  // log: {
-  //   name: 'PRODUCT_LIST_VIEW',
-  //   extraPayload: {
-  //     extraPayload: 'extraPayload'
-  //   },
-  //   payload: {
-  //     key: 'moreDetail', // Log will use "this.props[key].data"
-  //     fields: ['id']
-  //   }
-  // },
+  log: {
+    name: 'PRODUCT_LIST_VIEW',
+    // extraPayload: {
+    //   extraPayload: 'extraPayload'
+    // },
+    // payload: {
+    //   key: 'moreDetail', // Log will use "this.props[key].data"
+    //   fields: ['id']
+    // }
+  },
 
   // // [Optional] extraData
   // extraData: [

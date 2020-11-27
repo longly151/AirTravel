@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import Redux, { TQuery, BaseProps } from '@utils/redux';
+import Redux, { TQuery, IBase } from '@utils/redux';
 import Filter from '@utils/filter';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
@@ -8,20 +8,13 @@ import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
 import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog } from '@utils/hocHelper';
 import _ from 'lodash';
-import Container from '../Common/View/Container';
-import Body from '../Common/View/Body';
-import QuickView from '../Common/View/QuickView';
-import FlatList from '../Common/FlatList/DefaultFlatList';
+import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
 
-export interface FilterProps {
-  applyFilter: () => any;
-  filter: Filter;
-}
-
-export interface WithReduxListProps extends BaseProps {
+export interface WithReduxListProps extends IBase {
   getList: (query?: TQuery) => any;
   filterData: any,
   setFilter: (filter: any) => any;
+  themeName?: ThemeEnum;
 }
 
 interface State {
@@ -34,7 +27,7 @@ const withReduxList = (
     constant: IHocConstant,
     fields?: Array<string>,
     ListHeaderComponent?: React.ComponentType<any>,
-    renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
+    renderItem?: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
     log?: IHocLog
@@ -92,7 +85,7 @@ const withReduxList = (
       setFilter(this.filter.filterObject);
     };
 
-    render() {
+    renderFlatList = (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => {
       const { data, metadata, loading, error, getList, themeName } = this.props;
       const themeNameAny: any = themeName;
       const list = {
@@ -101,25 +94,42 @@ const withReduxList = (
         loading,
         error,
       };
+      if (renderItem) {
+        return (
+          <FlatList
+            ref={(ref: any) => { this.flatList = ref; }}
+            {...flatListProps}
+            list={list}
+            ListHeaderComponent={ListHeaderComponent}
+            getList={(query?: TQuery) => {
+              getList({ ...query, fields, filter: this.filter?.filterObject });
+            }}
+            renderItem={(data) => renderItem(data, themeNameAny)}
+          />
+        );
+      }
+      return null;
+    };
 
-      return (
-        <Container>
-          {WrappedComponent ? <WrappedComponent {...this.props as P} {...this.state} filter={this.filter} applyFilter={this.applyFilter} /> : null}
-          <Body>
-            <QuickView>
-              <FlatList
-                ref={(ref: any) => { this.flatList = ref; }}
-                list={list}
-                ListHeaderComponent={ListHeaderComponent}
-                getList={(query?: TQuery) => {
-                  getList({ ...query, fields, filter: this.filter?.filterObject });
-                }}
-                renderItem={(data) => renderItem(data, themeNameAny)}
-              />
-            </QuickView>
-          </Body>
-        </Container>
-      );
+    render() {
+      const { themeName } = this.props;
+      const { getList } = this.props;
+      if (WrappedComponent) {
+        return (
+          <WrappedComponent
+            {...this.props as P}
+            {...this.state}
+            filter={this.filter}
+            applyFilter={this.applyFilter}
+            renderFlatList={this.renderFlatList}
+            getList={(query?: TQuery) => {
+              getList({ ...query, fields, filter: this.filter?.filterObject });
+            }}
+            themeName={themeName}
+          />
+        );
+      }
+      return null;
     }
   }
 

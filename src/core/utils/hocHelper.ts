@@ -1,3 +1,4 @@
+import { ThemeEnum } from '@contents/Config/redux/slice';
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 
@@ -6,8 +7,11 @@ import _ from 'lodash';
 import { AndroidPermission, IOSPermission } from 'react-native-permissions';
 import Log from '@core/log';
 import LogEvent from '@core/log/logEvent';
+import { FlatListProps } from '@components/Common/FlatList/DefaultFlatList';
 import Selector from './selector';
 import AppHelper from './appHelper';
+import Filter from './filter';
+import { TQuery } from './redux';
 
 /**
  * Type
@@ -51,6 +55,18 @@ export interface IHocLog {
     fields?: Array<string>,
   }
   extraPayload?: any,
+}
+
+export interface WithListProps {
+  filter: Filter,
+  applyFilter: () => any;
+  renderFlatList: (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => any;
+  getList: (query?: TQuery) => Promise<any>;
+  themeName: ThemeEnum;
+}
+
+export interface WithDetailProps {
+  themeName: ThemeEnum;
 }
 
 class CHocHelper {

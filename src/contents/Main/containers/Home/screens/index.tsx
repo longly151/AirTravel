@@ -12,6 +12,7 @@ import CrucialCategory from '../containers/CrucialCategory';
 import Categories from '../containers/Categories';
 import HotDeals from '../containers/HotDeals';
 import Destinations from '../containers/Destinations';
+import MapButton from '../Map/containers/MapButton';
 // import MapButton from '../containers/Map/containers/MapButton';
 
 interface Props {
@@ -40,7 +41,7 @@ class HomeScreen extends PureComponent<Props> {
         <Categories />
         <HotDeals {...listProps} />
         <Destinations />
-        {/* <MapButton /> */}
+        <MapButton />
       </Container>
     );
   }

@@ -16,12 +16,13 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
+  desc "Android Testing"
   lane :test do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
+
+  desc "Push a new beta build to Firebase App Distribution"
   lane :beta do
     # gradle(task: "clean assembleRelease")
     # crashlytics
@@ -34,17 +35,17 @@ platform :android do
     # You can also use other beta testing services here
 
     firebase_app_distribution(
-      app: "1:1023557421676:android:f741f78de3144f20f72649",
-      # testers: "vietlongle0599@gmail.com",
-      firebase_cli_token: '1//0g270_blxCjABCgYIARAAGBASNwF-L9IrQWKrUgwD60NewF9gydgdIUuoRURxMgIkpY2H8-N4Z9byBnLW4fHBFOJHUx40dTyMfU0',
+      app: ENV["FIREBASE_ANDROID_APP"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       release_notes: "Lots of amazing new features to test out!",
-      groups: "android-tester"
+      groups: ENV["FIREBASE_ANDROID_GROUPS"]
     )
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
-  end
+
+  # desc "Deploy a new version to the Google Play"
+  # lane :deploy do
+  #   gradle(task: "clean assembleRelease")
+  #   upload_to_play_store
+  # end
 end

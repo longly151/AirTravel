@@ -16,6 +16,53 @@
 default_platform(:ios)
 
 platform :ios do
+  desc "Code Signing"
+  lane :codesigning do
+    create_keychain(
+      name: "FastlaneKeychain",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: true,
+      password: ENV["KEYCHAIN_PASSWORD"]
+    )
+    install_provisioning_profile(path: "./fastlane/certs/VLRNBase_Development.mobileprovision")
+
+    import_certificate(
+      keychain_name: "FastlaneKeychain",
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      certificate_path: "./fastlane/certs/iPhone_Developer.p12",
+      certificate_password: ENV["CERTIFICATE_PASSWORD"]
+    )
+
+    update_project_team(
+      path: "VLRNBase.xcodeproj",
+      teamid: ENV["TEAM_ID"]
+    )
+  end
+
+
+  desc "iOS Build"
+  lane :build do
+    update_project_provisioning(
+      profile: "fastlane/certs/AirTravel_Development.mobileprovision",
+    )
+    build_app(
+      scheme: ENV["SCHEME"],
+      workspace: ENV["WORKSPACE"],
+      export_method: "development",
+    )
+  end
+
+
+  desc "iOS Testing"
+  lane :test do
+    run_tests(workspace: "VLRNBase.xcworkspace",
+              devices: ["iPhone 8", "iPad Air"],
+              scheme: "VLRNBase")
+  end
+
+
   # desc "Push a new beta build to TestFlight"
   # lane :beta do
   #   increment_build_number(xcodeproj: "CityAReal.xcodeproj")
@@ -25,31 +72,13 @@ platform :ios do
 
   desc "Push a new beta build to Firebase App Distribution"
   lane :beta do
-    # update_project_provisioning(
-    #   profile: "certs/demodevelopment.mobileprovision", # optional if you use sigh
-    # )
-    increment_build_number(xcodeproj: "AirTravel.xcodeproj")
-    build_app(
-      workspace: "AirTravel.xcworkspace",
-      scheme: "AirTravel",
-      export_options: {
-        # Manual Signing
-        # method: "development",
-        # provisioningProfiles: { 
-        #   "vn.com.citya" => "demo-development",
-        # }
-
-        # Auto Signing
-        method: 'ad-hoc'
-      }
-    )
-    
+    build
     firebase_app_distribution(
-      app: "1:1023557421676:ios:dd6266ddbd67e036f72649",
-      # testers: "vietlongle0599@gmail.com",
-      firebase_cli_token: '1//0gUSGEfAwSzVRCgYIARAAGBASNwF-L9IrEiizOSPN57rCfWpZjR0IZMg41fYJkidS1zsRC9Va9bE2fDX_RL6yUHb_SFthARQXhtc',
+      app: ENV["FIREBASE_IOS_APP"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       release_notes: "Lots of amazing new features to test out!",
-      groups: "ios-tester"
+      groups: ENV["FIREBASE_IOS_GROUPS"]
     )
   end
+
 end
