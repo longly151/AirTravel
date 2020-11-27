@@ -5,6 +5,9 @@ import {
   serviceGetList,
   serviceGetListSuccess,
   serviceGetListFail,
+  serviceGetSpecialList,
+  serviceGetSpecialListSuccess,
+  serviceGetSpecialListFail,
   serviceGetDetail,
   serviceGetDetailFail,
   serviceGetDetailSuccess,
@@ -25,6 +28,20 @@ export function* getListSaga({ payload }: { payload: any }) {
   }
 }
 
+export function* getSpecialListSaga({ payload }: { payload: any }) {
+  try {
+    const response = yield call(
+      fetchServices,
+      Redux.stringifyQuery(payload.query),
+    );
+    yield put(serviceGetSpecialListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(serviceGetSpecialListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export function* getDetailSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(fetchServiceById, payload.id);
@@ -38,5 +55,6 @@ export function* getDetailSaga({ payload }: { payload: any }) {
 
 export default [
   takeLatest(serviceGetList, getListSaga),
+  takeLatest(serviceGetSpecialList, getSpecialListSaga),
   takeLatest(serviceGetDetail, getDetailSaga),
 ];

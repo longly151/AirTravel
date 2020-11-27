@@ -370,16 +370,17 @@ class Image extends PureComponent<ImageProps, State> {
         borderRadius = 0;
       }
     }
+
     const containerStyle: any = StyleSheet.flatten([
       {
         width,
         height,
         justifyContent: 'center',
         borderRadius,
-        borderWidth: placeholderBorderWidth,
-        borderColor: 'transparent',
       },
       (loading || renderFail) && {
+        borderWidth: placeholderBorderWidth,
+        width: width - (placeholderBorderWidth || 0) / 2,
         borderColor: placeholderBorderColor,
       },
       center && { alignSelf: 'center' },

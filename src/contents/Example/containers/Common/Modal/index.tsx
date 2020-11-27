@@ -1,13 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import React, { PureComponent } from 'react';
 import {
-  Container, QuickView, Header, Body, ModalButton, Button, Text, Image, withBottomSheet
+  Container,
+  QuickView,
+  Header,
+  Body,
+  ModalButton,
+  Button,
+  Text,
+  Image,
+  withBottomSheet,
 } from '@components';
 import Modal from 'react-native-modal';
 import { withTheme } from 'react-native-elements';
 import i18next from 'i18next';
 import { ScrollView } from 'react-native';
-import { BottomSheetScrollView, BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetScrollView,
+  BottomSheetFlatList,
+  BottomSheetSectionList,
+} from '@gorhom/bottom-sheet';
 import AppView from '@utils/appView';
 import { useFocusEffect } from '@react-navigation/native';
 import { WithBottomSheetProps } from '@utils/hocHelper';
@@ -16,7 +29,7 @@ interface Props extends WithBottomSheetProps {
   theme: any;
 }
 interface State {
-  isVisible: boolean
+  isVisible: boolean;
 }
 class ModalExample extends PureComponent<Props, State> {
   customChildren: any;
@@ -33,13 +46,15 @@ class ModalExample extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isVisible: false
+      isVisible: false,
     };
 
     // this.data
-    [50].map((i) => Array(i).fill(i).map(
-      (item: any, index: number) => (this.data.push(`Hi 👋 ${index} !`))
-    ));
+    [50].map((i) =>
+      Array(i)
+        .fill(i)
+        .map((item: any, index: number) => this.data.push(`Hi 👋 ${index} !`)),
+    );
 
     // this.sectionData
     this.sectionData.push({
@@ -65,18 +80,17 @@ class ModalExample extends PureComponent<Props, State> {
           focusHook={useFocusEffect} // For Changing (React Navigation) Screen Focusing
           contentContainerStyle={{
             backgroundColor: theme.colors.primaryBackground,
-            paddingBottom: AppView.safeAreaInsets.bottom
-          }}
-        >
-          {
-            [50].map((i) => Array(i).fill(i).map(
-              (item: any, index: number) => (
+            paddingBottom: AppView.safeAreaInsets.bottom,
+          }}>
+          {[50].map((i) =>
+            Array(i)
+              .fill(i)
+              .map((item: any, index: number) => (
                 <Text key={index.toString()} center>
                   {`Hi 👋 ${index} !`}
                 </Text>
-              )
-            ))
-          }
+              )),
+          )}
           <Button
             marginHorizontal={20}
             marginVertical={10}
@@ -86,18 +100,23 @@ class ModalExample extends PureComponent<Props, State> {
               if (close) close();
             }}
           />
-        </BottomSheetScrollView>
+        </BottomSheetScrollView>,
       );
     }
     if (open) open();
   };
 
   // FlatListBottomSheet
-  renderFlatListItem = ({ item }: any) => (<Text center>{item}</Text>);
+  renderFlatListItem = ({ item }: any) => <Text center>{item}</Text>;
 
   renderFlatListBottomSheet = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { open, setModalContent, theme, setIndicatorBackgroundColor } = this.props;
+    const {
+      open,
+      setModalContent,
+      theme,
+      setIndicatorBackgroundColor,
+    } = this.props;
     // setIndicatorBackgroundColor('orange'); //For Custom Indicator Background Color
 
     if (setModalContent) {
@@ -107,11 +126,11 @@ class ModalExample extends PureComponent<Props, State> {
           focusHook={useFocusEffect} // For Changing (React Navigation) Screen Focusing
           contentContainerStyle={{
             backgroundColor: theme.colors.primaryBackground,
-            paddingBottom: AppView.safeAreaInsets.bottom
+            paddingBottom: AppView.safeAreaInsets.bottom,
           }}
           renderItem={this.renderFlatListItem}
           keyExtractor={(item, index) => index.toString()}
-        />
+        />,
       );
     }
     if (open) open();
@@ -124,15 +143,16 @@ class ModalExample extends PureComponent<Props, State> {
       <QuickView
         paddingBottom={6}
         paddingHorizontal={AppView.bodyPaddingHorizontal}
-        backgroundColor={theme.colors.primaryBackground}
-      >
+        backgroundColor={theme.colors.primaryBackground}>
         <Text style={{ textTransform: 'uppercase' }}>{section.title}</Text>
       </QuickView>
     );
   };
 
   renderSectionItem = ({ section, index }: any) => (
-    <Text key={`${section.title}_index`} center>{section.data[index]}</Text>
+    <Text key={`${section.title}_index`} center>
+      {section.data[index]}
+    </Text>
   );
 
   renderSectionListBottomSheet = () => {
@@ -146,13 +166,13 @@ class ModalExample extends PureComponent<Props, State> {
           focusHook={useFocusEffect} // For Changing (React Navigation) Screen Focusing
           contentContainerStyle={{
             backgroundColor: theme.colors.primaryBackground,
-            paddingBottom: AppView.safeAreaInsets.bottom
+            paddingBottom: AppView.safeAreaInsets.bottom,
           }}
           initialNumToRender={20}
           keyExtractor={(item, index) => index.toString()}
           renderSectionHeader={this.renderSectionHeader}
           renderItem={this.renderSectionItem}
-        />
+        />,
       );
     }
     if (open) open();
@@ -167,24 +187,31 @@ class ModalExample extends PureComponent<Props, State> {
         <Header backIcon title="Modal" shadow switchTheme />
         <Body scrollable>
           <QuickView marginTop={10} marginBottom={15}>
-            <Text type="header" marginBottom={10}>Modal with Children</Text>
-            <Button title="Native Modal" onPress={() => this.setState({ isVisible: !isVisible })} />
+            <Text type="header" marginBottom={10}>
+              Modal with Children
+            </Text>
+            <Button
+              title="Native Modal"
+              onPress={() => this.setState({ isVisible: !isVisible })}
+            />
             <Modal
               isVisible={isVisible}
-              onBackdropPress={() => this.setState({ isVisible: false })}
-            >
-              <Button title="Native Modal" onPress={() => this.setState({ isVisible: !isVisible })} />
+              onBackdropPress={() => this.setState({ isVisible: false })}>
+              <Button
+                title="Native Modal"
+                onPress={() => this.setState({ isVisible: !isVisible })}
+              />
             </Modal>
             <ModalButton
-              ref={(ref: any) => { this.customChildren = ref; }}
-              title="Modal Button with custom Children"
-            >
+              ref={(ref: any) => {
+                this.customChildren = ref;
+              }}
+              title="Modal Button with custom Children">
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 borderRadius={10}
                 padding={30}
-                center
-              >
+                center>
                 <Text center>Hi 👋!</Text>
                 <Button
                   title="Close"
@@ -202,7 +229,7 @@ class ModalExample extends PureComponent<Props, State> {
               title="Notification Modal Button"
               modalProps={{
                 title: 'Successful 🚀',
-                onOkButtonPress: () => console.log('Successful')
+                onOkButtonPress: () => console.log('Successful'),
               }}
             />
             <ModalButton
@@ -210,7 +237,7 @@ class ModalExample extends PureComponent<Props, State> {
               modalProps={{
                 title: i18next.t('auth:login'),
                 type: 'confirmation',
-                onOkButtonPress: () => console.log('Confirm')
+                onOkButtonPress: () => console.log('Confirm'),
               }}
             />
           </QuickView>
@@ -219,29 +246,46 @@ class ModalExample extends PureComponent<Props, State> {
             <Text type="header">Custom Modal</Text>
             <ModalButton
               title="Bottom-Half Modal"
-              modalProps={{ type: 'bottom-half' }}
-            >
+              modalProps={{ type: 'bottom-half' }}>
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 padding={30}
                 width="100%"
                 center
-                style={{ borderTopLeftRadius: 10, borderTopRightRadius: 10, maxHeight: 300 }}
-              >
+                style={{
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                  maxHeight: 300,
+                }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {
-                    [20].map((i) => Array(i).fill(i).map(
-                      (item: any, index: number) => <Text key={index.toString()} center>Hi 👋!</Text>
-                    ))
-                  }
+                  {[20].map((i) =>
+                    Array(i)
+                      .fill(i)
+                      .map((item: any, index: number) => (
+                        <Text key={index.toString()} center>
+                          Hi 👋!
+                        </Text>
+                      )),
+                  )}
                 </ScrollView>
               </QuickView>
             </ModalButton>
-            <Button title="[ScrollView] Bottom-Sheet Modal" onPress={() => this.renderScrollBottomSheet()} />
-            <Button title="[FlatList] Bottom-Sheet Modal" onPress={() => this.renderFlatListBottomSheet()} />
-            <Button title="[SectionList] Bottom-Sheet Modal" onPress={() => this.renderSectionListBottomSheet()} />
+            <Button
+              title="[ScrollView] Bottom-Sheet Modal"
+              onPress={() => this.renderScrollBottomSheet()}
+            />
+            <Button
+              title="[FlatList] Bottom-Sheet Modal"
+              onPress={() => this.renderFlatListBottomSheet()}
+            />
+            <Button
+              title="[SectionList] Bottom-Sheet Modal"
+              onPress={() => this.renderSectionListBottomSheet()}
+            />
             <ModalButton
-              ref={(ref: any) => { this.customBackdrop = ref; }}
+              ref={(ref: any) => {
+                this.customBackdrop = ref;
+              }}
               title="No Backdrop"
               modalProps={{
                 title: i18next.t('auth:login'),
@@ -251,17 +295,27 @@ class ModalExample extends PureComponent<Props, State> {
               }}
             />
             <ModalButton
-              ref={(ref: any) => { this.customBackdrop = ref; }}
+              ref={(ref: any) => {
+                this.customBackdrop = ref;
+              }}
               title="Custom Backdrop Modal"
               modalProps={{
                 title: i18next.t('auth:login'),
                 type: 'confirmation',
                 onOkButtonPress: () => console.log('Confirm'),
-                customBackdrop: <QuickView backgroundColor="orange" height="100%" onPress={() => this.customBackdrop.close()} />,
+                customBackdrop: (
+                  <QuickView
+                    backgroundColor="orange"
+                    height="100%"
+                    onPress={() => this.customBackdrop.close()}
+                  />
+                ),
               }}
             />
             <ModalButton
-              ref={(ref: any) => { this.fancyModal = ref; }}
+              ref={(ref: any) => {
+                this.fancyModal = ref;
+              }}
               title="Fancy Modal"
               modalProps={{
                 title: i18next.t('auth:login'),
@@ -276,13 +330,12 @@ class ModalExample extends PureComponent<Props, State> {
                 backdropTransitionInTiming: 600,
                 backdropTransitionOutTiming: 600,
                 swipeDirection: ['up', 'left', 'right', 'down'],
-                onSwipeComplete: () => this.fancyModal.close()
+                onSwipeComplete: () => this.fancyModal.close(),
               }}
             />
             <ModalButton
               title="Full Screen Modal"
-              modalProps={{ type: 'fullscreen' }}
-            >
+              modalProps={{ type: 'fullscreen' }}>
               <Container>
                 <Header backIcon title="ExampleScreen" />
                 <Body>
@@ -297,7 +350,7 @@ class ModalExample extends PureComponent<Props, State> {
             <Text type="header">Invisible Modal Button</Text>
             <ModalButton
               invisible
-              buttonChildren={(
+              buttonChildren={
                 <Image
                   source={{
                     uri: 'https://picsum.photos/1000/1000',
@@ -305,15 +358,13 @@ class ModalExample extends PureComponent<Props, State> {
                   }}
                   containerStyle={{ marginVertical: 15 }}
                 />
-              )}
-            >
+              }>
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 borderRadius={10}
                 padding={30}
                 width="100%"
-                center
-              >
+                center>
                 <Text center>Hi 👋!</Text>
               </QuickView>
             </ModalButton>
@@ -324,8 +375,7 @@ class ModalExample extends PureComponent<Props, State> {
   }
 }
 
-export default withBottomSheet(
-  // {
-  //   snapPoints: ['90%']
-  // }
-)(withTheme(ModalExample as any));
+export default withBottomSheet()(withTheme(ModalExample as any));
+// {
+//   snapPoints: ['90%']
+// }

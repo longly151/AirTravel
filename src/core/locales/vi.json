@@ -114,5 +114,9 @@
   "map": {
     "search_area": "Tìm kiếm khu vực này",
     "view_detail": "Xem chi tiết"
+  },
+  "service_detail": {
+    "product": "Sản phẩm",
+    "hosted_by": "Cung cấp bởi"
   }
 }

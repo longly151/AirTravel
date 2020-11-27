@@ -4,7 +4,9 @@ import { QuickView, Text, Image } from '@components';
 import { Dimensions, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
-import serviceRoutes from '../../../../../../routes';
+import AppHelper from '@utils/appHelper';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -30,9 +32,13 @@ class CardService extends PureComponent<Props> {
       <QuickView
         marginBottom={40}
         row
-        onPress={() => {
-          NavigationService.navigate(serviceRoutes.detail);
-        }}
+        onPress={() => NavigationService.navigate(
+          serviceRoutes.detail,
+          {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(data),
+          }
+        )}
       >
         <Image
           source={{ uri: data.thumbnail }}
@@ -54,8 +60,10 @@ class CardService extends PureComponent<Props> {
               {data.enTitle}
             </Text>
             <QuickView row alignItems="center" marginTop={10}>
-              <Icon name="medal" color="red" size={16} />
-              <Text marginHorizontal={3}>Superhost</Text>
+              <Icon name="map-marker" color="red" size={16} />
+              <Text fontSize={10} bold>
+                {data.destinations[0].address}
+              </Text>
             </QuickView>
           </QuickView>
           <Text fontSize={14}>{`${data.currentPrice} vnd - ${data.unit}`}</Text>

@@ -114,5 +114,9 @@
   "map": {
     "search_area": "Search this area",
     "view_detail": "View Detail"
+  },
+  "service_detail": {
+    "product": "Product",
+    "hosted_by": "Hosted by"
   }
 }
