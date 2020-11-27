@@ -4,16 +4,15 @@ import * as Progress from 'react-native-progress';
 import {
   Image as RNImage, StyleSheet, Modal,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, withTheme, ThemeProps } from 'react-native-elements';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import _ from 'lodash';
-import Color from '@themes/Color';
 import AppView from '@utils/appView';
 import QuickView from '../../View/QuickView';
 import Loading from '../../Loading';
 
 export interface ImageProps extends Omit<FastImageProps, 'source'> {
-  width: number;
+  width?: number;
   height?: number | string;
   source?: Source;
   multipleSources?: any;
@@ -32,6 +31,7 @@ export interface ImageProps extends Omit<FastImageProps, 'source'> {
   placeholderBorderColor?: string;
   placeholderBorderWidth?: number;
   disablePlaceholder?: boolean;
+  theme?: any;
   onPress?: () => any;
 }
 interface State {
@@ -64,8 +64,7 @@ class Image extends PureComponent<ImageProps, State> {
     showLoadingText: true,
     loadingType: 'circle',
     rounded: true,
-    placeholderBorderColor: Color.grey4,
-    placeholderBorderWidth: 1,
+    placeholderBorderWidth: 0.5,
   };
 
   constructor(props: ImageProps) {
@@ -103,7 +102,8 @@ class Image extends PureComponent<ImageProps, State> {
 
   renderLoadingPlaceholder = () => {
     const { loading } = this.state;
-    const { width, disablePlaceholder, isLoading, source } = this.props;
+    const { width: widthProp, disablePlaceholder, isLoading, source } = this.props;
+    const width: any = widthProp;
     if (isLoading) {
       // Loading from Props
       return (
@@ -139,7 +139,8 @@ class Image extends PureComponent<ImageProps, State> {
 
   renderErrorPlaceholder = () => {
     const { renderFail } = this.state;
-    const { width } = this.props;
+    const { width: widthProp } = this.props;
+    const width: any = widthProp;
     if (renderFail) {
       return (
         <QuickView style={styles.center}>
@@ -158,8 +159,14 @@ class Image extends PureComponent<ImageProps, State> {
   renderProgress = () => {
     const { progress, indeterminate, loading } = this.state;
     const {
-      isLoading, loadingColor, loadingSize: loadingSizeProp, showLoadingText, width, loadingType
+      isLoading,
+      loadingColor,
+      loadingSize: loadingSizeProp,
+      showLoadingText,
+      width: widthProp,
+      loadingType
     } = this.props;
+    const width: any = widthProp;
     const loadingSize = loadingSizeProp || width / 5;
     if (_.isUndefined(isLoading) && loading) {
       // Loading from State
@@ -281,6 +288,18 @@ class Image extends PureComponent<ImageProps, State> {
     } else if (onPress) onPress();
   };
 
+  onProgress = (e: any) => {
+    const { loaded } = e.nativeEvent;
+    const total = e.nativeEvent.total || 100000;
+    const progressPercent = loaded / total;
+    if (progressPercent > 0) {
+      this.setState({
+        loading: true,
+        progress: progressPercent <= 1 ? progressPercent : 1,
+      });
+    }
+  };
+
   render() {
     const {
       imageHeight, imageWidth, loading, renderFail,
@@ -298,14 +317,17 @@ class Image extends PureComponent<ImageProps, State> {
       rounded: roundedProp,
       circle: circleProp,
       borderRadius: borderRadiusProp,
-      placeholderBorderColor,
+      placeholderBorderColor: placeholderBorderColorProp,
       placeholderBorderWidth,
       onPress,
+      theme,
       ...otherProps
     } = this.props;
     const ratio = imageHeight / imageWidth || 1;
     let width: any = widthProp;
     let height = heightProp || ratio * width;
+
+    const placeholderBorderColor = placeholderBorderColorProp || theme.colors.secondary;
 
     const touchableEnable = (viewEnable && !renderFail) || onPress;
     /**
@@ -348,6 +370,7 @@ class Image extends PureComponent<ImageProps, State> {
         borderRadius = 0;
       }
     }
+
     const containerStyle: any = StyleSheet.flatten([
       {
         width,
@@ -356,8 +379,9 @@ class Image extends PureComponent<ImageProps, State> {
         borderRadius,
       },
       (loading || renderFail) && {
-        borderColor: placeholderBorderColor,
         borderWidth: placeholderBorderWidth,
+        width: width - (placeholderBorderWidth || 0) / 2,
+        borderColor: placeholderBorderColor,
       },
       center && { alignSelf: 'center' },
       containerStyleProp,
@@ -369,6 +393,7 @@ class Image extends PureComponent<ImageProps, State> {
     const style: any = StyleSheet.flatten([
       {
         width,
+        marginLeft: -(placeholderBorderWidth || 0.5),
         height,
         borderRadius,
       },
@@ -400,17 +425,8 @@ class Image extends PureComponent<ImageProps, State> {
             onLoadStart={() => this.setState({
               indeterminate: false,
             })}
-            onProgress={(e) => {
-              const { loaded } = e.nativeEvent;
-              const total = e.nativeEvent.total || 100000;
-              const progressPercent = loaded / total;
-              if (progressPercent > 0) {
-                this.setState({
-                  loading: true,
-                  progress: progressPercent <= 1 ? progressPercent : 1,
-                });
-              }
-            }}
+            onProgress={this.onProgress}
+            onLoad={() => this.setState({ loading: false })}
             onLoadEnd={() => this.setState({ loading: false })}
             onError={() => { this.setState({ renderFail: true }); }}
           />
@@ -421,4 +437,4 @@ class Image extends PureComponent<ImageProps, State> {
   }
 }
 
-export default Image;
+export default withTheme(Image as unknown as React.ComponentType<ImageProps & ThemeProps<any>>);

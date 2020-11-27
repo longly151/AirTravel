@@ -112,6 +112,16 @@
     "content": "Must fill this field!"
   },
   "map": {
-    "search_area": "Search this area"
+    "search_area": "Search this area",
+    "view_detail": "View Detail"
+  },
+  "service_detail": {
+    "product": "Product",
+    "hosted_by": "Hosted by"
+  },
+  "empty": {
+    "empty_notification": "Your notification is empty",
+    "empty_favorite": "Your Favorite List is empty",
+    "empty_trip": "You have not booked any trip yet"
   }
 }

@@ -28,6 +28,11 @@ import Helper from '@utils/helper';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
 import { WithListProps } from '@utils/hocHelper';
+import Color from '@themes/Color';
+import productStack from '@contents/Example/containers/Common/FlatList/routes';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import AppView from '@utils/appView';
+import serviceStack from '@contents/Service/routes';
 
 interface Props extends WithListProps, IBase {}
 interface State {
@@ -72,7 +77,7 @@ class MapScreen extends Component<Props, State> {
         }}
       >
         <Image
-          source={{ uri: thumbnail, cache: 'web' }}
+          source={{ uri: thumbnail }}
           // style={{
           //   width: '100%',
           //   height: '60%',
@@ -111,33 +116,33 @@ class MapScreen extends Component<Props, State> {
             }}
           >
             <TouchableOpacity
-              onPress={() => {}}
-              style={[
+              onPress={() => NavigationService.navigate(
+                serviceStack.detail,
                 {
-                  width: '100%',
-                  padding: 5,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 3,
-                },
-                {
-                  borderColor: '#FF6347',
-                  borderWidth: 1,
-                },
-              ]}
+                  screen: detailServiceStack.index,
+                  params: AppHelper.setItemIntoParams(item),
+                }
+              )}
+                // AppView
+              style={[{
+                width: '100%',
+                padding: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 3,
+              }, {
+                borderColor: Color.lightPrimary,
+                borderWidth: 1,
+              }]}
             >
-              <Text
-                style={[
-                  {
-                    fontSize: 14,
-                    fontWeight: 'bold',
-                  },
-                  {
-                    color: '#FF6347',
-                  },
-                ]}
+              <Text style={[{
+                fontSize: 14,
+                fontWeight: 'bold',
+              }, {
+                color: Color.lightPrimary,
+              }]}
               >
-                Order Now
+                {i18next.t('map:view_detail')}
               </Text>
             </TouchableOpacity>
           </View>

@@ -4,6 +4,8 @@ import { QuickView, Text, Image } from '@components';
 import { Dimensions, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
+import AppHelper from '@utils/appHelper';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
 import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
@@ -30,9 +32,13 @@ class CardService extends PureComponent<Props> {
       <QuickView
         marginBottom={40}
         row
-        onPress={() => {
-          NavigationService.navigate(serviceRoutes.detail);
-        }}
+        onPress={() => NavigationService.navigate(
+          serviceRoutes.detail,
+          {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(data),
+          }
+        )}
       >
         <Image
           source={{ uri: data.thumbnail }}

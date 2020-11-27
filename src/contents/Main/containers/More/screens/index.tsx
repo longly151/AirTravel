@@ -104,19 +104,22 @@ class Settings extends React.PureComponent<Props> {
           backgroundColor={theme.colors.primary}
           position="relative"
           borderBottomLeftRadius={24}
-          borderBottomRightRadius={24}>
+          borderBottomRightRadius={24}
+        >
           <QuickView
             padding={20}
             position="absolute"
             top={120}
             width={AppView.screenWidth}
-            borderRadius={10}>
+            borderRadius={10}
+          >
             <QuickView
               alignItems="center"
               backgroundColor={theme.colors.primaryBackground}
               position="relative"
               borderRadius={20}
-              style={AppView.shadow}>
+              style={AppView.shadow}
+            >
               <Avatar
                 size="xlarge"
                 rounded
