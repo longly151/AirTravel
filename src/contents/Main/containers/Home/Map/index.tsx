@@ -45,8 +45,7 @@ class MapScreen extends Component<Props, State> {
   }
 
   renderBottomItem = ({ item }: { item: any }) => {
-    const title =
-      i18next.t('key') === LanguageEnum.EN ? item.enTitle : item.viTitle;
+    const title = i18next.t('key') === LanguageEnum.EN ? item.enTitle : item.viTitle;
     let address = '';
     if (!_.isEmpty(item.destinations)) {
       address = item.destinations[0].address;
@@ -70,7 +69,8 @@ class MapScreen extends Component<Props, State> {
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
           elevation: 5,
-        }}>
+        }}
+      >
         <Image
           source={{ uri: thumbnail, cache: 'web' }}
           // style={{
@@ -85,27 +85,31 @@ class MapScreen extends Component<Props, State> {
         <View
           style={{
             padding: 15,
-          }}>
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontSize: 12,
               // marginTop: 5,
               fontWeight: 'bold',
-            }}>
+            }}
+          >
             {title}
           </Text>
           <Text
             numberOfLines={1}
             color={theme.colors.secondaryText}
-            fontSize={12}>
+            fontSize={12}
+          >
             {address}
           </Text>
           <View
             style={{
               alignItems: 'center',
               marginTop: 5,
-            }}>
+            }}
+          >
             <TouchableOpacity
               onPress={() => {}}
               style={[
@@ -120,7 +124,8 @@ class MapScreen extends Component<Props, State> {
                   borderColor: '#FF6347',
                   borderWidth: 1,
                 },
-              ]}>
+              ]}
+            >
               <Text
                 style={[
                   {
@@ -130,7 +135,8 @@ class MapScreen extends Component<Props, State> {
                   {
                     color: '#FF6347',
                   },
-                ]}>
+                ]}
+              >
                 Order Now
               </Text>
             </TouchableOpacity>
