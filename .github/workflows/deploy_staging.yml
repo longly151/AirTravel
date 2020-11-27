@@ -21,7 +21,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: NPM Install
         run: |
-          echo ${{ secrets.ENV }} > .env
+          echo "${{ secrets.ENV }}" > .env
           grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
           npm install
 
@@ -64,7 +64,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: NPM Install
         run: |
-          echo ${{ secrets.ENV }} > .env
+          echo "${{ secrets.ENV }}" > .env
           npm install
 
       # Build
