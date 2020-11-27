@@ -78,7 +78,6 @@ class AppNavigator extends Component<Props, State> {
               headerShown: false,
             }}
           />
-
         </Stack.Navigator>
       </NavigationContainer>
     );
