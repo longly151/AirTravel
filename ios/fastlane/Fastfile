@@ -26,17 +26,17 @@ platform :ios do
       lock_when_sleeps: true,
       password: ENV["KEYCHAIN_PASSWORD"]
     )
-    install_provisioning_profile(path: "./fastlane/certs/AirTravel_Development.mobileprovision")
+    install_provisioning_profile(path: ENV["PROVISIONING_PATH"])
 
     import_certificate(
       keychain_name: "FastlaneKeychain",
       keychain_password: ENV["KEYCHAIN_PASSWORD"],
-      certificate_path: "./fastlane/certs/iPhone_Developer.p12",
+      certificate_path: ENV["CERTIFICATE_PATH"],
       certificate_password: ENV["CERTIFICATE_PASSWORD"]
     )
 
     update_project_team(
-      path: "VLRNBase.xcodeproj",
+      path: ENV["SCHEME_PATH"],
       teamid: ENV["TEAM_ID"]
     )
   end
@@ -45,7 +45,7 @@ platform :ios do
   desc "iOS Build"
   lane :build do
     update_project_provisioning(
-      profile: "fastlane/certs/AirTravel_Development.mobileprovision",
+      profile: ENV["PROVISIONING_PATH"],
     )
     build_app(
       scheme: ENV["SCHEME"],
@@ -57,9 +57,9 @@ platform :ios do
 
   desc "iOS Testing"
   lane :test do
-    run_tests(workspace: "VLRNBase.xcworkspace",
+    run_tests(workspace: ENV["WORKSPACE"],
               devices: ["iPhone 8", "iPad Air"],
-              scheme: "VLRNBase")
+              scheme: ENV["SCHEME"])
   end
 
 

@@ -21,7 +21,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: NPM Install
         run: |
-          cp .env.example .env
+          echo ${{ secrets.ENV }} > .env
           grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
           npm install
 
@@ -64,7 +64,7 @@ jobs:
             ${{ runner.os }}-node-
       - name: NPM Install
         run: |
-          cp .env.example .env
+          echo ${{ secrets.ENV }} > .env
           npm install
 
       # Build
@@ -79,6 +79,9 @@ jobs:
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+          SCHEME_PATH: ${{ secrets.SCHEME_PATH }}
+          CERTIFICATE_PATH: ${{ secrets.CERTIFICATE_PATH }}
+          PROVISIONING_PATH: ${{ secrets.PROVISIONING_PATH }}
           TEAM_ID: ${{ secrets.TEAM_ID }}
         run: cd ios && fastlane codesigning
       - name: Distribute to firebase
