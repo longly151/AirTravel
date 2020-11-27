@@ -13,8 +13,6 @@ import Categories from '../containers/Categories';
 import HotDeals from '../containers/HotDeals';
 import Destinations from '../containers/Destinations';
 import { serviceCategoryGetList } from '../containers/Categories/redux/slice';
-import MapButton from '../Map/containers/MapButton';
-// import MapButton from '../containers/Map/containers/MapButton';
 
 interface Props {
   list: TArrayRedux;
@@ -44,7 +42,6 @@ class HomeScreen extends PureComponent<Props> {
         <Categories />
         <HotDeals {...listProps} />
         <Destinations />
-        <MapButton />
       </Container>
     );
   }

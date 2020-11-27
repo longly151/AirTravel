@@ -50,9 +50,11 @@ class ModalExample extends PureComponent<Props, State> {
     };
 
     // this.data
-    [50].map((i) => Array(i)
-      .fill(i)
-      .map((item: any, index: number) => this.data.push(`Hi 👋 ${index} !`)),);
+    [50].map((i) =>
+      Array(i)
+        .fill(i)
+        .map((item: any, index: number) => this.data.push(`Hi 👋 ${index} !`)),
+    );
 
     // this.sectionData
     this.sectionData.push({
@@ -79,17 +81,16 @@ class ModalExample extends PureComponent<Props, State> {
           contentContainerStyle={{
             backgroundColor: theme.colors.primaryBackground,
             paddingBottom: AppView.safeAreaInsets.bottom,
-          }}
-        >
-          {
-            [50].map((i) => Array(i).fill(i).map(
-              (item: any, index: number) => (
+          }}>
+          {[50].map((i) =>
+            Array(i)
+              .fill(i)
+              .map((item: any, index: number) => (
                 <Text key={index.toString()} center>
                   {`Hi 👋 ${index} !`}
                 </Text>
-              )
-            ))
-          }
+              )),
+          )}
           <Button
             marginHorizontal={20}
             marginVertical={10}
@@ -99,7 +100,7 @@ class ModalExample extends PureComponent<Props, State> {
               if (close) close();
             }}
           />
-        </BottomSheetScrollView>
+        </BottomSheetScrollView>,
       );
     }
     if (open) open();
@@ -142,8 +143,7 @@ class ModalExample extends PureComponent<Props, State> {
       <QuickView
         paddingBottom={6}
         paddingHorizontal={AppView.bodyPaddingHorizontal}
-        backgroundColor={theme.colors.primaryBackground}
-      >
+        backgroundColor={theme.colors.primaryBackground}>
         <Text style={{ textTransform: 'uppercase' }}>{section.title}</Text>
       </QuickView>
     );
@@ -196,8 +196,7 @@ class ModalExample extends PureComponent<Props, State> {
             />
             <Modal
               isVisible={isVisible}
-              onBackdropPress={() => this.setState({ isVisible: false })}
-            >
+              onBackdropPress={() => this.setState({ isVisible: false })}>
               <Button
                 title="Native Modal"
                 onPress={() => this.setState({ isVisible: !isVisible })}
@@ -207,14 +206,12 @@ class ModalExample extends PureComponent<Props, State> {
               ref={(ref: any) => {
                 this.customChildren = ref;
               }}
-              title="Modal Button with custom Children"
-            >
+              title="Modal Button with custom Children">
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 borderRadius={10}
                 padding={30}
-                center
-              >
+                center>
                 <Text center>Hi 👋!</Text>
                 <Button
                   title="Close"
@@ -249,8 +246,7 @@ class ModalExample extends PureComponent<Props, State> {
             <Text type="header">Custom Modal</Text>
             <ModalButton
               title="Bottom-Half Modal"
-              modalProps={{ type: 'bottom-half' }}
-            >
+              modalProps={{ type: 'bottom-half' }}>
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 padding={30}
@@ -260,16 +256,17 @@ class ModalExample extends PureComponent<Props, State> {
                   borderTopLeftRadius: 10,
                   borderTopRightRadius: 10,
                   maxHeight: 300,
-                }}
-              >
+                }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {[20].map((i) => Array(i)
-                    .fill(i)
-                    .map((item: any, index: number) => (
-                      <Text key={index.toString()} center>
-                        Hi 👋!
-                      </Text>
-                    )),)}
+                  {[20].map((i) =>
+                    Array(i)
+                      .fill(i)
+                      .map((item: any, index: number) => (
+                        <Text key={index.toString()} center>
+                          Hi 👋!
+                        </Text>
+                      )),
+                  )}
                 </ScrollView>
               </QuickView>
             </ModalButton>
@@ -338,8 +335,7 @@ class ModalExample extends PureComponent<Props, State> {
             />
             <ModalButton
               title="Full Screen Modal"
-              modalProps={{ type: 'fullscreen' }}
-            >
+              modalProps={{ type: 'fullscreen' }}>
               <Container>
                 <Header backIcon title="ExampleScreen" />
                 <Body>
@@ -354,7 +350,7 @@ class ModalExample extends PureComponent<Props, State> {
             <Text type="header">Invisible Modal Button</Text>
             <ModalButton
               invisible
-              buttonChildren={(
+              buttonChildren={
                 <Image
                   source={{
                     uri: 'https://picsum.photos/1000/1000',
@@ -362,15 +358,13 @@ class ModalExample extends PureComponent<Props, State> {
                   }}
                   containerStyle={{ marginVertical: 15 }}
                 />
-              )}
-            >
+              }>
               <QuickView
                 backgroundColor={theme.colors.primaryBackground}
                 borderRadius={10}
                 padding={30}
                 width="100%"
-                center
-              >
+                center>
                 <Text center>Hi 👋!</Text>
               </QuickView>
             </ModalButton>
@@ -381,15 +375,7 @@ class ModalExample extends PureComponent<Props, State> {
   }
 }
 
-<<<<<<< HEAD
-export default withBottomSheet()(withTheme(ModalExample));
+export default withBottomSheet()(withTheme(ModalExample as any));
 // {
 //   snapPoints: ['90%']
 // }
-=======
-export default withBottomSheet(
-  // {
-  //   snapPoints: ['90%']
-  // }
-)(withTheme(ModalExample as any));
->>>>>>> 0d027172e2f2d6a47caf4d26d67283593fc32679

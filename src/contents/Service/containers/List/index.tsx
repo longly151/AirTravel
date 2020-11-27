@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { QuickView, Text, Button, ListCheckBox } from '@components';
+import { QuickView, Text, Button, ListCheckBox, Body } from '@components';
 import withReduxList from '@components/Hoc/withReduxList';
 import { CONSTANT } from '@contents/Service/redux/constant';
 import {
@@ -19,6 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AppView from '@utils/appView';
 import { compose } from 'recompose';
 import withBottomSheet from '@components/Hoc/withBottomSheet';
+import MapButton from '@contents/Main/containers/Home/Map/containers/MapButton';
 import CardService from './components/CardService';
 
 const styles = StyleSheet.create({
@@ -94,7 +95,7 @@ function ListServiceScreen(props: any) {
   };
 
   const renderScrollBottomSheet = () => {
-    const { open, setModalContent, theme } = props;
+    const { open, setModalContent, theme, close } = props;
     if (setModalContent) {
       setModalContent(
         <>
@@ -137,7 +138,7 @@ function ListServiceScreen(props: any) {
             color={theme.colors.primaryBackground}
             marginTop={10}
             onPress={() => {
-              // customBackdrop.close();
+              close();
               handleFilterByCategories();
             }}
           />
@@ -147,8 +148,10 @@ function ListServiceScreen(props: any) {
     if (open) open();
   };
 
+  const { renderFlatList } = props;
+
   return (
-    <QuickView style={styles.headerContainer}>
+    <Body>
       <TouchableOpacity activeOpacity={0.9}>
         <QuickView
           backgroundColor="#fff"
@@ -158,8 +161,7 @@ function ListServiceScreen(props: any) {
           padding={10}
           borderRadius={8}
           borderWidth={2}
-          marginTop={60}
-          marginHorizontal={18}>
+          marginTop={20}>
           <QuickView row alignItems="center" width={300}>
             <Icon name="magnify" size={24} />
             <Input
@@ -169,11 +171,18 @@ function ListServiceScreen(props: any) {
               inputStyle={styles.input}
             />
           </QuickView>
-          <Icon
-            name="filter-outline"
-            size={22}
-            onPress={renderScrollBottomSheet}
-          />
+          <QuickView
+            style={{ borderRightWidth: 2 }}
+            marginRight={5}
+            paddingVertical={2}>
+            <Icon
+              name="filter-outline"
+              size={22}
+              onPress={renderScrollBottomSheet}
+            />
+          </QuickView>
+
+          <MapButton />
         </QuickView>
       </TouchableOpacity>
 
@@ -183,19 +192,19 @@ function ListServiceScreen(props: any) {
         justifyContent="center"
         marginTop={20}
         marginBottom={30}
-        paddingHorizontal={18}
         position="relative">
         <Icon
           name="arrow-left"
           size={24}
           onPress={() => NavigationService.goBack()}
-          style={{ position: 'absolute', left: 14 }}
+          style={{ position: 'absolute', left: 0 }}
         />
         <Text fontSize={18} bold>
           {totalServices} services to enjoy
         </Text>
       </QuickView>
-    </QuickView>
+      {renderFlatList()}
+    </Body>
   );
 }
 
