@@ -45,7 +45,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Copy .env
+      - name: Init .env
         run: |
           echo "${{ secrets.ENV }}" > .env
 
