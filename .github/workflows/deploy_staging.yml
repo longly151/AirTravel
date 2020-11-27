@@ -80,11 +80,11 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
           TEAM_ID: ${{ secrets.TEAM_ID }}
-          SCHEME: ${{ secrets.SCHEME }}
-          WORKSPACE: ${{ secrets.WORKSPACE }}
         run: cd ios && fastlane codesigning
       - name: Distribute to firebase
         env:
+          SCHEME: ${{ secrets.SCHEME }}
+          WORKSPACE: ${{ secrets.WORKSPACE }}
           FIREBASE_IOS_APP: ${{ secrets.FIREBASE_IOS_APP }}
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
           FIREBASE_IOS_GROUPS: ${{ secrets.FIREBASE_IOS_GROUPS }}
