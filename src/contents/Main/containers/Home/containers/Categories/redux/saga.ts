@@ -16,10 +16,19 @@ export function* getListSaga() {
     const response = yield call(fetchServiceCategories);
 
     response.data.map((e: any, index: any) => {
+      let subtitle = '';
+      e.children.map((ec: any) => {
+        subtitle += `${ec.enName} - `;
+        return ec;
+      });
       e.illustration = mockCategories[index].illustration;
-      e.subtitle = mockCategories[index].subtitle;
+      if (subtitle === '') e.subtitle = mockCategories[index].subtitle;
+      else {
+        e.subtitle = subtitle.slice(0, subtitle.length - 3);
+      }
       return e;
     });
+
     yield put(serviceCategoryGetListSuccess(response));
     return true;
   } catch (error) {

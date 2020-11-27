@@ -1,14 +1,22 @@
 import Selector from '@utils/selector';
-import { PARENT_NAME, NAME, LIST, DETAIL } from './constant';
+import { CONSTANT } from './constant';
 
 export const root = (state: any) => {
-  if (PARENT_NAME) return state[PARENT_NAME][NAME];
-  return state[NAME];
+  if (CONSTANT.PARENT_NAME) return state[CONSTANT.PARENT_NAME][CONSTANT.NAME];
+  return state[CONSTANT.NAME];
 };
 
-export const serviceListSelector = Selector.createArraySelector(root, LIST);
+export const serviceListSelector = Selector.createArraySelector(
+  root,
+  CONSTANT.LIST,
+);
+
+export const serviceSpecialListSelector = Selector.createArraySelector(
+  root,
+  CONSTANT.SPECIAL_LIST,
+);
 
 export const serviceDetailSelector = Selector.createObjectSelector(
   root,
-  DETAIL,
+  CONSTANT.DETAIL,
 );

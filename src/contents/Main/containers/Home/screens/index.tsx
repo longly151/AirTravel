@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Container, Loading } from '@components';
 import { TQuery, TArrayRedux } from '@utils/redux';
 import Selector from '@utils/selector';
-import { serviceListSelector } from '@contents/Service/redux/selector';
-import { serviceGetList } from '@contents/Service/redux/slice';
+import { serviceSpecialListSelector } from '@contents/Service/redux/selector';
+import { serviceGetSpecialList } from '@contents/Service/redux/slice';
 
 import Greeting from '../containers/Greeting';
 import CrucialCategory from '../containers/CrucialCategory';
@@ -16,13 +16,13 @@ import Destinations from '../containers/Destinations';
 
 interface Props {
   list: TArrayRedux;
-  getList: (query?: TQuery) => any;
+  getSpecialList: (query?: TQuery) => any;
 }
 
 class HomeScreen extends PureComponent<Props> {
   componentDidMount() {
-    const { getList } = this.props;
-    getList({ limit: 5 });
+    const { getSpecialList } = this.props;
+    getSpecialList({ limit: 3, page: 2 });
   }
 
   render() {
@@ -47,11 +47,11 @@ class HomeScreen extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-  list: Selector.getArray(serviceListSelector, state),
+  list: Selector.getArray(serviceSpecialListSelector, state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getList: (query?: TQuery) => dispatch(serviceGetList({ query })),
+  getSpecialList: (query?: TQuery) => dispatch(serviceGetSpecialList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

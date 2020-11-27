@@ -1,15 +1,14 @@
 // import { fromJS } from 'immutable';
 import Redux from '@utils/redux';
 
-/**
- * NAME
- */
-export const PARENT_NAME = '';
-export const NAME = 'service';
-
-export const LIST = 'list';
-export const DETAIL = 'detail';
-
+export const CONSTANT = {
+  PARENT_NAME: '',
+  NAME: 'service',
+  LIST: 'list',
+  SPECIAL_LIST: 'specialList',
+  DETAIL: 'detail',
+  FILTER: 'filter',
+};
 /**
  * TYPE
  */
@@ -18,6 +17,13 @@ export type TList = {
   serviceGetListSuccess: (state: any, action: any) => any;
   serviceGetListFail: (state: any, action: any) => any;
 };
+
+export type TSpecialList = {
+  serviceGetSpecialList: (state: any, action: any) => any;
+  serviceGetSpecialListSuccess: (state: any, action: any) => any;
+  serviceGetSpecialListFail: (state: any, action: any) => any;
+};
+
 export type TDetail = {
   serviceGetDetail: (state: any, action: any) => any;
   serviceGetDetailSuccess: (state: any, action: any) => any;
@@ -32,6 +38,8 @@ export type TDetail = {
 //   ...Redux.createObjectInitialState(DETAIL),
 // });S
 export const INITIAL_STATE = {
-  ...Redux.createArrayInitialState(LIST),
-  ...Redux.createObjectInitialState(DETAIL),
+  ...Redux.createArrayInitialState(CONSTANT.LIST),
+  ...Redux.createArrayInitialState(CONSTANT.SPECIAL_LIST),
+  [CONSTANT.FILTER]: {},
+  ...Redux.createObjectInitialState(CONSTANT.DETAIL),
 };

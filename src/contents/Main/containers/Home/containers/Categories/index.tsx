@@ -7,6 +7,7 @@ import { withTheme } from 'react-native-elements';
 import { QuickView, FlatList, Card } from '@components';
 import { NavigationService } from '@utils/navigation';
 import Selector from '@utils/selector';
+import { serviceSetFilter } from '@contents/Service/redux/slice';
 import homeStack from '../../routes';
 import { serviceCategoryListSelector } from './redux/selector';
 import { serviceCategoryGetList } from './redux/slice';
@@ -16,12 +17,13 @@ const { width: viewportWidth } = Dimensions.get('window');
 interface Props {
   list: TArrayRedux;
   getList: (query?: TQuery) => any;
+  setFilter: (filter: any) => any;
   theme?: any;
 }
 
 class Categories extends PureComponent<Props> {
   renderItem = ({ item }: { item: any }) => {
-    const { theme } = this.props;
+    const { theme, setFilter } = this.props;
     return (
       <Card
         data={item}
@@ -31,9 +33,8 @@ class Categories extends PureComponent<Props> {
         backgroundColor={theme.Card.backgroundColor}
         shadowColor={theme.Card.shadowColor}
         onPress={() => {
-          NavigationService.navigate(homeStack.service, {
-            id: [item.id],
-          });
+          setFilter({ 'serviceCategories.id': item.id });
+          NavigationService.navigate(homeStack.service);
         }}
         key={item.id}
       />
@@ -63,6 +64,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   getList: () => dispatch(serviceCategoryGetList({})),
+  setFilter: (filter: any) => dispatch(serviceSetFilter({ filter })),
 });
 
 const withReduce = connect(mapStateToProps, mapDispatchToProps, null, {

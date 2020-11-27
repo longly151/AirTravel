@@ -22,9 +22,9 @@ class SearchBar extends PureComponent<Props> {
           alignItems="center"
           justifyContent="space-between"
           padding={10}
-          borderRadius={24}
+          borderRadius={8}
+          borderWidth={2}
           marginTop={60}
-          marginBottom={10}
           marginHorizontal={18}
           onPress={() => {
             NavigationService.navigate(serviceRoutes.search);
@@ -38,7 +38,9 @@ class SearchBar extends PureComponent<Props> {
             name="filter-outline"
             size={22}
             onPress={() => {
-              NavigationService.navigate(serviceRoutes.filter, { id: serviceCategoryId });
+              NavigationService.navigate(serviceRoutes.filter, {
+                id: serviceCategoryId,
+              });
             }}
           />
         </QuickView>

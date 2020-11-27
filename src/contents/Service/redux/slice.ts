@@ -1,14 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Redux from '@utils/redux';
 // import { REHYDRATE } from 'redux-persist';
-import { INITIAL_STATE, TList, NAME, TDetail, LIST, DETAIL } from './constant';
+import {
+  INITIAL_STATE,
+  TList,
+  TDetail,
+  CONSTANT,
+  TSpecialList,
+} from './constant';
 
 const slice = createSlice({
-  name: NAME,
+  name: CONSTANT.NAME,
   initialState: INITIAL_STATE,
   reducers: {
-    ...Redux.createArrayReducer<TList>(`${NAME}GetList`, LIST),
-    ...Redux.createObjectReducer<TDetail>(`${NAME}GetDetail`, DETAIL),
+    ...Redux.createArrayReducer<TList>(
+      `${CONSTANT.NAME}GetList`,
+      CONSTANT.LIST,
+    ),
+    ...Redux.createArrayReducer<TSpecialList>(
+      `${CONSTANT.NAME}GetSpecialList`,
+      CONSTANT.SPECIAL_LIST,
+    ),
+    serviceSetFilter: (state, action) => {
+      state[CONSTANT.FILTER] = action.payload.filter;
+    },
+    ...Redux.createObjectReducer<TDetail>(
+      `${CONSTANT.NAME}GetDetail`,
+      CONSTANT.DETAIL,
+    ),
   },
   // extraReducers: {
   //   [REHYDRATE]: (state, action) => {
@@ -27,6 +46,10 @@ export const {
   serviceGetList,
   serviceGetListSuccess,
   serviceGetListFail,
+  serviceGetSpecialList,
+  serviceGetSpecialListSuccess,
+  serviceGetSpecialListFail,
+  serviceSetFilter,
   serviceGetDetail,
   serviceGetDetailSuccess,
   serviceGetDetailFail,
