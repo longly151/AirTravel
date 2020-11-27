@@ -26,7 +26,7 @@ platform :ios do
       lock_when_sleeps: true,
       password: ENV["KEYCHAIN_PASSWORD"]
     )
-    install_provisioning_profile(path: "./fastlane/certs/VLRNBase_Development.mobileprovision")
+    install_provisioning_profile(path: "./fastlane/certs/AirTravel_Development.mobileprovision")
 
     import_certificate(
       keychain_name: "FastlaneKeychain",
