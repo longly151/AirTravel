@@ -10,11 +10,15 @@ import { ScrollView } from 'react-native';
 import { BottomSheetScrollView, BottomSheetFlatList, BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import AppView from '@utils/appView';
 import { useFocusEffect } from '@react-navigation/native';
+import { WithBottomSheetProps } from '@utils/hocHelper';
 
+interface Props extends WithBottomSheetProps {
+  theme: any;
+}
 interface State {
   isVisible: boolean
 }
-class ModalExample extends PureComponent<any, State> {
+class ModalExample extends PureComponent<Props, State> {
   customChildren: any;
 
   customBackdrop: any;
@@ -72,7 +76,16 @@ class ModalExample extends PureComponent<any, State> {
                 </Text>
               )
             ))
-            }
+          }
+          <Button
+            marginHorizontal={20}
+            marginVertical={10}
+            title="Apply"
+            onPress={() => {
+              const { close } = this.props;
+              if (close) close();
+            }}
+          />
         </BottomSheetScrollView>
       );
     }
@@ -315,4 +328,4 @@ export default withBottomSheet(
   // {
   //   snapPoints: ['90%']
   // }
-)(withTheme(ModalExample));
+)(withTheme(ModalExample as any));

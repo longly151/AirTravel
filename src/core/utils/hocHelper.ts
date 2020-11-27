@@ -1,3 +1,4 @@
+import React from 'react';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
@@ -66,6 +67,14 @@ export interface WithListProps {
 }
 
 export interface WithDetailProps {
+  themeName: ThemeEnum;
+}
+
+export interface WithBottomSheetProps {
+  open: () => any;
+  close: () => any;
+  setModalContent: (content: React.ReactElement) => any;
+  setIndicatorBackgroundColor: (color: string) => any;
   themeName: ThemeEnum;
 }
 
