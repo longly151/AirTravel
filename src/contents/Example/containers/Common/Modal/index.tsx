@@ -23,11 +23,15 @@ import {
 } from '@gorhom/bottom-sheet';
 import AppView from '@utils/appView';
 import { useFocusEffect } from '@react-navigation/native';
+import { WithBottomSheetProps } from '@utils/hocHelper';
 
+interface Props extends WithBottomSheetProps {
+  theme: any;
+}
 interface State {
   isVisible: boolean;
 }
-class ModalExample extends PureComponent<any, State> {
+class ModalExample extends PureComponent<Props, State> {
   customChildren: any;
 
   customBackdrop: any;
@@ -77,14 +81,25 @@ class ModalExample extends PureComponent<any, State> {
             paddingBottom: AppView.safeAreaInsets.bottom,
           }}
         >
-          {[50].map((i) => Array(i)
-            .fill(i)
-            .map((item: any, index: number) => (
-              <Text key={index.toString()} center>
-                {`Hi 👋 ${index} !`}
-              </Text>
-            )),)}
-        </BottomSheetScrollView>,
+          {
+            [50].map((i) => Array(i).fill(i).map(
+              (item: any, index: number) => (
+                <Text key={index.toString()} center>
+                  {`Hi 👋 ${index} !`}
+                </Text>
+              )
+            ))
+          }
+          <Button
+            marginHorizontal={20}
+            marginVertical={10}
+            title="Apply"
+            onPress={() => {
+              const { close } = this.props;
+              if (close) close();
+            }}
+          />
+        </BottomSheetScrollView>
       );
     }
     if (open) open();
@@ -366,7 +381,15 @@ class ModalExample extends PureComponent<any, State> {
   }
 }
 
+<<<<<<< HEAD
 export default withBottomSheet()(withTheme(ModalExample));
 // {
 //   snapPoints: ['90%']
 // }
+=======
+export default withBottomSheet(
+  // {
+  //   snapPoints: ['90%']
+  // }
+)(withTheme(ModalExample as any));
+>>>>>>> 0d027172e2f2d6a47caf4d26d67283593fc32679

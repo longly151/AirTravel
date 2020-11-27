@@ -1,4 +1,3 @@
-import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
@@ -55,15 +54,7 @@ export type TQuery = {
  * Interface
  */
 
-export interface BaseProps {
-  loading: boolean;
-  data: any;
-  metadata?: TMetadata;
-  error: TError | null;
-  themeName?: ThemeEnum;
-}
-
-export interface BaseState {
+export interface IBase {
   loading: boolean;
   data: any;
   metadata?: TMetadata;

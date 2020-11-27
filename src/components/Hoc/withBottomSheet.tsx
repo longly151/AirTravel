@@ -20,7 +20,7 @@ const withBottomSheet = (data?: IWithBottomSheet) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   function BottomSheet(props: any) {
-    const { present } = useBottomSheetModal();
+    const { present, dismiss } = useBottomSheetModal();
     const { reduxThemeName } = props;
     const theme = AppHelper.getThemeByName(reduxThemeName);
 
@@ -84,11 +84,17 @@ const withBottomSheet = (data?: IWithBottomSheet) => <P extends object>(
       );
     }, [present, handleChange]);
 
+    const close = useCallback(() => {
+      dismiss();
+    }, [dismiss]);
+
     // renders
     return (
       <WrappedComponent
         {...props}
         open={open}
+        close={close}
+        themeName={reduxThemeName}
         setModalContent={setModalContent}
         setIndicatorBackgroundColor={setIndicatorBackgroundColor}
       />

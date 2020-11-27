@@ -8,8 +8,8 @@ import _ from 'lodash';
 import Redux from '@utils/redux';
 
 export interface WithReduxDetailProps {
-  themeName?: any;
   getDetail: (item: any) => any;
+  themeName?: any;
 }
 interface State {}
 

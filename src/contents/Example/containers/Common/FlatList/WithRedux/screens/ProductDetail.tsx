@@ -12,15 +12,13 @@ import {
   withReduxDetail,
 } from '@components';
 import { parallaxHeaderHeight } from '@themes/ThemeComponent/ParallaxScrollView';
-import { BaseProps, BaseState } from '@utils/redux';
+import { IBase } from '@utils/redux';
 import AppHelper from '@utils/appHelper';
+import { WithDetailProps } from '@utils/hocHelper';
 import { productGetDetail, CONSTANT } from '../redux/slice';
 
-interface Props {
-  theme?: any;
-}
-interface Props extends BaseProps {}
-interface State extends BaseState {}
+interface Props extends WithDetailProps, IBase {}
+interface State extends IBase {}
 
 class ProductDetailScreen extends Component<Props, State> {
   renderForeground = () => {
@@ -93,17 +91,17 @@ export default withReduxDetail({
   },
 
   // // [LOG] Support data (pass from previous screen (no API call)) & ExtraData
-  // log: {
-  //   name: 'PRODUCT_DETAIL_VIEW',
-  //   // extraPayload: {
-  //   //   extraPayload: 'extraPayload'
-  //   // },
-  //   payload: {
-  //     // if key is undefined, Log will use "this.props.data" instead of "this.props[key].data"
-  //     key: 'moreDetail',
-  //     fields: ['id']
-  //   }
-  // },
+  log: {
+    name: 'PRODUCT_DETAIL_VIEW',
+    // extraPayload: {
+    //   extraPayload: 'extraPayload'
+    // },
+    payload: {
+      // if key is undefined, Log will use "this.props.data" instead of "this.props[key].data"
+      // key: 'moreDetail',
+      fields: ['id']
+    }
+  },
 
   // // [Optional] extraData
   // extraData: [

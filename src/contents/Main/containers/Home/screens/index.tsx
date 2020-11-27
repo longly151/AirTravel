@@ -13,6 +13,7 @@ import Categories from '../containers/Categories';
 import HotDeals from '../containers/HotDeals';
 import Destinations from '../containers/Destinations';
 import { serviceCategoryGetList } from '../containers/Categories/redux/slice';
+import MapButton from '../Map/containers/MapButton';
 // import MapButton from '../containers/Map/containers/MapButton';
 
 interface Props {
@@ -43,7 +44,7 @@ class HomeScreen extends PureComponent<Props> {
         <Categories />
         <HotDeals {...listProps} />
         <Destinations />
-        {/* <MapButton /> */}
+        <MapButton />
       </Container>
     );
   }
@@ -54,8 +55,10 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getSpecialList: (query?: TQuery) => dispatch(serviceGetSpecialList({ query })),
-  getCategoryList: (query?: TQuery) => dispatch(serviceCategoryGetList({ query })),
+  getSpecialList: (query?: TQuery) =>
+    dispatch(serviceGetSpecialList({ query })),
+  getCategoryList: (query?: TQuery) =>
+    dispatch(serviceCategoryGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

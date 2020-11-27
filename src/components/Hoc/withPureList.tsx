@@ -9,15 +9,7 @@ import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog } from '@utils/hocHelper';
-import Container from '../Common/View/Container';
-import Body from '../Common/View/Body';
-import QuickView from '../Common/View/QuickView';
-import FlatList from '../Common/FlatList/DefaultFlatList';
-
-export interface FilterProps {
-  filter: Filter,
-  applyFilter: () => any;
-}
+import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
 
 export interface WithPureListProps {
   themeName?: any;
@@ -32,7 +24,7 @@ const withPureList = (
     url: string,
     fields?: Array<string>,
     ListHeaderComponent?: React.ComponentType<any>,
-    renderItem: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
+    renderItem?: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
     log?: IHocLog
@@ -134,8 +126,7 @@ const withPureList = (
     //     if (!propsAny[e.key]?.data || _.isEmpty(propsAny[e.key].data)) return true;
     //   });
     // };
-
-    render() {
+    renderFlatList = (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => {
       const { loading, data, metadata, error } = this.state;
       const { themeName } = this.props;
       const list = {
@@ -144,25 +135,39 @@ const withPureList = (
         loading,
         error,
       };
+      if (renderItem) {
+        return (
+          <FlatList
+            ref={(ref: any) => { this.flatList = ref; }}
+            {...flatListProps}
+            list={list}
+            ListHeaderComponent={ListHeaderComponent}
+            getList={(query?: TQuery) => {
+              this.getList({ ...query, fields, filter: this.filter?.filterObject });
+            }}
+            renderItem={(data) => renderItem(data, themeName)}
+          />
+        );
+      }
+      return null;
+    };
 
-      return (
-        <Container>
-          {WrappedComponent ? <WrappedComponent {...this.props as P} {...this.state} filter={this.filter} applyFilter={this.applyFilter} /> : null}
-          <Body>
-            <QuickView>
-              <FlatList
-                ref={(ref: any) => { this.flatList = ref; }}
-                list={list}
-                ListHeaderComponent={ListHeaderComponent}
-                getList={(query?: TQuery) => {
-                  this.getList({ ...query, fields, filter: this.filter?.filterObject });
-                }}
-                renderItem={(data) => renderItem(data, themeName)}
-              />
-            </QuickView>
-          </Body>
-        </Container>
-      );
+    render() {
+      if (WrappedComponent) {
+        return (
+          <WrappedComponent
+            {...this.props as P}
+            {...this.state}
+            filter={this.filter}
+            applyFilter={this.applyFilter}
+            renderFlatList={this.renderFlatList}
+            getList={(query?: TQuery) => {
+              this.getList({ ...query, fields, filter: this.filter?.filterObject });
+            }}
+          />
+        );
+      }
+      return null;
     }
   }
 

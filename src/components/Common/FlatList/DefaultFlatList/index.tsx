@@ -21,6 +21,7 @@ export interface FlatListProps
   renderEmpty?: () => any;
   loadingColor?: string;
   textColor?: string;
+  loadMore?: boolean;
   theme?: any;
   ref?: any;
 }
@@ -33,6 +34,7 @@ class FlatList extends PureComponent<FlatListProps, State> {
   static defaultProps = {
     showsVerticalScrollIndicator: false,
     onEndReachedThreshold: 0.5,
+    loadMore: true,
   };
 
   private flatListRef: any;
@@ -65,8 +67,8 @@ class FlatList extends PureComponent<FlatListProps, State> {
   };
 
   handleLoadMore = () => {
-    const { list, getList } = this.props;
-    if (list && getList) {
+    const { list, getList, loadMore } = this.props;
+    if (loadMore && list && getList) {
       const { page: currentPage, pageCount } = list.metadata;
       if (currentPage !== pageCount && !list.loading) {
         this.setState(
