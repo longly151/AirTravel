@@ -9,8 +9,8 @@ import { NavigationService } from '@utils/navigation';
 import Selector from '@utils/selector';
 import { serviceSetFilter } from '@contents/Service/redux/slice';
 import homeStack from '../../routes';
-import { serviceCategoryListSelector } from './redux/selector';
-import { serviceCategoryGetList } from './redux/slice';
+import { serviceCategoryHomeScreenListSelector } from './redux/selector';
+import { serviceCategoryGetHomeScreenList } from './redux/slice';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -59,11 +59,11 @@ class Categories extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-  list: Selector.getArray(serviceCategoryListSelector, state),
+  list: Selector.getArray(serviceCategoryHomeScreenListSelector, state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getList: () => dispatch(serviceCategoryGetList({})),
+  getList: (query?: TQuery) => dispatch(serviceCategoryGetHomeScreenList({ query })),
   setFilter: (filter: any) => dispatch(serviceSetFilter({ filter })),
 });
 

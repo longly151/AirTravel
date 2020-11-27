@@ -12,17 +12,20 @@ import CrucialCategory from '../containers/CrucialCategory';
 import Categories from '../containers/Categories';
 import HotDeals from '../containers/HotDeals';
 import Destinations from '../containers/Destinations';
+import { serviceCategoryGetList } from '../containers/Categories/redux/slice';
 // import MapButton from '../containers/Map/containers/MapButton';
 
 interface Props {
   list: TArrayRedux;
   getSpecialList: (query?: TQuery) => any;
+  getCategoryList: (query?: TQuery) => any;
 }
 
 class HomeScreen extends PureComponent<Props> {
   componentDidMount() {
-    const { getSpecialList } = this.props;
+    const { getSpecialList, getCategoryList } = this.props;
     getSpecialList({ limit: 3, page: 2 });
+    getCategoryList({ limit: 50, sort: 'id,DESC' });
   }
 
   render() {
@@ -52,6 +55,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   getSpecialList: (query?: TQuery) => dispatch(serviceGetSpecialList({ query })),
+  getCategoryList: (query?: TQuery) => dispatch(serviceCategoryGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

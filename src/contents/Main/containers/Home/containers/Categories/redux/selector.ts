@@ -1,5 +1,5 @@
 import Selector from '@utils/selector';
-import { PARENT_NAME, NAME, LIST, DETAIL } from './constant';
+import { PARENT_NAME, NAME, LIST, DETAIL, HOME_SCREEN_LIST } from './constant';
 
 export const root = (state: any) => {
   if (PARENT_NAME) return state[PARENT_NAME][NAME];
@@ -14,4 +14,9 @@ export const serviceCategoryListSelector = Selector.createArraySelector(
 export const serviceCategoryDetailSelector = Selector.createObjectSelector(
   root,
   DETAIL,
+);
+
+export const serviceCategoryHomeScreenListSelector = Selector.createArraySelector(
+  root,
+  HOME_SCREEN_LIST,
 );

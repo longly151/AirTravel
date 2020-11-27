@@ -33,13 +33,15 @@ class CrucialCategory extends PureComponent<Props> {
           <Text
             style={crucialCategoryStyle.title}
             numberOfLines={3}
-            color={theme.Card.backgroundColor}>
+            color={theme.Card.backgroundColor}
+          >
             {i18next.t('home:crucial_category_title')}
           </Text>
           <Text
             style={crucialCategoryStyle.subtitle}
             numberOfLines={3}
-            color={theme.Card.backgroundColor}>
+            color={theme.Card.backgroundColor}
+          >
             {i18next.t('home:crucial_category_subTitle')}
           </Text>
           <Button
