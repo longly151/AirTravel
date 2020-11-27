@@ -52,10 +52,8 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getSpecialList: (query?: TQuery) =>
-    dispatch(serviceGetSpecialList({ query })),
-  getCategoryList: (query?: TQuery) =>
-    dispatch(serviceCategoryGetList({ query })),
+  getSpecialList: (query?: TQuery) => dispatch(serviceGetSpecialList({ query })),
+  getCategoryList: (query?: TQuery) => dispatch(serviceCategoryGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

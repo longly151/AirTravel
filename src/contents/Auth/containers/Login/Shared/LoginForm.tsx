@@ -32,7 +32,7 @@ class LoginForm extends PureComponent<Props> {
           ref={(ref: any) => {
             this.email = ref;
           }}
-          value="admin@gmail.com"
+          value="fussssss@gmail.com"
           leftIconName="email-outline"
           placeholder="Email"
           validationField="email"
@@ -42,7 +42,7 @@ class LoginForm extends PureComponent<Props> {
           ref={(ref: any) => {
             this.password = ref;
           }}
-          value="admin"
+          value="123123"
           leftIconName="lock-outline"
           textContentType="oneTimeCode"
           placeholder="Password"
@@ -65,11 +65,14 @@ class LoginForm extends PureComponent<Props> {
         <QuickView marginTop={20}>
           <AuthButton
             title={i18next.t('auth:login')}
-              // onPress={this.onSignIn}
+            // onPress={this.onSignIn}
             color={Color.white}
             outline
             onPress={() => {
-              reduxLogin({ email: this.email.getText(), password: this.password.getText() });
+              reduxLogin({
+                email: this.email.getText(),
+                password: this.password.getText(),
+              });
             }}
             loading={loginData.loading}
           />
@@ -94,4 +97,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   reduxLogout: () => dispatch(logout()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginForm as any));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withTheme(LoginForm as any));
