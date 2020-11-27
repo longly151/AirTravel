@@ -1,20 +1,22 @@
 /* eslint-disable no-console */
 import React from 'react';
 import {
-  Platform,
   StyleSheet,
-  TouchableOpacity,
-  Linking,
 } from 'react-native';
+import { Marker } from 'react-native-maps';
+import { NavigationService } from '@utils/navigation';
 import MapView from '../../MapView';
+import ModalButton from '../../Button/ModalButton';
+import Button from '../../Button/DefaultButton';
 
 const styles = StyleSheet.create({
   container: {},
   mapView: {
-    width: 150,
-    height: 100,
-    borderRadius: 13,
-    margin: 3,
+    width: 200,
+    height: 200,
+    borderRadius: 15,
+    marginTop: -10,
+    marginBottom: 5
   },
 });
 
@@ -29,47 +31,55 @@ export default class CustomView extends React.Component<{
     mapViewStyle: {},
   };
 
-  openMapAsync = async () => {
-    const { currentMessage: { location = {} } = {} } = this.props;
+  mapModal: any;
 
-    const url = Platform.select({
-      ios: `http://maps.apple.com/?ll=${location.latitude},${location.longitude}`,
-      default: `http://maps.google.com/?q=${location.latitude},${location.longitude}`,
-    });
+  openMap = () => {
+    this.mapModal.open();
+  };
 
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        return Linking.openURL(url);
-      }
-      console.log('Opening the map is not supported.');
-      return true;
-    } catch ({ message }) {
-      console.log(message);
-      return false;
-    }
+  renderMap = (triggerPress: boolean = true) => {
+    const { currentMessage, mapViewStyle } = this.props;
+    return (
+      <MapView
+        style={triggerPress ? [styles.mapView, mapViewStyle] : {}}
+        region={{
+          latitude: currentMessage.location.latitude,
+          longitude: currentMessage.location.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        staticMap={triggerPress}
+        fullScreen
+        showDefaultMarker={false}
+        onPress={() => { if (triggerPress) this.openMap(); }}
+      >
+        <Marker coordinate={currentMessage.location} />
+      </MapView>
+    );
   };
 
   render() {
-    const { currentMessage, containerStyle, mapViewStyle } = this.props;
+    const { currentMessage } = this.props;
     if (currentMessage.location) {
       return (
-        <TouchableOpacity
-          style={[styles.container, containerStyle]}
-          onPress={this.openMapAsync}
-        >
-          <MapView
-            style={[styles.mapView, mapViewStyle]}
-            region={{
-              latitude: currentMessage.location.latitude,
-              longitude: currentMessage.location.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            scrollEnabled={false}
-            zoomEnabled={false}
-          />
-        </TouchableOpacity>
+        <>
+          {this.renderMap()}
+          <ModalButton
+            ref={(ref: any) => { this.mapModal = ref; }}
+            title="Full Screen Modal"
+            modalProps={{ type: 'fullscreen' }}
+            invisible
+          >
+            {this.renderMap(false)}
+            <Button
+              icon={{ name: 'arrowleft', type: 'antdesign' }}
+              backgroundColor="rgba(255, 255, 255, 0.5)"
+              circle
+              containerStyle={{ position: 'absolute', top: 20, left: 20 }}
+              onPress={() => NavigationService.goBack()}
+            />
+          </ModalButton>
+        </>
       );
     }
     return null;

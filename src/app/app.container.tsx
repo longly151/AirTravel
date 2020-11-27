@@ -3,84 +3,85 @@ import {
   ThemeProvider, withTheme,
 } from 'react-native-elements';
 import NetInfo from '@react-native-community/netinfo';
-import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 import { compose } from 'recompose';
 import { lightTheme, darkTheme } from '@themes/Theme';
 import i18n from '@config/i18n';
 import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
-import { Global } from '@utils/appHelper';
+import AppHelper, { Global } from '@utils/appHelper';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { TObjectRedux } from '@utils/redux';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
 import SocketIOClient from 'socket.io-client';
 import Config from 'react-native-config';
+import Log from '@core/log';
+import DeviceInfo from 'react-native-device-info';
+import { firebase } from '@react-native-firebase/messaging';
+import SplashScreen from 'react-native-splash-screen';
+import { utils } from '@react-native-firebase/app';
 import AppNavigator from './app.navigator';
 
 interface Props {
   language: string;
-  t: any;
   colors: any;
-  themeRedux: any;
+  themeName: any;
   loginSelectorData: TObjectRedux;
 }
 
 interface State {
-  isInternetCheck: boolean;
-  isConnected: boolean;
+  hasShownNoInternet: boolean
 }
 
 class AppContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      isInternetCheck: false,
-      isConnected: true,
-    };
     const { loginSelectorData } = this.props;
+    this.state = {
+      hasShownNoInternet: false
+    };
     if (loginSelectorData.data) {
       Global.token = loginSelectorData.data.token;
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    if (!await DeviceInfo.isEmulator()) {
+      Log.log('OPEN_APP');
+    }
+
     NetInfo.addEventListener((state) => {
-      const { isInternetCheck } = this.state;
       const { isConnected } = state;
-      if (!isConnected) {
-        this.setState({
-          isConnected: false,
-        });
+      const { hasShownNoInternet } = this.state;
+      AppHelper.isConnected = isConnected;
+      if (!hasShownNoInternet && !isConnected) {
+        AppHelper.showNoConnectionMessage();
+        this.setState({ hasShownNoInternet: true });
       }
-      if (isInternetCheck && isConnected) {
-        this.setState({
-          isConnected: true,
-          isInternetCheck: false,
-        });
+      if (isConnected) {
+        this.setState({ hasShownNoInternet: false });
       }
     });
+
+    /**
+     * Firebase Notification
+     */
+    this.requestNotificationPermission();
+    this.messageListener();
 
     /**
      * Socket
      */
     this.onSocket();
+
+    /**
+     * Hide Splash Screen
+     */
+    await setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
   }
-
-  checkInternet = () => {
-    this.setState({
-      isInternetCheck: true,
-    });
-  };
-
-  showNotConnectedMessage = () => {
-    showMessage({
-      message: 'No internet',
-      type: 'danger',
-      onPress: () => this.checkInternet(),
-    });
-  };
 
   onSocket = () => {
     /**
@@ -99,12 +100,40 @@ class AppContainer extends React.Component<Props, State> {
     });
   };
 
+  requestNotificationPermission = async () => {
+    // Don't run when using Firebase Test Lab
+    if (!utils().isRunningInTestLab) {
+      const enabled = await firebase.messaging().hasPermission();
+      if (enabled === 1) {
+        const fcmToken = await firebase.messaging().getToken();
+        // eslint-disable-next-line no-console
+        console.log('fcmToken', fcmToken);
+      } else {
+        const authorizationStatus = await firebase.messaging().requestPermission();
+        if (authorizationStatus) {
+          const fcmToken = await firebase.messaging().getToken();
+          // eslint-disable-next-line no-console
+          console.log('fcmToken', fcmToken);
+        }
+      }
+    }
+  };
+
+  messageListener = async () => {
+    // Foreground
+    const unsubscribe = firebase.messaging().onMessage(async (remoteMessage) => {
+      AppHelper.showNotificationMessage(remoteMessage);
+    });
+    // Background & Quit
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    firebase.messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
+    return unsubscribe;
+  };
+
   render() {
     const {
-      language, themeRedux,
+      language, themeName,
     } = this.props;
-
-    const { isConnected } = this.state;
 
     /**
      * Change language
@@ -115,12 +144,7 @@ class AppContainer extends React.Component<Props, State> {
     /**
      * Theme
      */
-    const themeColor: any = themeRedux === ThemeEnum.LIGHT ? lightTheme : darkTheme;
-
-    /**
-     * Check Internet
-     */
-    if (!isConnected) this.showNotConnectedMessage();
+    const themeColor: any = themeName === ThemeEnum.LIGHT ? lightTheme : darkTheme;
 
     return (
       <ThemeProvider theme={themeColor}>
@@ -133,12 +157,11 @@ class AppContainer extends React.Component<Props, State> {
 
 const mapStateToProps = (state: any) => ({
   language: languageSelector(state),
-  themeRedux: themeSelector(state),
+  themeName: themeSelector(state),
   loginSelectorData: Selector.getObject(loginSelector, state),
 });
 
 export default compose(
   withTheme,
-  withTranslation(),
   connect(mapStateToProps, null),
 )(AppContainer as any);

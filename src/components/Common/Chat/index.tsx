@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage as IDefaultMessage, Send, GiftedChatProps, Bubble } from 'react-native-gifted-chat';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Global } from '@utils/appHelper';
@@ -8,6 +8,7 @@ import Api from '@utils/api';
 import qs from 'qs';
 import Helper from '@utils/helper';
 import _ from 'lodash';
+import Color from '@themes/Color';
 import ActionBar from './Children/ActionBar';
 import Image from '../Image/DefaultImage';
 import Loading from '../Loading';
@@ -126,7 +127,7 @@ class Chat extends Component<ChatProps, State> {
     const result: any = await this.getMessageApi();
 
     let messages = result[apiMessageField];
-    messages = Helper.selectFields(messages, ['_id', 'text', 'image', 'user', 'createdAt']);
+    messages = Helper.selectFields(messages, ['_id', 'text', 'image', 'audio', 'video', 'location', 'user', 'createdAt']);
     messages.forEach((item: IMessage, index: number) => {
       messages[index] = this.addUserIntoMessage(item, result.users, item.user._id);
     });
@@ -252,8 +253,10 @@ class Chat extends Component<ChatProps, State> {
 
       // Handle Api
       const result: any = await this.getMessageApi();
+
       let messages = result[apiMessageField];
-      messages = Helper.selectFields(messages, ['_id', 'text', 'user', 'createdAt']);
+
+      messages = Helper.selectFields(messages, ['_id', 'text', 'image', 'audio', 'video', 'location', 'user', 'createdAt']);
       messages.forEach((item: IMessage, index: number) => {
         messages[index] = this.addUserIntoMessage(item, result.users, item.user._id);
       });
@@ -344,6 +347,16 @@ class Chat extends Component<ChatProps, State> {
     />
   );
 
+  renderCustomBubble = (props: any) => (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        left: { backgroundColor: '#E6E9F0', marginVertical: 5 },
+        right: { backgroundColor: Color.lightPrimary, marginVertical: 5 }
+      }}
+    />
+  );
+
   render() {
     const { sender } = this.props;
     const { appIsReady,
@@ -385,6 +398,7 @@ class Chat extends Component<ChatProps, State> {
           renderActions={this.renderActions}
           renderMessageImage={this.renderMessageImage}
           alwaysShowSend
+          renderBubble={(props: any) => this.renderCustomBubble(props)}
           renderChatFooter={() => (loadingImage ? <Loading style={{ marginBottom: 10, alignSelf: 'flex-end', marginRight: 10 }} /> : null)}
         />
       </View>

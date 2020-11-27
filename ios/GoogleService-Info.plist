@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1023557421676-42nj635ss1ebjguj36bjvfr5a8mdk8o6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1023557421676-42nj635ss1ebjguj36bjvfr5a8mdk8o6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAlW4EQymiCb3x_6g-SwklnN6r7W-ba22Y</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1023557421676</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.demo.airtravel</string>
+	<key>PROJECT_ID</key>
+	<string>airtravel-276f8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>airtravel-276f8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1023557421676:ios:dd6266ddbd67e036f72649</string>
+	<key>DATABASE_URL</key>
+	<string>https://airtravel-276f8.firebaseio.com</string>
+</dict>
+</plist>

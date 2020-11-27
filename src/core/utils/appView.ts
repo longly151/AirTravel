@@ -2,30 +2,6 @@ import { Platform, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const standardWidth = 375;
-const standardHeight = 812;
-
-const getBottomNavigationBarHeight = () => {
-  try {
-    const DeviceInfo = require('react-native-device-info');
-    return DeviceInfo.hasNotch() ? 85 : 70;
-  } catch (error) {
-    return 70;
-  }
-};
-
-const getHeaderHeight = () => {
-  try {
-    const DeviceInfo = require('react-native-device-info');
-    if (Platform.OS === 'ios') {
-      return DeviceInfo.hasNotch() ? 85 : 70;
-    }
-    return 85;
-  } catch (error) {
-    return 70;
-  }
-};
-
 class CAppView {
   private static _instance: CAppView;
 
@@ -42,49 +18,41 @@ class CAppView {
 
   shadow = Platform.select({
     android: {
-      elevation: 4,
+      elevation: 10,
     },
     default: {
-      shadowColor: '#000000',
-      shadowOffset: { height: 2, width: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 1,
-      elevation: 4,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+      shadowOpacity: 0.34,
+      shadowRadius: 6.27,
     },
   });
 
-  createShadow = (color: string = '#000000') => (
-    Platform.select({
-      android: {
-        elevation: 4,
-      },
-      default: {
-        shadowColor: color,
-        shadowOffset: { height: 2, width: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 1,
-        elevation: 4,
-      },
-    })
-  );
+  bottomNavigationBarHeight = 50;
 
-  bottomNavigationBarHeight = getBottomNavigationBarHeight();
+  headerHeight = 50;
 
-  headerHeight = getHeaderHeight();
+  headerPaddingHorizontal = 20;
 
-  headerPaddingHorizontal = 18;
-
-  bodyPaddingHorizontal = 18;
+  bodyPaddingHorizontal = 20;
 
   roundedBorderRadius = 20;
 
-  screenWidth = width < height ? width : height;
+  screenWidth = width;
 
-  screenHeight = width < height ? height : width;
+  screenHeight = height;
 
-  ratioH = height / standardHeight;
+  isHorizontal = this.screenWidth > this.screenHeight;
 
-  ratioW = width / standardWidth;
+  safeAreaInsets = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
 }
 
 const AppView = CAppView.Instance;

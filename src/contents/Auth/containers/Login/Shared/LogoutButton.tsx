@@ -4,6 +4,7 @@ import { requireLoginSelector } from '@contents/Config/redux/selector';
 import { QuickView } from '@components';
 import { TObjectRedux } from '@utils/redux';
 import Selector from '@utils/selector';
+import i18next from 'i18next';
 import AuthButton, { AuthButtonProps } from '../../Shared/AuthButton';
 import { logout } from '../redux/slice';
 import { loginSelector } from '../redux/selector';
@@ -29,7 +30,7 @@ class LoginButton extends PureComponent<Props> {
       return (
         <AuthButton
           {...otherProps}
-          t="auth:logout"
+          title={i18next.t('auth:logout')}
           onPress={reduxLogout}
         />
       );

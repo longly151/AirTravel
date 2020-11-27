@@ -22,12 +22,6 @@ exports[`Button Component should render without issues 1`] = `
       "marginRight": undefined,
       "marginTop": undefined,
       "marginVertical": 5,
-      "padding": 0,
-      "paddingHorizontal": undefined,
-      "paddingLeft": undefined,
-      "paddingRight": undefined,
-      "paddingTop": undefined,
-      "paddingVertical": undefined,
     }
   }
   iconContainerStyle={Object {}}

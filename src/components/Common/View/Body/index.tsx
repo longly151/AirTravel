@@ -32,8 +32,7 @@ class Body extends PureComponent<BodyProps> {
       ...otherProps
     } = this.props;
 
-    let backgroundColor = backgroundColorProp
-      || (secondary ? theme.colors.secondaryBackground : theme.colors.primaryBackground);
+    let backgroundColor = backgroundColorProp || 'transparent';
     const paddingHorizontal = fullWidth || fullView
       ? 0
       : paddingHorizontalProp || AppView.bodyPaddingHorizontal;

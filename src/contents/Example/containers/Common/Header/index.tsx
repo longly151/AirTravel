@@ -10,7 +10,7 @@ class HeaderExample extends PureComponent {
     return (
       <>
         <Container scrollable>
-          <Header backIcon title="Header 1" />
+          <Header backIcon title="Header 1" shadow />
           <QuickView height={10} />
           <Header closeIcon title="Header 2" placement="left" />
           <QuickView height={10} />

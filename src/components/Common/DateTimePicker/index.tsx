@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import RNDateTimePicker, { IOSNativeProps, AndroidNativeProps } from '@react-native-community/datetimepicker';
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { ThemeEnum, LanguageEnum } from '@contents/Config/redux/slice';
-import AppHelper from '@utils/appHelper';
+import { ThemeEnum } from '@contents/Config/redux/slice';
 import Modal from 'react-native-modal';
 import Color from '@themes/Color';
-import { Divider } from 'react-native-elements';
+import { Divider, ThemeProps, withTheme } from 'react-native-elements';
 import DeviceInfo from 'react-native-device-info';
 import AppView from '@utils/appView';
+import i18next from 'i18next';
 import Button, { ButtonProps } from '../Button/DefaultButton';
 import QuickView from '../View/QuickView';
 import Text from '../Text';
@@ -25,11 +23,10 @@ export interface DateTimePickerProps extends
   mode?: Mode;
   display?: Display;
   momentFormat?: string;
-  themeName?: ThemeEnum;
-  language?: LanguageEnum;
   value?: Date;
   placeholder?: string;
   placeholderTextColor?: string;
+  theme?: any;
 }
 interface State {
   date: Date;
@@ -95,9 +92,24 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
     const { date } = this.state;
     const { onChange } = this.props;
     const currentDate = selectedDate || date;
-    this.setState({
-      tempDate: currentDate
-    });
+    switch (Platform.OS) {
+      case 'ios':
+        this.setState({ tempDate: currentDate });
+        break;
+      default:
+        if (event.type === 'set') {
+          this.setState({
+            date: currentDate,
+            show: false,
+            hidePlaceholder: true,
+          });
+        }
+        if (event.type === 'dismissed') {
+          this.setState({
+            show: false,
+          });
+        }
+    }
     if (onChange) onChange(event, selectedDate);
   };
 
@@ -117,14 +129,10 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
      */
     const {
       textColor: textColorProp,
-      language,
       mode: modeProp,
-      themeName,
+      theme,
       ...otherProps
     } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
-    const doneText = language === LanguageEnum.EN ? 'Done' : 'Hoàn tất';
-    const cancelText = language === LanguageEnum.EN ? 'Cancel' : 'Huỷ bỏ';
     if (Platform.OS === 'ios') {
       const textColor = textColorProp || theme.colors.primaryText;
       const bgColor = theme.colors.primaryBackground;
@@ -143,7 +151,7 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
           >
             <QuickView row alignItems="center">
               <Button
-                title={cancelText}
+                title={i18next.t('cancel')}
                 titleColor={Color.blue}
                 width={120}
                 fontSize={20}
@@ -153,7 +161,7 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
               />
               <Text fontSize={20}>{this.getDateTimePlaceholder()}</Text>
               <Button
-                title={doneText}
+                title={i18next.t('done')}
                 titleColor={Color.blue}
                 width={120}
                 fontSize={20}
@@ -222,16 +230,14 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
     const { date } = this.state;
     const {
       textColor: textColorProp,
-      language,
       width,
       height,
       mode: modeProp,
-      themeName,
+      theme,
       ...otherProps
     } = this.props;
-    const theme = AppHelper.getThemeByName(themeName);
     const bgColor = theme.colors.secondaryBackground;
-    const parentBgColor = themeName === ThemeEnum.LIGHT ? '#b4bcc6' : '#494e53';
+    const parentBgColor = theme.key === ThemeEnum.LIGHT ? '#b4bcc6' : '#494e53';
     return (
       <QuickView
         style={{
@@ -256,35 +262,33 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
 
   getDate = () => {
     const { hidePlaceholder, date } = this.state;
+    const { value } = this.props;
+    if (!hidePlaceholder || !date) {
+      if (value) return value;
+      return null;
+    }
     if (!hidePlaceholder) return null;
     return date;
   };
 
   getText = () => {
     const { hidePlaceholder, date } = this.state;
-    if (!hidePlaceholder) return null;
+    const { value } = this.props;
     const { momentFormat: momentFormatProp } = this.props;
     const momentFormat = momentFormatProp || this.momentFormat;
+
+    if (!hidePlaceholder || !date) {
+      if (value) return moment(value).format(momentFormat);
+      return null;
+    }
+    if (!hidePlaceholder) return null;
     return moment(date).format(momentFormat);
   };
 
   getDateTimePlaceholder = () => {
-    const { language, mode } = this.props;
-    let placeholder = '';
-    let enModeString = '';
-    let viModeString = '';
-    if (mode === 'date') {
-      enModeString = 'date';
-      viModeString = 'ngày';
-    } else if (mode === 'time') {
-      enModeString = 'time';
-      viModeString = 'thời gian';
-    } else if (mode === 'datetime') {
-      enModeString = 'date & time';
-      viModeString = 'ngày và giờ';
-    }
-    placeholder = language === LanguageEnum.EN ? `Pick ${enModeString}` : `Chọn ${viModeString}`;
-    return placeholder;
+    const { mode } = this.props;
+    const modeString = i18next.t(`component:date_time_picker:${mode}`);
+    return i18next.t('component:date_time_picker:pick', { mode: modeString });
   };
 
   render() {
@@ -293,8 +297,6 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
       mode,
       display,
       momentFormat: momentFormatProp,
-      themeName,
-      language,
       value,
       locale,
       minuteInterval,
@@ -305,6 +307,7 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
       placeholder: placeholderProp,
       titleColor: titleColorProp,
       placeholderTextColor,
+      theme,
       ...otherProps
     } = this.props;
 
@@ -323,7 +326,6 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
     /**
      * Color Handle
      */
-    const theme = AppHelper.getThemeByName(themeName);
     let titleColor = titleColorProp;
     if (!hidePlaceholder && !value) {
       titleColor = placeholderTextColor || theme.colors.secondaryText;
@@ -354,18 +356,12 @@ class DateTimePicker extends Component<DateTimePickerProps, State> {
           titleColor={titleColor}
           titleCenter={show && Platform.OS === 'ios'}
         />
-        {this.renderDateTime()}
+        {show && this.renderDateTime()}
       </QuickView>
     );
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-const Result: any = connect(mapStateToProps, null, null,
-  { forwardRef: true })(DateTimePicker as any);
-
-export default Result as React.ComponentClass<DateTimePickerProps, any>;
+export default withTheme(
+  DateTimePicker as any as React.ComponentType<DateTimePickerProps & ThemeProps<any>>
+);

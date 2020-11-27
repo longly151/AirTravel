@@ -1,9 +1,13 @@
 import React from 'react';
 import RNImagePicker, { Image as TImage, ImageOrVideo as TImageOrVideo } from 'react-native-image-crop-picker';
-import { TouchableOpacity, GestureResponderEvent } from 'react-native';
-import { withTheme, ThemeProps } from 'react-native-elements';
-import Button, { ButtonProps } from '../DefaultButton';
+import { TouchableOpacity } from 'react-native';
+import { ThemeProps, withTheme } from 'react-native-elements';
+import { PERMISSIONS } from 'react-native-permissions';
+import i18next from 'i18next';
+import DeviceInfo from 'react-native-device-info';
+import withPermission from '../../../Hoc/withPermission';
 import QuickView from '../../View/QuickView';
+import Button, { ButtonProps } from '../DefaultButton';
 
 interface IImage{
   uri: string;
@@ -12,7 +16,7 @@ interface IImage{
   mime?: string;
 }
 
-export interface ImagePickerButtonProps extends ButtonProps {
+export interface ImagePickerButtonProps extends Omit<ButtonProps, 'onPress'> {
   cropType?: 'freeStyle' | 'rectangle' | 'circular';
   multiple?: boolean;
   dataSource?: 'camera' | 'gallery';
@@ -24,7 +28,9 @@ export interface ImagePickerButtonProps extends ButtonProps {
   imageHeight?: number;
   pickSuccess?: (media: TImageOrVideo[]) => any;
   handleException?: (e: any) => any;
+  requestPermission?: (index?: number) => Promise<any>;
   theme?: any;
+  onPress?: () => any | Promise<any>;
 }
 
 interface State {
@@ -264,22 +270,33 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
     if (handleException) handleException(e);
   };
 
-  open = (event: GestureResponderEvent) => {
-    const { dataSource, multiple, onPress } = this.props;
+  open = async () => {
+    const { dataSource, multiple, onPress, requestPermission: requestPermissionProp } = this.props;
+    let granted = false;
+    const requestPermission: any = requestPermissionProp;
     if (multiple) {
-      this.pickMultipleWithGallery();
+      granted = await requestPermission(1);
+      if (granted) {
+        this.pickMultipleWithGallery();
+      }
     } else {
       switch (dataSource) {
         case 'camera':
-          this.pickSingleWithCamera();
+          granted = await requestPermission(0);
+          if (granted) {
+            this.pickSingleWithCamera();
+          }
           break;
         default:
-          this.pickSingleWithGallery();
+          granted = await requestPermission(1);
+          if (granted) {
+            this.pickSingleWithGallery();
+          }
           break;
       }
     }
 
-    if (onPress) onPress(event);
+    if (onPress) await onPress();
   };
 
   render() {
@@ -288,7 +305,7 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
       <QuickView>
         {
           invisible ? (
-            <TouchableOpacity onPress={this.open}>
+            <TouchableOpacity onPress={() => this.open()}>
               {buttonChildren}
             </TouchableOpacity>
           )
@@ -299,6 +316,21 @@ class ImagePickerButton extends React.PureComponent<ImagePickerButtonProps, Stat
   }
 }
 
-export default withTheme(
-  ImagePickerButton as unknown as React.ComponentType<ImagePickerButtonProps & ThemeProps<any>>
+export default (
+  withPermission(
+    [
+      {
+        ios: PERMISSIONS.IOS.CAMERA,
+        android: PERMISSIONS.ANDROID.CAMERA,
+        deniedMessage: i18next.t('permission_denied:camera', { appName: DeviceInfo.getApplicationName() })
+      },
+      {
+        ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+        android: PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        deniedMessage: i18next.t('permission_denied:photo_library', { appName: DeviceInfo.getApplicationName() })
+      }
+    ]
+  )(withTheme(
+    ImagePickerButton as unknown as React.ComponentType<ImagePickerButtonProps & ThemeProps<any>>
+  ))
 );

@@ -5,15 +5,9 @@ import {
   FlatListProps as RNFlatListProps,
   RefreshControl,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, withTheme, ThemeProps } from 'react-native-elements';
 import _ from 'lodash';
-import {
-  themeSelector,
-  languageSelector,
-} from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
-import { darkTheme, lightTheme } from '@themes/Theme';
-import { LanguageEnum, ThemeEnum } from '@contents/Config/redux/slice';
+import i18next from 'i18next';
 import Loading from '../../Loading';
 import QuickView from '../../View/QuickView';
 import Text from '../../Text';
@@ -27,8 +21,7 @@ export interface FlatListProps
   renderEmpty?: () => any;
   loadingColor?: string;
   textColor?: string;
-  language?: string;
-  themeName?: string;
+  theme?: any;
   ref?: any;
 }
 interface State {
@@ -102,14 +95,13 @@ class FlatList extends PureComponent<FlatListProps, State> {
 
   renderFooter = () => {
     const {
-      list, loadingColor: loadingColorProp, themeName, getList,
+      list, loadingColor: loadingColorProp, getList, theme
     } = this.props;
     if (list && getList) {
       const { refreshing } = this.state;
       /**
        * Theme Handle
        */
-      const theme: any = themeName === ThemeEnum.DARK ? darkTheme : lightTheme;
       const loadingColor = loadingColorProp || theme.colors.secondaryText;
 
       if (list.metadata.page === list.metadata.pageCount && !_.isEmpty(list.data)) {
@@ -139,17 +131,14 @@ class FlatList extends PureComponent<FlatListProps, State> {
     const {
       horizontal,
       list,
-      language,
-      themeName,
       textColor: textColorProp,
       getList,
+      theme,
     } = this.props;
     if (list && getList) {
       /**
        * Language & Theme Handle
        */
-      const emptyText = language === LanguageEnum.VI ? 'Danh sách rỗng' : 'Empty List';
-      const theme: any = themeName === ThemeEnum.DARK ? darkTheme : lightTheme;
       const textColor = textColorProp || theme.colors.secondaryText;
 
       if (!horizontal && !list.loading) {
@@ -163,7 +152,7 @@ class FlatList extends PureComponent<FlatListProps, State> {
                 size={30}
               />
             </QuickView>
-            <Text color={textColor}>{list.error?.messages || emptyText}</Text>
+            <Text color={textColor}>{list.error?.messages || i18next.t('component:flat_list:empty')}</Text>
           </QuickView>
         );
       }
@@ -179,8 +168,8 @@ class FlatList extends PureComponent<FlatListProps, State> {
       getList,
       renderItem,
       renderEmpty,
-      themeName,
       loadingColor: loadingColorProp,
+      theme,
       ...otherProps
     } = this.props;
     if (list && getList) {
@@ -188,7 +177,6 @@ class FlatList extends PureComponent<FlatListProps, State> {
       /**
        * Theme Handle
        */
-      const theme: any = themeName === ThemeEnum.DARK ? darkTheme : lightTheme;
       const loadingColor = loadingColorProp || theme.colors.secondaryText;
 
       if (!list.loading) setTimeout(() => this.setState({ refreshing: false }), 500);
@@ -230,11 +218,6 @@ class FlatList extends PureComponent<FlatListProps, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-export default connect(mapStateToProps, null, null, { forwardRef: true })(
-  FlatList as React.ComponentType<FlatListProps>,
+export default withTheme(
+  FlatList as any as React.ComponentType<FlatListProps & ThemeProps<any>>
 );

@@ -85,6 +85,18 @@ class PureProductDetailScreen extends PureComponent<Props, State> {
 
 export default withPureDetail({
   url: '/services/:id',
+  // // [LOG] Support data & ExtraData
+  // log: {
+  //   name: 'PRODUCT_DETAIL_VIEW',
+  //   // extraPayload: {
+  //   //   extraPayload: 'extraPayload'
+  //   // },
+  //   payload: {
+  //     // if key is undefined, Log will use "this.props.data" instead of "this.props[key].data"
+  //     key: 'moreDetail',
+  //     fields: ['id']
+  //   }
+  // },
 
   // // [Optional] extraData
   // extraData: [

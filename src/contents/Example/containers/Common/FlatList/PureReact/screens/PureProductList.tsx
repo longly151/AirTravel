@@ -121,8 +121,8 @@ function PureProductListScreen(props: Props) {
     <>
       <Header backIcon title="FlatList" shadow switchTheme />
       <QuickView row center>
-        <Button title="Filter" center titlePaddingHorizontal={20} paddingHorizontal={5} onPress={handleFilter} />
-        <Button title="Clear Filter" center titlePaddingHorizontal={20} paddingHorizontal={5} onPress={clearFilter} />
+        <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
+        <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
       </QuickView>
     </>
   );
@@ -132,6 +132,17 @@ export default withPureList({
   url: '/services',
   fields: ['id', 'enTitle', 'viTitle', 'price', 'thumbnail'],
   renderItem,
+  // // [LOG] Only support ExtraData
+  // log: {
+  //   name: 'PRODUCT_LIST_VIEW',
+  //   extraPayload: {
+  //     extraPayload: 'extraPayload'
+  //   },
+  //   payload: {
+  //     key: 'moreDetail', // Log will use "this.props[key].data"
+  //     fields: ['id']
+  //   }
+  // },
 
   // // [Optional] extraData
   // extraData: [

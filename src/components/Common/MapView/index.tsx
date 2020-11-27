@@ -15,13 +15,17 @@ import { TQuery, TArrayRedux } from '@utils/redux';
 import AppView from '@utils/appView';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Color from '@themes/Color';
-import Button from '../Button/DefaultButton';
-import QuickView from '../View/QuickView';
+import withPermission from '@components/Hoc/withPermission';
+import { PERMISSIONS } from 'react-native-permissions';
+import i18next from 'i18next';
+import DeviceInfo from 'react-native-device-info';
 import Text from '../Text';
+import QuickView from '../View/QuickView';
+import Button from '../Button/DefaultButton';
 
 const ASPECT_RATIO = AppView.screenWidth / AppView.screenHeight;
-const LATITUDE = 10.8253169869135;
-const LONGITUDE = 106.668213181553;
+const LATITUDE = 16.054407;
+const LONGITUDE = 108.202164;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACING_FOR_CARD_INSET = AppView.screenWidth * 0.1 - 30;
@@ -62,6 +66,8 @@ export interface MapViewProps extends Omit<RNMapViewProps, 'initialRegion' | 'pr
   markerActiveBackgroundColor?: any;
   animationEnable?: boolean;
   backIcon?: boolean;
+  requestPermission?: (index?: number) => Promise<any>;
+  needGPS?: boolean;
   theme?: any;
 }
 interface State {
@@ -86,6 +92,7 @@ class MapView extends PureComponent<MapViewProps, State> {
     loadingEnabled: true,
     markerType: 'default',
     animationEnable: true,
+    needGPS: true,
   };
 
   mapIndex: number;
@@ -106,10 +113,20 @@ class MapView extends PureComponent<MapViewProps, State> {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
-      bottomItemData, bottomItemList, bottomItemGetList, cardWidth: cardWidthProp, theme,
+      bottomItemData,
+      bottomItemList,
+      bottomItemGetList,
+      cardWidth: cardWidthProp,
+      requestPermission,
+      needGPS,
+      theme,
     } = this.props;
+
+    // Request Permission
+    if (needGPS && requestPermission) requestPermission();
+
     if (bottomItemList && bottomItemGetList) {
       bottomItemGetList();
     }
@@ -424,7 +441,7 @@ class MapView extends PureComponent<MapViewProps, State> {
                     height: 30,
                     borderRadius: 10,
                     backgroundColor,
-                  }, AppView.createShadow]}
+                  }, AppView.shadow]}
                   >
                     <CustomView style={[
                       scaleStyle,
@@ -437,7 +454,7 @@ class MapView extends PureComponent<MapViewProps, State> {
                       ) : null }
                     </CustomView>
                   </CustomView>
-                  <CustomView style={[AppView.createShadow]}>
+                  <CustomView style={[AppView.shadow]}>
                     <CustomView style={{
                       width: 0,
                       height: 0,
@@ -588,4 +605,14 @@ class MapView extends PureComponent<MapViewProps, State> {
   }
 }
 
-export default withTheme(MapView as any as React.ComponentType<MapViewProps & ThemeProps<any>>);
+export default (withTheme(
+  withPermission(
+    [
+      {
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        deniedMessage: i18next.t('permission_denied:location', { appName: DeviceInfo.getApplicationName() })
+      }
+    ]
+  )(MapView as any as React.ComponentType<MapViewProps & ThemeProps<any>>)
+));

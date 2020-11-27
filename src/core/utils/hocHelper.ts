@@ -3,6 +3,9 @@
 
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { AndroidPermission, IOSPermission } from 'react-native-permissions';
+import Log from '@core/log';
+import LogEvent from '@core/log/logEvent';
 import Selector from './selector';
 import AppHelper from './appHelper';
 
@@ -33,6 +36,21 @@ export interface IHocConstant {
   NAME: string,
   KEY: string,
   FILTER_KEY?: string
+}
+
+export interface IHocPermission {
+  ios?: IOSPermission,
+  android?: AndroidPermission,
+  deniedMessage: string,
+}
+
+export interface IHocLog {
+  name: keyof typeof LogEvent,
+  payload?: {
+    key?: string,
+    fields?: Array<string>,
+  }
+  extraPayload?: any,
 }
 
 class CHocHelper {
@@ -116,6 +134,24 @@ class CHocHelper {
       });
     }
     return newResult;
+  }
+
+  async logScreenEvent(log: IHocLog, dataSource: any) {
+    let payload = log.extraPayload || {};
+    if (log.payload) {
+      const { key, fields } = log.payload;
+      const screenData = key ? dataSource[key]?.data : dataSource.data;
+      if (screenData) {
+        if (_.isObject(screenData) && !_.isEmpty(screenData)) {
+          if (fields) {
+            payload = { ...payload, ..._.pick(screenData, fields) };
+          } else {
+            payload = { ...payload, ...screenData };
+          }
+        } else payload = { ...payload, screenData };
+      }
+    }
+    await Log.log(log.name, payload);
   }
 }
 

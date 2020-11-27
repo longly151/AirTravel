@@ -1,16 +1,14 @@
 import React, { PureComponent, ReactNode } from 'react';
 import Modal, { ModalProps as RNModalProps } from 'react-native-modal';
-import { GestureResponderEvent } from 'react-native';
-import { themeSelector, languageSelector } from '@contents/Config/redux/selector';
-import { connect } from 'react-redux';
 import AppHelper from '@utils/appHelper';
-import { LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import { OrNull } from 'react-native-modal/dist/types';
 import { Animation, CustomAnimation } from 'react-native-animatable';
 import { NavigationService } from '@utils/navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import modalStack from '@contents/Modal/routes';
+import i18next from 'i18next';
+import { withTheme, ThemeProps } from 'react-native-elements';
 import QuickView from '../../View/QuickView';
 import Button, { ButtonProps } from '../DefaultButton';
 import Text from '../../Text';
@@ -18,10 +16,12 @@ import Text from '../../Text';
 interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' | 'onSwipeComplete' | 'onSwipeCancel' | 'style' | 'swipeDirection' | 'onDismiss' | 'onShow' | 'hardwareAccelerated' | 'onOrientationChange' | 'presentationStyle' | 'supportedOrientations'> {
   children?: ReactNode;
   backdropClose?: boolean;
-  type?: 'notification' | 'confirmation' | 'bottom-half' | 'bottom-sheet' | 'fullscreen' ;
+  type?: 'notification' | 'confirmation' | 'bottom-half' | 'fullscreen' ;
   title?: string;
   t?: string;
   onOkButtonPress?: () => any;
+  okTitle?: string;
+  cancelTitle?: string;
   animationIn?: Animation | CustomAnimation;
   animationInTiming?: number;
   animationOut?: Animation | CustomAnimation;
@@ -51,16 +51,17 @@ interface ModalProps extends Pick<RNModalProps, 'onSwipeStart' | 'onSwipeMove' |
   scrollOffset?: number;
   scrollOffsetMax?: number;
   scrollHorizontal?: boolean;
+  snapPoints?: Array<string | number>;
+  theme?: any;
 }
 
-export interface ModalButtonProps extends ButtonProps {
+export interface ModalButtonProps extends Omit<ButtonProps, 'onPress'> {
   ref?: any;
   children?: any;
   buttonChildren?: any;
   invisible?: boolean;
   modalProps?: ModalProps;
-  language?: any;
-  themeName?: any;
+  onPress?: () => any;
 }
 
 interface State {
@@ -74,14 +75,21 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     };
   }
 
-  open = (event: GestureResponderEvent) => {
-    const { onPress } = this.props;
-    this.setState({ isVisible: true });
-    if (onPress) onPress(event);
+  open = () => {
+    const { modalProps, children } = this.props;
+    if (modalProps && modalProps.type === 'fullscreen') {
+      const content = children;
+      const id = AppHelper.setModalIntoGlobal(content);
+      NavigationService.navigate(modalStack.defaultModal, { id });
+    } else {
+      const { onPress } = this.props;
+      this.setState({ isVisible: true });
+      if (onPress) onPress();
+    }
   };
 
   renderChildren = () => {
-    const { themeName, language, modalProps, children } = this.props;
+    const { theme, modalProps, children } = this.props;
     if (children) return children;
 
     if (modalProps) {
@@ -92,30 +100,26 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       const {
         type,
         title,
-        t,
         onOkButtonPress,
+        okTitle,
+        cancelTitle,
       } = defaultModalProps;
-
-      const theme = AppHelper.getThemeByName(themeName).Modal;
-      const okText = language === LanguageEnum.EN ? 'OK' : 'Xác nhận';
-      const cancelText = language === LanguageEnum.EN ? 'Cancel' : 'Huỷ bỏ';
 
       return (
         <QuickView
-          backgroundColor={theme.backgroundColor}
-          borderRadius={theme.roundedBorderRadius}
-          width={theme.width}
-          height={theme.height}
+          backgroundColor={theme.Modal.backgroundColor}
+          borderRadius={theme.Modal.roundedBorderRadius}
+          width={theme.Modal.width}
           center
+          padding={15}
         >
-          <Text type="xTitle" color={theme.textColor} center marginBottom={15} t={t}>{title}</Text>
+          <Text type="xTitle" color={theme.Modal.textColor} center marginBottom={15}>{title}</Text>
           <QuickView row center>
             {
             type === 'notification' ? (
               <Button
-                title="OK"
+                title={okTitle || 'Ok'}
                 width={100}
-                paddingHorizontal={10}
                 onPress={() => {
                   this.setState({ isVisible: false });
                   if (onOkButtonPress) onOkButtonPress();
@@ -125,18 +129,18 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
               : (
                 <>
                   <Button
-                    title={okText}
-                    width={100}
-                    paddingHorizontal={10}
+                    title={okTitle || i18next.t('ok')}
+                    titlePaddingHorizontal={15}
+                    marginRight={10}
                     onPress={() => {
                       this.setState({ isVisible: false });
                       if (onOkButtonPress) onOkButtonPress();
                     }}
                   />
                   <Button
-                    title={cancelText}
-                    width={100}
-                    paddingHorizontal={10}
+                    title={cancelTitle || i18next.t('cancel')}
+                    titlePaddingHorizontal={15}
+                    marginLeft={10}
                     onPress={() => this.setState({ isVisible: false })}
                   />
                 </>
@@ -149,7 +153,14 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
     return null;
   };
 
-  close = () => this.setState({ isVisible: false });
+  close = () => {
+    const { modalProps } = this.props;
+    if (modalProps?.type === 'fullscreen') {
+      NavigationService.goBack();
+    } else {
+      this.setState({ isVisible: false });
+    }
+  };
 
   render() {
     const { isVisible } = this.state;
@@ -193,6 +204,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
         const content = children;
         const id = AppHelper.setModalIntoGlobal(content);
         NavigationService.navigate(modalStack.defaultModal, { id });
+        if (onPress) onPress();
       };
       if (invisible) {
         return (
@@ -224,11 +236,11 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
       <>
         {
           invisible ? (
-            <TouchableOpacity onPress={this.open}>
+            <TouchableOpacity onPress={() => this.open()}>
               {buttonChildren}
             </TouchableOpacity>
           )
-            : <Button {...otherProps} onPress={this.open} />
+            : <Button {...otherProps} onPress={() => this.open()} />
         }
 
         <Modal
@@ -241,16 +253,11 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
         >
           {this.renderChildren()}
         </Modal>
-
       </>
     );
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  themeName: themeSelector(state),
-  language: languageSelector(state),
-});
-
-export default connect(mapStateToProps, null, null,
-  { forwardRef: true })(ModalButton as unknown as React.ComponentType<ModalButtonProps>);
+export default withTheme(
+  ModalButton as any as React.ComponentType<ModalButtonProps & ThemeProps<any>>
+);

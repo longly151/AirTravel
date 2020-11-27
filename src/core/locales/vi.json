@@ -1,14 +1,51 @@
 {
+  "common": {
+    "theme": "Chủ đề",
+    "language": "Ngôn ngữ",
+    "cancel": "Huỷ bỏ",
+    "ok": "Đồng ý",
+    "done": "Hoàn tất",
+    "no_internet": "Không có kết nối Internet"
+  },
+  "component": {
+    "file_view_button": {
+      "updated_at": "Cập nhật ngày {{updatedAt}}"
+    },
+    "date_time_picker": {
+      "date": "ngày",
+      "time": "giờ",
+      "datetime": "ngày và giờ",
+      "pick": "Chọn {{mode}}"
+    },
+    "flat_list": {
+      "empty": "Danh sách rỗng"
+    },
+    "editable_image": {
+      "take_photo": "Chụp ảnh",
+      "select_from_album": "Chọn từ Album"
+    },
+    "input": {
+      "default_label": "thông tin",
+      "input": "Nhập {{field}}",
+      "invalid": "{{field}} không hợp lệ"
+    },
+    "loading": {
+      "loading": "Vui lòng đợi"
+    }
+  },
+  "permission_denied": {
+    "go_to_setting": "Đi tới cài đặt",
+    "camera": "Để truy cập tính năng này, bạn cần cho phép \"{{appName}}\" sử dụng camera của bạn",
+    "photo_library": "Để truy cập tính năng này, bạn cần cho phép \"{{appName}}\" truy cập vào thư viện của bạn",
+    "location": "Để có thể sử dụng toàn bộ tính năng của bản đồ, bạn cần cho phép \"{{appName}}\" truy cập vào vị trí hiện tại của bạn"
+  },
   "exception": {
     "400": "Thông tin không hợp lệ. Vui Lòng kiểm tra lại",
     "401": "Số điện thoại hoặc mật khẩu không chính xác",
     "403": "Tài khoản hiện tại không có quyền truy cập vào trang này",
     "404": "Nội dung hiện không có sẵn. Vui lòng thử lại sau",
-    "500": "Đã có lỗi xảy ra. Vui lòng thử lại sau"
-  },
-  "common": {
-    "theme": "Chủ đề",
-    "language": "Ngôn ngữ"
+    "500": "Đã có lỗi xảy ra. Vui lòng thử lại sau",
+    "502": "Máy chủ đang được bảo trì. Vui lòng thử lại sau"
   },
   "bottom_tab": {
     "home": "Trang chủ",

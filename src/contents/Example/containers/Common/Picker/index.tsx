@@ -26,7 +26,8 @@ class PickerExample extends PureComponent {
               height={40}
               shadow
               // placeholder="Choose Language"
-              // selectedValue={1}
+              selectedValue={1}
+              // selectedValue="js"
               ref={(ref: any) => { this.pickerRef = ref; }}
               onValueChange={(value) => {
                 console.log('onValueChange: ', value);
@@ -48,7 +49,8 @@ class PickerExample extends PureComponent {
             <Picker
               labels={Helper.selectFields(dataCity, 'name')}
               values={Helper.selectFields(dataCity, 'id')}
-              width={150}
+              // selectedValue={0}
+              width={200}
               height={40}
               shadow
               modal
@@ -74,7 +76,7 @@ class PickerExample extends PureComponent {
             <Picker
               labels={Helper.selectFields(dataCity, 'name')}
               values={Helper.selectFields(dataCity, 'id')}
-              width={150}
+              width={200}
               height={40}
               shadow
               modal

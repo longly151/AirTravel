@@ -179,6 +179,7 @@ class CRedux {
         const { metadata } = action.payload;
         const dataGet = action.payload[dataPrefix];
         let data = dataGet;
+
         if (metadata) {
           const currentPage = action.payload.metadata?.page;
           data = currentPage === 1 || !currentPage
@@ -271,11 +272,14 @@ class CRedux {
     };
   }
 
-  async fetchDetail(props: any, preApi: string) {
+  async fetchDetail(props: any, preApiUrl: string): Promise<{ loading: boolean, data: any, error: TError | null }> {
     const initialData = AppHelper.getItemFromParams(props);
-    const api = preApi.replace(':id', initialData.id);
+    let apiUrl = preApiUrl;
+    if (initialData) {
+      apiUrl = preApiUrl.replace(':id', initialData.id);
+    }
     try {
-      const response = await Api.get(api);
+      const response = await Api.get(apiUrl);
       return {
         loading: false,
         data: response[dataPrefix],

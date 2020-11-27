@@ -6,10 +6,7 @@ import QuickView from '../../View/QuickView';
 import Picker from '../../Picker';
 import EditableImage from '../../Image/EditableImage';
 import ModalButton from '../../Button/ModalButton';
-import Container from '../../View/Container';
-import Header from '../../Header';
-import Body from '../../View/Body';
-import Text from '../../Text';
+import MapModal from './MapModal';
 
 interface Props {
   onSend: (messages: any) => any;
@@ -40,7 +37,6 @@ class ActionBar extends PureComponent<Props> {
   };
 
   onPickerValuePress = (value: any, index: any) => {
-    // eslint-disable-next-line no-console
     switch (index) {
       case 0:
         this.editableImageRef.openCamera();
@@ -49,15 +45,15 @@ class ActionBar extends PureComponent<Props> {
         this.editableImageRef.openGallery();
         break;
       default:
-        this.openMapModal();
+        this.mapView.open();
+        this.actionModalRef.pickerModal.close();
         break;
     }
   };
 
-  openMapModal = () => {
-    // console.log('okok', this.mapView.open);
-
-    this.mapView.open(null);
+  addLocationMessage = (coordinate: { latitude: number, longitude: number } | null) => {
+    const { onSend } = this.props;
+    onSend([{ location: coordinate }]);
   };
 
   render() {
@@ -70,18 +66,12 @@ class ActionBar extends PureComponent<Props> {
           ref={(ref: any) => { this.mapView = ref; }}
           title="Full Screen Modal"
           modalProps={{ type: 'fullscreen' }}
-          // invisible
+          invisible
         >
-          <Container>
-            <Header backIcon title="ExampleScreen" />
-            <Body>
-              <QuickView>
-                <Text center>Example Screen</Text>
-              </QuickView>
-            </Body>
-          </Container>
+          <MapModal addLocationMessage={this.addLocationMessage} />
         </ModalButton>
         <Picker
+          ref={(ref: any) => { this.actionModalRef = ref; }}
           values={['📷 Chụp ảnh', '🏞 Chọn ảnh từ thư viện', '📍 Chọn vị trí']}
           modalHeight={180}
           modal
@@ -90,7 +80,6 @@ class ActionBar extends PureComponent<Props> {
             <Icon containerStyle={{ marginRight: -5, marginLeft: 5, marginTop: 5 }} type="material" name="add-circle-outline" size={30} color="grey" />
           )}
           // placeholder="Chọn hành động"
-          ref={(ref: any) => { this.actionModalRef = ref; }}
           onValuePress={this.onPickerValuePress}
         />
         <EditableImage
