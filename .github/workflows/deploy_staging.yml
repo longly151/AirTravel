@@ -40,12 +40,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
       - name: Setup fastlane
-        run: cd android && bundle install
+        run: |
+          echo "${{ secrets.FASTLANE_ANDROID_ENV }}" > android/fastlane/.env
+          cd android && bundle install
       - name: Distribute to firebase
-        env:
-          FIREBASE_ANDROID_APP: ${{ secrets.FIREBASE_ANDROID_APP }}
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-          FIREBASE_ANDROID_GROUPS: ${{ secrets.FIREBASE_ANDROID_GROUPS }}
         run: cd android && bundle exec fastlane beta
 
   distribute-ios:
@@ -64,7 +62,6 @@ jobs:
             ${{ runner.os }}-node-
       - name: NPM Install
         run: |
-          echo "${{ secrets.ENV }}" > .env
           npm install
 
       # Build
@@ -75,20 +72,10 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
+      - name: Setup fastlane
+        run: |
+          echo "${{ secrets.FASTLANE_IOS_ENV }}" > ios/fastlane/.env
       - name: Provisioning profile
-        env:
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
-          SCHEME_PATH: ${{ secrets.SCHEME_PATH }}
-          CERTIFICATE_PATH: ${{ secrets.CERTIFICATE_PATH }}
-          PROVISIONING_PATH: ${{ secrets.PROVISIONING_PATH }}
-          TEAM_ID: ${{ secrets.TEAM_ID }}
         run: cd ios && fastlane codesigning
       - name: Distribute to firebase
-        env:
-          SCHEME: ${{ secrets.SCHEME }}
-          WORKSPACE: ${{ secrets.WORKSPACE }}
-          FIREBASE_IOS_APP: ${{ secrets.FIREBASE_IOS_APP }}
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-          FIREBASE_IOS_GROUPS: ${{ secrets.FIREBASE_IOS_GROUPS }}
         run: cd ios && fastlane beta
