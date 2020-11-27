@@ -24,7 +24,7 @@ class HotDeals extends PureComponent<Props> {
       ...item,
       illustration: item.thumbnail,
       enName: item.enTitle,
-      subtitle: item.note,
+      subtitle: item.enDescription,
     };
     return (
       <Card

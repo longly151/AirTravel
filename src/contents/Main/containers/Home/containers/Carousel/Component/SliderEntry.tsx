@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
   slideInnerContainer: {
     width: itemWidth,
     height: slideHeight,
-    borderRadius: 30,
-    paddingBottom: 10,
+    borderRadius: 36,
+    backgroundColor: 'red',
     position: 'relative',
   },
   imageContainer: {
@@ -52,20 +52,22 @@ const styles = StyleSheet.create({
     marginBottom: IS_IOS ? 0 : -1, // Prevent a random Android rendering issue
     borderBottomRightRadius,
     position: 'relative',
+    height: slideHeight,
   },
   imageOverlay: {
     position: 'absolute',
     width: itemWidth,
-    height: slideHeight - 10,
+    height: slideHeight,
     top: 0,
     zIndex: 1,
     borderBottomRightRadius,
     opacity: 0.24,
   },
   image: {
+    ...StyleSheet.absoluteFillObject,
     borderBottomRightRadius,
-    width: viewportWidth,
-    height: slideHeight - 10,
+    width: itemWidth,
+    height: slideHeight,
     borderRadius: 0,
   },
   // image's border radius is buggy on iOS; let's hack it!
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
   },
   detailContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 0,
     width: itemWidth,
     opacity: 0.8,
     borderTopLeftRadius: 20,
