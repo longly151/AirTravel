@@ -118,5 +118,10 @@
   "service_detail": {
     "product": "Product",
     "hosted_by": "Hosted by"
+  },
+  "empty": {
+    "empty_notification": "Your notification is empty",
+    "empty_favorite": "Your Favorite List is empty",
+    "empty_trip": "You have not booked any trip yet"
   }
 }

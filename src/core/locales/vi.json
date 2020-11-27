@@ -118,5 +118,10 @@
   "service_detail": {
     "product": "Sản phẩm",
     "hosted_by": "Cung cấp bởi"
+  },
+  "empty": {
+    "empty_notification": "Không có thông báo nào",
+    "empty_favorite": "Danh sách yêu thích rỗng",
+    "empty_trip": "Chưa có chuyến đi nào"
   }
 }

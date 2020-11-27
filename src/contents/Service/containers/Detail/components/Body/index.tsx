@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { QuickView, Button, Text, Avatar, Image, Loading, HTML } from '@components';
+import { QuickView, Text, Avatar, Loading, HTML } from '@components';
 import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import { IBase } from '@utils/redux';

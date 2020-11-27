@@ -20,6 +20,7 @@ import HomeScreen from './containers/Home/screens';
 import MoreScreen from './containers/More/screens';
 import FavoriteListScreen from './containers/Favorite/screens';
 import TripListScreen from './containers/Trip/screens';
+import NotificationListScreen from './containers/Notification/screens';
 import ExampleListScreen from '../Example/screens/index';
 
 const BottomTabs = createBottomTabNavigator();
@@ -130,18 +131,19 @@ function MainBottomTab(props: any) {
       />
       <BottomTabs.Screen
         name={notificationStack.index}
-        component={ExampleListScreen}
+        // component={ExampleListScreen}
+        component={NotificationListScreen}
         options={{
           tabBarLabel: i18next.t('bottom_tab:notification'),
           tabBarIcon: ({ focused, color, size }) => (focused ? (
-            <BadgedIcon
+            <Icon
               name="bell"
               type="material-community"
               color={color}
               size={26}
             />
           ) : (
-            <BadgedIcon name="bell-outline" type="material-community" color={color} size={22} />
+            <Icon name="bell-outline" type="material-community" color={color} size={22} />
           )),
         }}
       />

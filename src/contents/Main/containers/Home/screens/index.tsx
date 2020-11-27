@@ -33,15 +33,22 @@ class HomeScreen extends PureComponent<Props> {
     const listProps = {
       list,
     };
-    return list.loading ? (
-      <Loading />
-    ) : (
+    return (
       <Container scrollable>
-        <Greeting {...listProps} />
-        <CrucialCategory />
-        <Categories />
-        <HotDeals {...listProps} />
-        <Destinations />
+        {
+          list.loading ? (
+            <Loading marginTop={50} />
+          ) : (
+            <>
+              <Greeting {...listProps} />
+              <CrucialCategory />
+              <Categories />
+              <HotDeals {...listProps} />
+              <Destinations />
+            </>
+          )
+        }
+
       </Container>
     );
   }
