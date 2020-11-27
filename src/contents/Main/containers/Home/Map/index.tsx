@@ -17,6 +17,8 @@ import Helper from '@utils/helper';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import AppHelper from '@utils/appHelper';
 import { WithListProps } from '@utils/hocHelper';
+import Color from '@themes/Color';
+import productStack from '@contents/Example/containers/Common/FlatList/routes';
 
 interface Props extends WithListProps, IBase {}
 interface State {
@@ -60,7 +62,7 @@ class MapScreen extends Component<Props, State> {
       }}
       >
         <Image
-          source={{ uri: thumbnail, cache: 'web' }}
+          source={{ uri: thumbnail }}
           // style={{
           //   width: '100%',
           //   height: '60%',
@@ -97,7 +99,10 @@ class MapScreen extends Component<Props, State> {
           }}
           >
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => NavigationService.navigate(
+                productStack.pureProductDetail,
+                AppHelper.setItemIntoParams(item),
+              )}
               style={[{
                 width: '100%',
                 padding: 5,
@@ -105,7 +110,7 @@ class MapScreen extends Component<Props, State> {
                 alignItems: 'center',
                 borderRadius: 3,
               }, {
-                borderColor: '#FF6347',
+                borderColor: Color.lightPrimary,
                 borderWidth: 1,
               }]}
             >
@@ -113,10 +118,10 @@ class MapScreen extends Component<Props, State> {
                 fontSize: 14,
                 fontWeight: 'bold',
               }, {
-                color: '#FF6347',
+                color: Color.lightPrimary,
               }]}
               >
-                Order Now
+                {i18next.t('map:view_detail')}
               </Text>
             </TouchableOpacity>
           </View>

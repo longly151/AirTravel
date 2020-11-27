@@ -112,6 +112,7 @@
     "content": "Must fill this field!"
   },
   "map": {
-    "search_area": "Search this area"
+    "search_area": "Search this area",
+    "view_detail": "View Detail"
   }
 }

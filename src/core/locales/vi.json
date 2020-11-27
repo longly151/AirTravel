@@ -112,6 +112,7 @@
     "content": "Vui lòng nhập nội dung!"
   },
   "map": {
-    "search_area": "Tìm kiếm khu vực này"
+    "search_area": "Tìm kiếm khu vực này",
+    "view_detail": "Xem chi tiết"
   }
 }
