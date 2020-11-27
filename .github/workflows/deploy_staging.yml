@@ -1,0 +1,91 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  distribute-android:
+    runs-on: ubuntu-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: NPM Install
+        run: |
+          cp .env.example .env
+          grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+          npm install
+
+      # Build
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - name: Install firebase tool
+        run: |
+          yarn global add firebase-tools
+      - name: Bundle Cache
+        uses: actions/cache@v2
+        with:
+          path: android/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Setup fastlane
+        run: cd android && bundle install
+      - name: Distribute to firebase
+        env:
+          FIREBASE_ANDROID_APP: ${{ secrets.FIREBASE_ANDROID_APP }}
+          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+          FIREBASE_ANDROID_GROUPS: ${{ secrets.FIREBASE_ANDROID_GROUPS }}
+        run: cd android && bundle exec fastlane beta
+
+  distribute-ios:
+    runs-on: macOS-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: NPM Install
+        run: |
+          cp .env.example .env
+          npm install
+
+      # Build
+      - name: Pods Cache
+        uses: actions/cache@v2
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Provisioning profile
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          SCHEME: ${{ secrets.SCHEME }}
+          WORKSPACE: ${{ secrets.WORKSPACE }}
+        run: cd ios && fastlane codesigning
+      - name: Distribute to firebase
+        env:
+          FIREBASE_IOS_APP: ${{ secrets.FIREBASE_IOS_APP }}
+          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+          FIREBASE_IOS_GROUPS: ${{ secrets.FIREBASE_IOS_GROUPS }}
+        run: cd ios && fastlane beta
