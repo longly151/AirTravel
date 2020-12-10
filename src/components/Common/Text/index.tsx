@@ -10,6 +10,7 @@ import {
 import { StyleSheet } from 'react-native';
 import Font from '@themes/Font';
 import { lightTheme } from '@themes/Theme';
+import { Translation } from 'react-i18next';
 import QuickView from '../View/QuickView';
 
 type TFontFamily = typeof Font.fontFamily;
@@ -42,6 +43,7 @@ export interface TextProps extends Omit<ETextProps, 'fontFamily' | 'fontSize'> {
   children?: any;
   icon?: EIconProps;
   iconContainerStyle?: any;
+  t?: string | Array<any>;
   theme?: any;
 }
 
@@ -80,6 +82,7 @@ class Text extends PureComponent<TextProps> {
       children,
       theme,
       type,
+      t,
       ...otherProps
     } = this.props;
 
@@ -105,7 +108,7 @@ class Text extends PureComponent<TextProps> {
         fontFamily: Font.fontFamily[fontFamily],
       },
       italic && {
-        fontFamily: Font.fontFamily.RobotoItalic,
+        fontStyle: 'italic',
       },
       thin && {
         fontWeight: '200',
@@ -158,6 +161,15 @@ class Text extends PureComponent<TextProps> {
       );
     }
 
+    if (!children && t) {
+      return (
+        <Translation>
+          {
+            (trans) => <EText {...otherProps} style={textStyle}>{typeof t === 'string' ? trans(t) : trans(t[0], t[1])}</EText>
+          }
+        </Translation>
+      );
+    }
     return (
       <EText {...otherProps} style={textStyle}>
         {children}

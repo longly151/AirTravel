@@ -13,6 +13,7 @@ import {
 } from './ThemeComponent/ParallaxScrollView';
 import { darkCard, lightCard } from './ThemeComponent/Card';
 import Color from './Color';
+import { darkListItem, lightListItem } from './ThemeComponent/ListItem';
 
 /**
  * Theme
@@ -49,6 +50,7 @@ export const darkTheme = {
   ParallaxScrollView: darkParallaxScrollView,
   Map: darkMap,
   Card: darkCard,
+  ListItem: darkListItem,
 };
 
 export const lightTheme = {
@@ -83,4 +85,5 @@ export const lightTheme = {
   ParallaxScrollView: lightParallaxScrollView,
   Map: lightMap,
   Card: lightCard,
+  ListItem: lightListItem,
 };

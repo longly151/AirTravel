@@ -28,6 +28,7 @@ exports[`Button Component should render without issues 1`] = `
   titleStyle={
     Object {
       "color": "#121212",
+      "fontFamily": "Roboto-Regular",
       "fontSize": 16,
       "fontWeight": "normal",
       "marginLeft": 0,

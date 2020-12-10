@@ -69,10 +69,11 @@ class Image extends PureComponent<ImageProps, State> {
 
   constructor(props: ImageProps) {
     super(props);
+    const { source } = this.props;
     this.state = {
       progress: 0,
       indeterminate: true,
-      loading: true,
+      loading: !!source?.uri,
       renderFail: false,
       imageWidth: 0,
       imageHeight: 0,
@@ -393,7 +394,7 @@ class Image extends PureComponent<ImageProps, State> {
     const style: any = StyleSheet.flatten([
       {
         width,
-        marginLeft: -(placeholderBorderWidth || 0.5),
+        // marginLeft: -(placeholderBorderWidth || 0.5),
         height,
         borderRadius,
       },

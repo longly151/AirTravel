@@ -32,6 +32,9 @@ export const darkText = {
     color: Color.darkSecondaryText,
     fontSize: subtitleFontSize,
   },
+  style: {
+    color: Color.darkPrimaryText,
+  }
 };
 export const lightText = {
   header: {
@@ -55,4 +58,7 @@ export const lightText = {
     color: Color.lightSecondaryText,
     fontSize: subtitleFontSize,
   },
+  style: {
+    color: Color.lightPrimaryText,
+  }
 };

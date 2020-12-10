@@ -72,7 +72,7 @@ describe('Text Component', () => {
     const testStyle16 = TestHelper.getStyle(target, { bold: true }, type);
     expect(testStyle16.fontWeight).toBe('bold');
     const testStyle17 = TestHelper.getStyle(target, { italic: true }, type);
-    expect(testStyle17.fontFamily).toBe(Font.fontFamily.RobotoItalic);
+    expect(testStyle17.fontStyle).toBe('italic');
 
     /**
      * icon
