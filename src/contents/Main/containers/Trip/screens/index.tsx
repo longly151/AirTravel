@@ -15,7 +15,7 @@ class TripListScreen extends PureComponent {
         <Body>
           <QuickView center height="100%">
             <Image source={require('@assets/images/empty-trip.png')} width={0.7 * AppView.screenWidth} />
-            <Text marginTop={30} primary type="xTitle" bold center t='empty:empty_trip' />
+            <Text marginTop={30} primary type="xTitle" bold center t="empty:empty_trip" />
           </QuickView>
         </Body>
       </Container>
