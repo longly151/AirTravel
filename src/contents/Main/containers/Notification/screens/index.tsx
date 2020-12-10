@@ -15,7 +15,7 @@ class NotificationListScreen extends PureComponent {
         <Body>
           <QuickView center height="100%">
             <Image source={require('@assets/images/empty-notification.png')} width={0.7 * AppView.screenWidth} />
-            <Text marginTop={30} primary type="xTitle" bold>{i18next.t('empty:notification')}</Text>
+            <Text marginTop={30} primary type="xTitle" bold center t="empty:empty_notification" />
           </QuickView>
         </Body>
       </Container>
