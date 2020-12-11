@@ -29,6 +29,7 @@ import FileViewButton from './Common/Button/FileViewButton';
 import FilePickerButton from './Common/Button/FilePickerButton';
 import Loading from './Common/Loading';
 import MapView from './Common/MapView';
+import Calendar from './Common/Calendar';
 
 /**
  * Custom
@@ -81,6 +82,7 @@ export {
   FilePickerButton,
   Loading,
   MapView,
+  Calendar,
 
   /**
    * Custom
