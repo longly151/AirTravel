@@ -17,7 +17,10 @@ class Body extends PureComponent<Props> {
   render() {
     return (
       <QuickView marginLeft={-18} marginTop={20}>
-        <CalendarList pastScrollRange={0} theme={themeCalendar} />
+        <CalendarList
+          pastScrollRange={0}
+          theme={themeCalendar}
+        />
       </QuickView>
     );
   }
