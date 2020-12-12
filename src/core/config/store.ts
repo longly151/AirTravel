@@ -11,6 +11,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['config', 'auth', 'product', 'event'],
+  blacklist: ['auth'],
 };
 
 const composeEnhancers = compose;

@@ -3,7 +3,7 @@
  */
 const authStack = {
   loginScreen: 'LoginScreen',
-  registerStack: 'registerStack',
+  registerScreen: 'registerScreen',
   forgotPasswordStack: 'forgotPasswordStack',
 };
 
