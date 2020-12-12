@@ -12,7 +12,7 @@ import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog } from '@utils/hocHelpe
 import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
 
 export interface WithPureListProps {
-  themeName?: any;
+  themeName: any;
 }
 
 // function getDisplayName(WrappedComponent: React.ComponentType) {

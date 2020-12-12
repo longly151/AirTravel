@@ -26,10 +26,10 @@ class Body extends PureComponent<IBase> {
           <QuickView row justifyContent="space-between" marginTop={10}>
             <QuickView>
               <QuickView row alignItems="center" marginTop={10} marginBottom={4}>
-                <QuickView row alignItems="center" marginRight={20}>
+                {/* <QuickView row alignItems="center" marginRight={20}>
                   <Icon name="star" color="red" size={18} />
                   <Text thin>4.79 (75)</Text>
-                </QuickView>
+                </QuickView> */}
                 <QuickView row alignItems="center">
                   <Icon name="medal" color="red" size={18} />
                   <Text thin>

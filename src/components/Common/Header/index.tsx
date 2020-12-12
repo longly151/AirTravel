@@ -11,6 +11,9 @@ import {
 import { NavigationService } from '@utils/navigation';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
 import AppView from '@utils/appView';
+import i18next from 'i18next';
+import { connect } from 'react-redux';
+import { languageSelector } from '@contents/Config/redux/selector';
 import QuickView from '../View/QuickView';
 
 export interface HeaderProps extends EHeaderProps {
@@ -29,6 +32,7 @@ export interface HeaderProps extends EHeaderProps {
   leftIconBackgroundColor?: string;
   closeIcon?: boolean;
   title?: string;
+  t?: string;
   logo?: boolean;
   switchTheme?: boolean;
   shadow?: boolean;
@@ -103,6 +107,7 @@ class Header extends PureComponent<HeaderProps, State> {
       leftIconBackgroundColor,
       closeIcon,
       title,
+      t,
       leftColor: leftColorProp,
       centerColor: centerColorProp,
       rightColor: rightColorProp,
@@ -198,13 +203,16 @@ class Header extends PureComponent<HeaderProps, State> {
      * Center Component
      */
     let centerComponent: any = centerComponentProp;
-    if (title) {
+    if (title || t) {
+      let titleText = title;
+      if (t) titleText = i18next.t(t);
       centerComponent = {
-        text: title,
+        text: titleText,
         style: StyleSheet.flatten([
           styles.defaultTitleStyle,
           {
-            marginLeft: backIcon || closeIcon ? -10 : 0,
+            // eslint-disable-next-line no-nested-ternary
+            marginLeft: backIcon || closeIcon ? -10 : (placement === 'left' ? -15 : 0),
             color: centerColor,
           },
           centerContainerStyleProp,
@@ -250,4 +258,10 @@ class Header extends PureComponent<HeaderProps, State> {
   }
 }
 
-export default withTheme(Header as any as React.ComponentType<HeaderProps & ThemeProps<any>>);
+const mapStateToProps = (state: any) => ({
+  language: languageSelector(state),
+});
+
+export default connect(
+  mapStateToProps, null, null, { forwardRef: true }
+)(withTheme(Header as any as React.ComponentType<HeaderProps & ThemeProps<any>>));

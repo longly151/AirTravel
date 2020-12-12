@@ -56,6 +56,9 @@
     "profile": "Tài khoản"
   },
   "header": {
+    "favorite": "Yêu thích",
+    "trip": "Chuyến đi",
+    "notification": "Thông báo",
     "setting": "Cài đặt",
     "example": "Danh sách các component"
   },
@@ -127,5 +130,12 @@
   },
   "select_date": {
     "add_date": "Chọn ngày để xem giá sản phẩm"
+  },
+  "trip": {
+    "detail": "Xem chi tiết",
+    "name": "Tên dịch vụ",
+    "price": "Đơn giá",
+    "duration": "Số ngày",
+    "total_price": "Tổng giá tiền"
   }
 }

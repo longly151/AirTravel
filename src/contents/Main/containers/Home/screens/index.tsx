@@ -48,7 +48,6 @@ class HomeScreen extends PureComponent<Props> {
             </>
           )
         }
-
       </Container>
     );
   }

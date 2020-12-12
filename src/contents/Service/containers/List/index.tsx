@@ -228,6 +228,8 @@ export default compose(
       'thumbnail',
       'unit',
       'destinations',
+      'createdAt',
+      'updatedAt'
     ],
     renderItem,
   }),

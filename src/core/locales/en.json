@@ -56,6 +56,9 @@
     "profile": "Profile"
   },
   "header": {
+    "favorite": "Favorite",
+    "trip": "Trip",
+    "notification": "Notification",
     "setting": "Setting",
     "example": "Component List Example"
   },
@@ -127,5 +130,12 @@
   },
   "select_date": {
     "add_date": "Add dates for prices"
+  },
+  "trip": {
+    "detail": "View Detail",
+    "name": "Service Name",
+    "price": "Price",
+    "duration": "Duration",
+    "total_price": "Total Price"
   }
 }
