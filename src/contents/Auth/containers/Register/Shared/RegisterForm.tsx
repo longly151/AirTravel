@@ -101,7 +101,7 @@ class RegisterForm extends PureComponent<Props> {
                 fullName: this.fullName.getText(),
                 email: this.email.getText(),
                 password: this.password.getText(),
-                phoneNumber: this.phoneNumber.getText(),
+                phone: this.phoneNumber.getText(),
               });
             }}
             loading={registerData.loading}
