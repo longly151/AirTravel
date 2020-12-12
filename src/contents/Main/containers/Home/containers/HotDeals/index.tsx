@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Badge, withTheme } from 'react-native-elements';
 import { QuickView, Text, Button, FlatList, Card } from '@components';
 import { NavigationService } from '@utils/navigation';
-import i18next from 'i18next';
 import hotDealStyles from './styles';
 import homeStack from '../../routes';
 
@@ -76,9 +75,8 @@ class HotDeals extends PureComponent<Props> {
           color={theme.Card.backgroundColor}
           bold
           fontSize={24}
-        >
-          {i18next.t('home:hot_deal_title')}
-        </Text>
+          t="home:hot_deal_title"
+        />
         {list && list.data.length > 0 && (
           <FlatList
             horizontal
@@ -89,7 +87,7 @@ class HotDeals extends PureComponent<Props> {
         )}
         <QuickView alignItems="center" width="100%">
           <Button
-            title={i18next.t('home:hot_deal_explore')}
+            t="home:hot_deal_explore"
             backgroundColor="transperant"
             width={viewportWidth - greetMarginVertical * 2}
             sharp

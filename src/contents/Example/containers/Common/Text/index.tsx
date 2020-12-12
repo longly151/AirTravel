@@ -4,7 +4,6 @@ import {
 } from '@components';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import Color from '@themes/Color';
-import i18next from 'i18next';
 
 class TextExample extends PureComponent {
   render() {
@@ -13,7 +12,7 @@ class TextExample extends PureComponent {
         <Header backIcon title="Text" shadow switchTheme />
         <Body scrollable backgroundColor="transparent">
           <QuickView style={{ marginBottom: 15, marginTop: 10 }}>
-            <Text>{i18next.t('auth:login')}</Text>
+            <Text t="auth:login" />
             <Text margin={10}>Text Component with margin=10</Text>
           </QuickView>
           <QuickView style={{ marginBottom: 15 }}>

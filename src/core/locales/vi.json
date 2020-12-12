@@ -84,7 +84,8 @@
     "button_verify": "Xác nhận ngay bây giờ",
     "fill_verify_otp": "Vui lòng xác nhận OTP",
     "success_verify_otp": "Đã xác nhận",
-    "resend_otp": "Gửi lại mã OTP"
+    "resend_otp": "Gửi lại mã OTP",
+    "select_period": "Vui lòng chọn thời gian xuất phát & thời gian kết thúc"
   },
   "home": {
     "greet": "Chào, ",
@@ -123,5 +124,8 @@
     "empty_notification": "Không có thông báo nào",
     "empty_favorite": "Danh sách yêu thích rỗng",
     "empty_trip": "Chưa có chuyến đi nào"
+  },
+  "select_date": {
+    "add_date": "Chọn ngày để xem giá sản phẩm"
   }
 }

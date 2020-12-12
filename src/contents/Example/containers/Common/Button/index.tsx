@@ -5,7 +5,6 @@ import {
 } from '@components';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import Color from '@themes/Color';
-import i18next from 'i18next';
 
 class ButtonExample extends PureComponent {
   buttonGroup: any;
@@ -37,7 +36,7 @@ class ButtonExample extends PureComponent {
               titlePadding={0}
               containerStyle={{ width: 91 }}
             />
-            <Button title={i18next.t('auth:login')} />
+            <Button t="auth:login" />
             <Button width={200} title="Button with width = 200" />
             <Button height={70} title="Button with height = 70" />
             <Button width={250} center title="Button with center = true" />

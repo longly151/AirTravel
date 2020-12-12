@@ -135,15 +135,15 @@ class MapScreen extends Component<Props, State> {
                 borderWidth: 1,
               }]}
             >
-              <Text style={[{
-                fontSize: 14,
-                fontWeight: 'bold',
-              }, {
-                color: Color.lightPrimary,
-              }]}
-              >
-                {i18next.t('map:view_detail')}
-              </Text>
+              <Text
+                style={[{
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                }, {
+                  color: Color.lightPrimary,
+                }]}
+                t="map:view_detail"
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -161,7 +161,7 @@ class MapScreen extends Component<Props, State> {
     if (displaySearchArea) {
       return (
         <Button
-          title={i18next.t('map:search_area')}
+          t="map:search_area"
           containerStyle={{
             position: 'absolute',
             alignSelf: 'center',

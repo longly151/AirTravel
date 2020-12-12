@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { NavigationService } from '@utils/navigation';
-import i18next from 'i18next';
 import AuthButton, { AuthButtonProps } from '../../Shared/AuthButton';
 import authStack from '../../routes';
 
@@ -12,7 +11,7 @@ class RegisterButton extends PureComponent<Props> {
     const { ...otherProps } = this.props;
     return (
       <AuthButton
-        title={i18next.t('auth:register')}
+        t="auth:register"
         {...otherProps}
         onPress={() => NavigationService.navigate(authStack.registerScreen)}
       />
