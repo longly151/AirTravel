@@ -11,7 +11,8 @@ class RegisterScreen extends PureComponent {
           paddingHorizontal={20}
           backgroundImage={{
             source: require('@assets/images/loginBackground.png'),
-          }}>
+          }}
+        >
           <LoginBackIcon />
           <QuickView marginBottom={20} marginTop={60} center>
             <Avatar

@@ -6,12 +6,12 @@ import { withTheme } from 'react-native-elements';
 import { QuickView, TextError } from '@components';
 import Color from '@themes/Color';
 import Selector from '@utils/selector';
+import { NavigationService } from '@utils/navigation';
 import AuthButton from '../../Shared/AuthButton';
 import AuthInput from '../../Shared/AuthInput';
 import { ILogInInput } from '../redux/model';
 import { login, logout } from '../redux/slice';
 import { loginSelector } from '../redux/selector';
-import { NavigationService } from '@utils/navigation';
 import authStack from '../../routes';
 
 interface Props {

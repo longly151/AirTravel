@@ -1,4 +1,4 @@
-import { put, call, takeLatest, select } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import Redux from '@utils/redux';
 import { registerSuccess, registerFail, register } from './slice';
 import { realtorRegisterApi } from './api';

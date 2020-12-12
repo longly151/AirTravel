@@ -2,5 +2,4 @@
 import Api from '@utils/api';
 import { IRegisterInput } from './model';
 
-export const realtorRegisterApi = (data: IRegisterInput) =>
-  Api.post('/auth/register/customer', data);
+export const realtorRegisterApi = (data: IRegisterInput) => Api.post('/auth/register/customer', data);

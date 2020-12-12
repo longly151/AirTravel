@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { REHYDRATE } from 'redux-persist';
 import Redux from '@utils/redux';
 
 /**
