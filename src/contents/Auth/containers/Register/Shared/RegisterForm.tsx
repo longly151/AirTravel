@@ -3,42 +3,60 @@ import { connect } from 'react-redux';
 import { Keyboard } from 'react-native';
 import { TObjectRedux } from '@utils/redux';
 import { withTheme } from 'react-native-elements';
-import { QuickView, TextError } from '@components';
+import { QuickView, Text, TextError } from '@components';
 import Color from '@themes/Color';
 import Selector from '@utils/selector';
 import i18next from 'i18next';
 import AuthButton from '../../Shared/AuthButton';
 import AuthInput from '../../Shared/AuthInput';
-import { ILogInInput } from '../redux/model';
-import { login, logout } from '../redux/slice';
-import { loginSelector } from '../redux/selector';
 import { NavigationService } from '@utils/navigation';
 import authStack from '../../routes';
+import { IRegisterInput } from '../redux/model';
+import { register } from '../redux/slice';
+import { registerSelector } from '../redux/selector';
 
 interface Props {
-  loginData: TObjectRedux;
-  reduxLogin: (data: ILogInInput) => any;
+  registerData: TObjectRedux;
+  reduxRegister: (data: IRegisterInput) => any;
   theme?: any;
 }
-class LoginForm extends PureComponent<Props> {
+class RegisterForm extends PureComponent<Props> {
+  private fullName: any;
+
   private email: any;
 
   private password: any;
 
+  private phoneNumber: any;
+
   render() {
-    const { loginData, reduxLogin, theme } = this.props;
+    const { registerData, reduxRegister, theme } = this.props;
     return (
       <>
-        <TextError error={loginData.error} color="#FA8072" />
+        {registerData.data.token && (
+          <QuickView alignSelf="center" marginVertical={10}>
+            <Text color={Color.green}>Register Succeeded!</Text>
+          </QuickView>
+        )}
+        <TextError error={registerData.error} color="#FA8072" />
+        <AuthInput
+          ref={(ref: any) => {
+            this.fullName = ref;
+          }}
+          leftIconName="account-outline"
+          placeholder="Full name"
+          validationField="name"
+          keyboardType="default"
+        />
         <AuthInput
           ref={(ref: any) => {
             this.email = ref;
           }}
-          value="fussssss@gmail.com"
           leftIconName="email-outline"
           placeholder="Email"
           validationField="email"
           keyboardType="email-address"
+          marginVertical={10}
         />
         <AuthInput
           ref={(ref: any) => {
@@ -52,6 +70,15 @@ class LoginForm extends PureComponent<Props> {
           onSubmitEditing={() => Keyboard.dismiss()}
           blurOnSubmit={false}
           secureTextEntry
+        />
+        <AuthInput
+          ref={(ref: any) => {
+            this.phoneNumber = ref;
+          }}
+          leftIconName="phone-outline"
+          placeholder="Phone number"
+          validationField="phone"
+          keyboardType="number-pad"
           marginVertical={10}
         />
         {/* <AuthButton
@@ -66,24 +93,25 @@ class LoginForm extends PureComponent<Props> {
         /> */}
         <QuickView marginTop={20}>
           <AuthButton
-            title={i18next.t('auth:login')}
-            // onPress={this.onSignIn}
+            title={i18next.t('auth:register')}
             color={Color.white}
             outline
             onPress={() => {
-              reduxLogin({
+              reduxRegister({
+                fullName: this.fullName.getText(),
                 email: this.email.getText(),
                 password: this.password.getText(),
+                phoneNumber: this.phoneNumber.getText(),
               });
             }}
-            loading={loginData.loading}
+            loading={registerData.loading}
           />
           <AuthButton
-            title={i18next.t('auth:register')}
+            title={i18next.t('auth:login')}
             titleColor={theme.colors.primary}
             backgroundColor={Color.white}
             onPress={() => {
-              NavigationService.navigate(authStack.registerScreen);
+              NavigationService.navigate(authStack.loginScreen);
             }}
           />
         </QuickView>
@@ -93,15 +121,14 @@ class LoginForm extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: any) => ({
-  loginData: Selector.getObject(loginSelector, state),
+  registerData: Selector.getObject(registerSelector, state),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  reduxLogin: (data: ILogInInput) => dispatch(login({ data })),
-  reduxLogout: () => dispatch(logout()),
+  reduxRegister: (data: IRegisterInput) => dispatch(register({ data })),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withTheme(LoginForm as any));
+)(withTheme(RegisterForm as any));

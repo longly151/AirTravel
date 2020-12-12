@@ -173,6 +173,7 @@ function ListServiceScreen(props: any) {
           </QuickView>
           <QuickView
             style={{ borderRightWidth: 2 }}
+            marginLeft={-20}
             marginRight={5}
             paddingVertical={2}>
             <Icon
