@@ -6,7 +6,6 @@ import { withTheme } from 'react-native-elements';
 import { QuickView, TextError } from '@components';
 import Color from '@themes/Color';
 import Selector from '@utils/selector';
-import i18next from 'i18next';
 import AuthButton from '../../Shared/AuthButton';
 import AuthInput from '../../Shared/AuthInput';
 import { ILogInInput } from '../redux/model';
@@ -64,7 +63,7 @@ class LoginForm extends PureComponent<Props> {
         /> */}
         <QuickView marginTop={20}>
           <AuthButton
-            title={i18next.t('auth:login')}
+            t="auth:login"
             // onPress={this.onSignIn}
             color={Color.white}
             outline
@@ -77,7 +76,7 @@ class LoginForm extends PureComponent<Props> {
             loading={loginData.loading}
           />
           <AuthButton
-            title={i18next.t('auth:register')}
+            t="auth:register"
             titleColor={theme.colors.primary}
             backgroundColor={Color.white}
             onPress={() => {}}

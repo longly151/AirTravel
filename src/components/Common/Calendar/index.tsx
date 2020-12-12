@@ -93,11 +93,11 @@ class Calendar extends React.PureComponent<CalendarProps, State> {
       case 'period':
         // Deselect
         if (date.dateString === startDate) {
-          this.setState({ startDate: '' });
+          this.setState({ startDate: '' }, () => { if (onDayPress) onDayPress(date); });
           return;
         }
         if (date.dateString === endDate) {
-          this.setState({ endDate: '' });
+          this.setState({ endDate: '' }, () => { if (onDayPress) onDayPress(date); });
           return;
         }
 
@@ -106,25 +106,24 @@ class Calendar extends React.PureComponent<CalendarProps, State> {
           (!startDate)
           || (startDate && moment(date.dateString).toDate() < moment(startDate).toDate())
         ) {
-          this.setState({ startDate: date.dateString });
+          this.setState({ startDate: date.dateString }, () => { if (onDayPress) onDayPress(date); });
         } else {
-          this.setState({ endDate: date.dateString });
+          this.setState({ endDate: date.dateString }, () => { if (onDayPress) onDayPress(date); });
         }
         break;
       default:
         if (_.includes(selected, date.dateString)) {
           // Deselect
           const newSelected = _.filter(selected, (o) => o !== date.dateString);
-          this.setState({ selected: newSelected });
+          this.setState({ selected: newSelected }, () => { if (onDayPress) onDayPress(date); });
         } else if (multipleSelect) {
           // Select
           const newSelected = [...selected, date.dateString];
-          this.setState({ selected: newSelected });
+          this.setState({ selected: newSelected }, () => { if (onDayPress) onDayPress(date); });
         } else {
-          this.setState({ selected: [date.dateString] });
+          this.setState({ selected: [date.dateString] }, () => { if (onDayPress) onDayPress(date); });
         }
     }
-    if (onDayPress) onDayPress(date);
   };
 
   render() {

@@ -21,6 +21,8 @@ import DeviceInfo from 'react-native-device-info';
 import { firebase } from '@react-native-firebase/messaging';
 import SplashScreen from 'react-native-splash-screen';
 import { utils } from '@react-native-firebase/app';
+import moment from 'moment';
+import { LocaleConfig } from 'react-native-calendars';
 import AppNavigator from './app.navigator';
 
 interface Props {
@@ -37,13 +39,20 @@ interface State {
 class AppContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const { loginSelectorData } = this.props;
+    const { loginSelectorData, language } = this.props;
     this.state = {
       hasShownNoInternet: false
     };
     if (loginSelectorData.data) {
       Global.token = loginSelectorData.data.token;
     }
+
+    /**
+     * Language
+     */
+    AppHelper.initCalendarLanguage();
+    moment.locale(language);
+    LocaleConfig.defaultLocale = language;
   }
 
   async componentDidMount() {

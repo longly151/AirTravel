@@ -18,7 +18,6 @@ class Header extends PureComponent<Props> {
             size={26}
             onPress={() => NavigationService.goBack()}
           />
-          <Text bold>Clear</Text>
         </QuickView>
 
         <QuickView marginTop={20}>
