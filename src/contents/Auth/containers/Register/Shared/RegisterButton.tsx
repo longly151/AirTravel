@@ -16,7 +16,7 @@ class RegisterButton extends PureComponent<Props> {
     } = this.props;
     return (
       <AuthButton
-        title={i18next.t('auth:register')}
+        t="auth:register"
         {...otherProps}
         onPress={() => NavigationService.navigate(authStack.registerStack)}
       />

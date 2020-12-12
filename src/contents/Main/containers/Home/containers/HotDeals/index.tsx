@@ -76,9 +76,8 @@ class HotDeals extends PureComponent<Props> {
           color={theme.Card.backgroundColor}
           bold
           fontSize={24}
-        >
-          {i18next.t('home:hot_deal_title')}
-        </Text>
+          t="home:hot_deal_title"
+        />
         {list && list.data.length > 0 && (
           <FlatList
             horizontal
@@ -89,7 +88,7 @@ class HotDeals extends PureComponent<Props> {
         )}
         <QuickView alignItems="center" width="100%">
           <Button
-            title={i18next.t('home:hot_deal_explore')}
+            t="home:hot_deal_explore"
             backgroundColor="transperant"
             width={viewportWidth - greetMarginVertical * 2}
             sharp

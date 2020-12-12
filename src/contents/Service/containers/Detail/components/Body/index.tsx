@@ -42,9 +42,7 @@ class Body extends PureComponent<IBase> {
               <Text thin>{data?.destinations[0]?.address}</Text>
             </QuickView>
             <QuickView center marginRight={10}>
-              <Text center fontSize={14} marginBottom={5}>
-                {i18next.t('service_detail:hosted_by')}
-              </Text>
+              <Text center fontSize={14} marginBottom={5} t="service_detail:hosted_by" />
               <Avatar
                 size="small"
                 rounded

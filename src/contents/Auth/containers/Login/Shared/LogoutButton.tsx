@@ -30,7 +30,7 @@ class LoginButton extends PureComponent<Props> {
       return (
         <AuthButton
           {...otherProps}
-          title={i18next.t('auth:logout')}
+          t="auth:logout"
           onPress={reduxLogout}
         />
       );

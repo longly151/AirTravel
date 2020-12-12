@@ -27,7 +27,7 @@ class LoginButton extends PureComponent<Props> {
       return (
         <QuickView>
           <AuthButton
-            title={i18next.t('auth:login')}
+            t="auth:login"
             {...otherProps}
             onPress={() => NavigationService.navigate(authStack.loginScreen)}
           />

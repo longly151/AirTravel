@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  Text, Icon, ListItem,
+  Icon, ListItem,
 } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationService } from '@utils/navigation';
 import {
-  QuickView, Body, Container, Avatar
+  QuickView, Body, Container, Avatar, Text
 } from '@components';
 import Color from '@themes/Color';
 import SwitchChangeTheme from '@contents/Config/Shared/SwitchChangeTheme';
-import i18next from 'i18next';
 import { exampleList } from '../list';
 
 const styles = StyleSheet.create({
@@ -45,7 +44,7 @@ class ExampleList extends PureComponent<Props> {
         <QuickView flex={1}>
           <View style={styles.headerContainer}>
             <Icon color="white" name="invert-colors" size={62} />
-            <Text style={styles.heading}>{i18next.t('header:example')}</Text>
+            <Text style={styles.heading} t="header:example" />
           </View>
           <QuickView row center position="absolute" right={15} top={160}>
             <Icon name="theme-light-dark" type="material-community" style={{ marginRight: 5 }} color={Color.white} />

@@ -109,7 +109,8 @@
     "name": "Must fill this field!",
     "message": "Must fill this field!",
     "title": "Must fill this field!",
-    "content": "Must fill this field!"
+    "content": "Must fill this field!",
+    "select_period": "Please select period"
   },
   "map": {
     "search_area": "Search this area",
@@ -123,5 +124,8 @@
     "empty_notification": "Your notification is empty",
     "empty_favorite": "Your Favorite List is empty",
     "empty_trip": "You have not booked any trip yet"
+  },
+  "select_date": {
+    "add_date": "Add dates for prices"
   }
 }

@@ -11,6 +11,7 @@ import ImageResizer from 'react-native-image-resizer';
 import i18next from 'i18next';
 import { showMessage } from 'react-native-flash-message';
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import { LocaleConfig } from 'react-native-calendars';
 import Api from './api';
 import { TError } from './redux';
 
@@ -189,8 +190,7 @@ export class CAppHelper {
     return RNFetchBlob.fetch(
       'PUT',
       presignedUrl,
-      {
-        'Content-Type': data.type,
+      { 'Content-Type': data.type,
       },
       RNFetchBlob.wrap(uri),
     );
@@ -348,6 +348,21 @@ export class CAppHelper {
         },
       });
     }
+  };
+
+  initCalendarLanguage = () => {
+    LocaleConfig.locales.en = {
+      monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthNamesShort: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
+      dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    };
+    LocaleConfig.locales.vi = {
+      monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+      monthNamesShort: ['Thg.1', 'Thg.2', 'Thg.3', 'Thg.4', 'Thg.5', 'Thg.6', 'Thg.7', 'Thg.8', 'Thg.9', 'Thg.10', 'Thg.11', 'Thg.12'],
+      dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+      dayNamesShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+    };
   };
 }
 
