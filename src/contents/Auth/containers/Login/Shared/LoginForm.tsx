@@ -6,7 +6,6 @@ import { withTheme } from 'react-native-elements';
 import { QuickView, TextError } from '@components';
 import Color from '@themes/Color';
 import Selector from '@utils/selector';
-import i18next from 'i18next';
 import AuthButton from '../../Shared/AuthButton';
 import AuthInput from '../../Shared/AuthInput';
 import { ILogInInput } from '../redux/model';

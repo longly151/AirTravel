@@ -6,7 +6,6 @@ import { NavigationService } from '@utils/navigation';
 import { serviceSetFilter } from '@contents/Service/redux/slice';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import i18next from 'i18next';
 import homeStack from '../../routes';
 import crucialCategory from './data';
 import crucialCategoryStyle from './styles';

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { View, Dimensions } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { QuickView, Text, Button } from '@components';
-import i18next from 'i18next';
 import Carousel from '../Carousel';
 // import topTours from './data';
 import greetingStyles from './styles';

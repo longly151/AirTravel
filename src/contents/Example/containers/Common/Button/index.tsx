@@ -5,7 +5,6 @@ import {
 } from '@components';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import Color from '@themes/Color';
-import i18next from 'i18next';
 
 class ButtonExample extends PureComponent {
   buttonGroup: any;

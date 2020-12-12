@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Badge, withTheme } from 'react-native-elements';
 import { QuickView, Text, Button, FlatList, Card } from '@components';
 import { NavigationService } from '@utils/navigation';
-import i18next from 'i18next';
 import hotDealStyles from './styles';
 import homeStack from '../../routes';
 
