@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { QuickView, Text, Image, Loading } from '@components';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
+import AppView from '@utils/appView';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -18,15 +19,6 @@ interface State {
   activeSlide: number;
 }
 
-const styles = StyleSheet.create({
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    width: viewportWidth,
-    height: 400,
-    borderRadius: 0,
-  },
-});
-
 class Header extends PureComponent<Props, State> {
   constructor(props: any) {
     super(props);
@@ -38,7 +30,9 @@ class Header extends PureComponent<Props, State> {
   renderItem = ({ item, index }: { item: any, index: number }) => (
     <Image
       source={{ uri: item }}
-      style={styles.image}
+      sharp
+      width={AppView.screenWidth}
+      height={300}
       key={index}
     />
   );
@@ -101,7 +95,6 @@ class Header extends PureComponent<Props, State> {
               </Text>
             ) : null
           }
-
         </QuickView>
       </QuickView>
     );

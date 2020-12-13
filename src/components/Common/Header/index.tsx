@@ -29,10 +29,11 @@ export interface HeaderProps extends EHeaderProps {
   borderBottomWidth?: number;
   transparent?: boolean;
   backIcon?: boolean;
+  homeIcon?: boolean;
   leftIconBackgroundColor?: string;
   closeIcon?: boolean;
   title?: string;
-  t?: string;
+  t?: string | Array<any>;
   logo?: boolean;
   switchTheme?: boolean;
   shadow?: boolean;
@@ -104,6 +105,7 @@ class Header extends PureComponent<HeaderProps, State> {
       backgroundColor: backgroundColorProp,
       transparent,
       backIcon,
+      homeIcon,
       leftIconBackgroundColor,
       closeIcon,
       title,
@@ -197,6 +199,20 @@ class Header extends PureComponent<HeaderProps, State> {
           padding: 8, backgroundColor: leftIconBackgroundColor, borderRadius: 20,
         } : null,
       };
+    } else if (homeIcon) {
+      leftComponent = {
+        icon: 'home',
+        type: 'octicons',
+        size: 30,
+        color: leftColor,
+        onPress: () => NavigationService.navigate('mainBottomTab'),
+        style: {
+          width: 25, height: 25,
+        },
+        containerStyle: leftIconBackgroundColor !== 'transparent' ? {
+          padding: 8, backgroundColor: leftIconBackgroundColor, borderRadius: 20,
+        } : null,
+      };
     }
 
     /**
@@ -205,7 +221,9 @@ class Header extends PureComponent<HeaderProps, State> {
     let centerComponent: any = centerComponentProp;
     if (title || t) {
       let titleText = title;
-      if (t) titleText = i18next.t(t);
+      if (t) {
+        titleText = typeof t === 'string' ? i18next.t(t) : i18next.t(t[0], t[1]);
+      }
       centerComponent = {
         text: titleText,
         style: StyleSheet.flatten([

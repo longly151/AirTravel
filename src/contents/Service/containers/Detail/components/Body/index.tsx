@@ -14,6 +14,7 @@ class Body extends PureComponent<IBase> {
   render() {
     const { data, loading } = this.props;
     const enLanguage = i18next.t('key') === LanguageEnum.EN;
+
     return (
       <QuickView marginHorizontal={18} marginBottom={150}>
         <QuickView
@@ -34,8 +35,8 @@ class Body extends PureComponent<IBase> {
                   <Icon name="medal" color="red" size={18} />
                   <Text thin>
                     {enLanguage
-                      ? data?.serviceCategories[0].enName
-                      : data?.serviceCategories[0].viName}
+                      ? data?.serviceCategories[0]?.enName
+                      : data?.serviceCategories[0]?.viName}
                   </Text>
                 </QuickView>
               </QuickView>
@@ -64,10 +65,11 @@ class Body extends PureComponent<IBase> {
           {
               loading ? <Loading style={{ marginTop: 20 }} />
                 : (
-                  <HTML
-                    html={enLanguage ? data.enDescription : data.viDescription}
+                  <Text
                     marginVertical={20}
-                  />
+                  >
+                    {enLanguage ? data.enDescription : data.viDescription}
+                  </Text>
                 )
             }
         </QuickView>
