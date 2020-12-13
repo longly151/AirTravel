@@ -146,6 +146,6 @@
     "pay_now": "Pay now",
     "success": "Success",
     "cancel": "Cancel",
-    "pay_info": "Please transfer to this account number:\n\nHolder: Nguyen Thi Phu\nAccount Number: 2010108100599\nBank: MB-Bank\nAmount: {{amount}} VND"
+    "pay_info": "Please transfer to this account number:\n\nHolder: NGUYEN THI PHU\nAccount Number: 2010108100599\nBank: MB-Bank\nAmount: {{amount}} VND"
   }
 }

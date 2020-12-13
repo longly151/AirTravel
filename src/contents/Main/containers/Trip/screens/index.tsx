@@ -16,6 +16,9 @@ import AppHelper from '@utils/appHelper';
 import detailServiceStack from '@contents/Service/containers/Detail/routes';
 import Helper from '@utils/helper';
 import i18next from 'i18next';
+import Selector from '@utils/selector';
+import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
+import { Global } from '@utils/api';
 import serviceRoutes from '../../../../Service/routes';
 import { billGetList, CONSTANT } from '../redux/slice';
 
@@ -178,7 +181,7 @@ class TripListScreen extends PureComponent<WithListProps> {
       <Container>
         <Header t="header:trip" shadow homeIcon={item?.goHome} />
         <Body fullWidth>
-          {renderFlatList({ renderEmpty: this.renderEmpty })}
+          {renderFlatList({ renderEmpty: this.renderEmpty, key: Global.token.toString() })}
         </Body>
       </Container>
     );
@@ -193,4 +196,7 @@ export default withReduxList({
   },
   fields: ['id', 'totalPrice', 'status', 'createdAt', 'updatedAt'],
   renderItem,
+  mapStateToProps: (state: any) => ({
+    loginData: Selector.getObject(loginSelector, state),
+  }),
 })(TripListScreen);

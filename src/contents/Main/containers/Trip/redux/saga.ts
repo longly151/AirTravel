@@ -19,11 +19,12 @@ export function* getListSaga({ payload }: { payload: any }) {
     const me = yield select((state) => state.auth.login);
     const filter = new Filter();
 
-    filter.mergeFilter('customer.id', '$eq', me.id);
+    filter.mergeFilter('customer.id', '$eq', me.data.id);
     const query: TQuery = {
+      ...payload.query,
       filter: filter.filterObject,
-      ...payload.query
     };
+
     const response = yield call(fetchBills, Redux.stringifyQuery(query));
 
     if (!payload.query.page || payload.query.page === 1) timeArray = [];

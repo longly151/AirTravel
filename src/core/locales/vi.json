@@ -146,6 +146,6 @@
     "pay_now": "Thanh toán ngay",
     "success": "Thành công",
     "cancel": "Đã huỷ",
-    "pay_info": "Quý khách vui lòng chuyển tiền vào số tài khoản sau:\n\nTên chủ TK: Nguyen Thi Phu\nSố TK: 2010108100599\nNgân hàng: MB-Bank\nSố tiền: {{amount}} VND"
+    "pay_info": "Quý khách vui lòng chuyển tiền vào số tài khoản sau:\n\nTên chủ TK: NGUYEN THI PHU\nSố TK: 2010108100599\nNgân hàng: MB-Bank\nSố tiền: {{amount}} VND"
   }
 }
