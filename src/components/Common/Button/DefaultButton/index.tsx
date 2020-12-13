@@ -9,6 +9,8 @@ import {
 import _ from 'lodash';
 import Color from '@themes/Color';
 import AppView from '@utils/appView';
+import { Translation } from 'react-i18next';
+import Font from '@themes/Font';
 
 export interface ButtonProps extends Omit<EButtonProps, 'raised' | 'type'> {
   width?: number | string;
@@ -50,6 +52,7 @@ export interface ButtonProps extends Omit<EButtonProps, 'raised' | 'type'> {
   shadow?: boolean;
   color?: string;
   reverseColor?: boolean;
+  t?: string | Array<any>;
   theme?: any;
 }
 
@@ -108,6 +111,7 @@ class Button extends React.PureComponent<ButtonProps> {
       shadow,
       color,
       reverseColor,
+      t,
       theme,
       ...otherProps
     } = this.props;
@@ -120,7 +124,7 @@ class Button extends React.PureComponent<ButtonProps> {
     const marginVertical = marginVerticalProp || theme.Button.marginVertical;
     const marginHorizontal = marginHorizontalProp || theme.Button.marginHorizontal;
     let width = widthProp;
-    let height = heightProp;
+    let height = heightProp || theme.Button.height;
 
     let borderRadius: any = 0;
     let sharp = sharpProp;
@@ -132,7 +136,7 @@ class Button extends React.PureComponent<ButtonProps> {
       if (circle) {
         rounded = false;
         sharp = false;
-        const minDimension = _.min([width, height]) || 50;
+        const minDimension = _.min([width, height]) || theme.Button.height || 50;
         width = minDimension;
         height = minDimension;
         borderRadius = minDimension;
@@ -211,6 +215,7 @@ class Button extends React.PureComponent<ButtonProps> {
 
     let titleStyle: any = StyleSheet.flatten([
       {
+        fontFamily: Font.fontFamily.RobotoRegular,
         fontWeight: (active || bold) ? 'bold' : 'normal',
         fontSize: fontSize || theme.Button.titleFontSize,
         color: active ? activeTitleColor : titleColor,
@@ -307,6 +312,25 @@ class Button extends React.PureComponent<ButtonProps> {
       const reverseTitleColor = buttonStyle.backgroundColor;
       buttonStyle.backgroundColor = reverseBackgroundColor;
       titleStyle.color = reverseTitleColor;
+    }
+
+    if (!title && t) {
+      return (
+        <Translation>
+          {(trans) => (
+            <ElementButton
+              {...otherProps}
+              icon={icon}
+              iconRight={iconRight}
+              containerStyle={containerStyle}
+              buttonStyle={buttonStyle}
+              title={typeof t === 'string' ? trans(t) : trans(t[0], t[1])}
+              titleStyle={titleStyle}
+              iconContainerStyle={iconContainerStyle}
+            />
+          )}
+        </Translation>
+      );
     }
 
     return (

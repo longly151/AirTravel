@@ -113,7 +113,7 @@ class ModalButton extends PureComponent<ModalButtonProps, State> {
           center
           padding={15}
         >
-          <Text type="xTitle" color={theme.Modal.textColor} center marginBottom={15}>{title}</Text>
+          <Text color={theme.Modal.textColor} center={type === 'confirmation'} marginBottom={15}>{title}</Text>
           <QuickView row center>
             {
             type === 'notification' ? (

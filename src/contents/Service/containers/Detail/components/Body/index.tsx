@@ -14,6 +14,7 @@ class Body extends PureComponent<IBase> {
   render() {
     const { data, loading } = this.props;
     const enLanguage = i18next.t('key') === LanguageEnum.EN;
+
     return (
       <QuickView marginHorizontal={18} marginBottom={150}>
         <QuickView
@@ -26,25 +27,23 @@ class Body extends PureComponent<IBase> {
           <QuickView row justifyContent="space-between" marginTop={10}>
             <QuickView>
               <QuickView row alignItems="center" marginTop={10} marginBottom={4}>
-                <QuickView row alignItems="center" marginRight={20}>
+                {/* <QuickView row alignItems="center" marginRight={20}>
                   <Icon name="star" color="red" size={18} />
                   <Text thin>4.79 (75)</Text>
-                </QuickView>
+                </QuickView> */}
                 <QuickView row alignItems="center">
                   <Icon name="medal" color="red" size={18} />
                   <Text thin>
                     {enLanguage
-                      ? data?.serviceCategories[0].enName
-                      : data?.serviceCategories[0].viName}
+                      ? data?.serviceCategories[0]?.enName
+                      : data?.serviceCategories[0]?.viName}
                   </Text>
                 </QuickView>
               </QuickView>
               <Text thin>{data?.destinations[0]?.address}</Text>
             </QuickView>
             <QuickView center marginRight={10}>
-              <Text center fontSize={14} marginBottom={5}>
-                {i18next.t('service_detail:hosted_by')}
-              </Text>
+              <Text center fontSize={14} marginBottom={5} t="service_detail:hosted_by" />
               <Avatar
                 size="small"
                 rounded
@@ -66,10 +65,11 @@ class Body extends PureComponent<IBase> {
           {
               loading ? <Loading style={{ marginTop: 20 }} />
                 : (
-                  <HTML
-                    html={enLanguage ? data.enDescription : data.viDescription}
+                  <Text
                     marginVertical={20}
-                  />
+                  >
+                    {enLanguage ? data.enDescription : data.viDescription}
+                  </Text>
                 )
             }
         </QuickView>

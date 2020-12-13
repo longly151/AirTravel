@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { View, Dimensions } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { QuickView, Text, Button } from '@components';
-import i18next from 'i18next';
 import Carousel from '../Carousel';
 // import topTours from './data';
 import greetingStyles from './styles';
@@ -27,10 +26,8 @@ class Greeting extends PureComponent<Props> {
             <Text
               style={greetingStyles.greetText}
               color="#fff"
-            >
-              {i18next.t('home:greet')}
-
-            </Text>
+              t="home:greet"
+            />
             <Text style={greetingStyles.greetText} color="#fff">
               Hieu
             </Text>
@@ -39,12 +36,11 @@ class Greeting extends PureComponent<Props> {
           <Text
             style={greetingStyles.greetText}
             color="#fff"
-          >
-            {i18next.t('home:expected_find')}
-          </Text>
+            t="home:expected_find"
+          />
           <Button
             icon={{ name: 'magnify', style: { marginRight: 8 } }}
-            title={i18next.t('home:btn_find')}
+            t="home:btn_find"
             backgroundColor="rgba(255,255,255,0.2)"
             titleColor="#fff"
             buttonStyle={{ display: 'flex', justifyContent: 'flex-start' }}
