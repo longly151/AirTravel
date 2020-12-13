@@ -9,7 +9,7 @@ import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog, IHocFlatListProps } from '@utils/hocHelper';
-import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
+import FlatList from '../Common/FlatList/DefaultFlatList';
 
 export interface WithPureListProps {
   themeName: any;

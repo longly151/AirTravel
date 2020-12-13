@@ -8,7 +8,7 @@ import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
 import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog, IHocFlatListProps } from '@utils/hocHelper';
 import _ from 'lodash';
-import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
+import FlatList from '../Common/FlatList/DefaultFlatList';
 
 export interface WithReduxListProps extends IBase {
   getList: (query?: TQuery) => any;
