@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
-import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog } from '@utils/hocHelper';
-import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
+import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog, IHocFlatListProps } from '@utils/hocHelper';
+import FlatList from '../Common/FlatList/DefaultFlatList';
 
 export interface WithPureListProps {
   themeName: any;
@@ -20,13 +20,15 @@ export interface WithPureListProps {
 // };
 
 const withPureList = (
-  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, log }: {
+  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log }: {
     url: string,
     fields?: Array<string>,
     ListHeaderComponent?: React.ComponentType<any>,
     renderItem?: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
+    mapStateToProps?: (state: any) => any,
+    mapDispatchToProps?: (dispatch: any) => any,
     log?: IHocLog
   }
 ) => <P extends object>(
@@ -126,7 +128,7 @@ const withPureList = (
     //     if (!propsAny[e.key]?.data || _.isEmpty(propsAny[e.key].data)) return true;
     //   });
     // };
-    renderFlatList = (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => {
+    renderFlatList = (flatListProps?: IHocFlatListProps) => {
       const { loading, data, metadata, error } = this.state;
       const { themeName } = this.props;
       const list = {
@@ -171,25 +173,41 @@ const withPureList = (
     }
   }
 
-  const mapStateToProps = (state: any) => {
+  const customMapStateToProps = (state: any) => {
     let result: any = {
       themeName: themeSelector(state)
     };
+
+    if (mapStateToProps) {
+      result = {
+        ...result,
+        ...mapStateToProps(state),
+      };
+    }
+
     // Map State for ReduxExtraData
     result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
     return result;
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
-    // Map Dispatch for ReduxExtraData
+  const customMapDispatchToProps = (dispatch: any) => {
     let result: any = {};
+
+    if (mapDispatchToProps) {
+      result = {
+        ...result,
+        ...mapDispatchToProps(dispatch),
+      };
+    }
+
+    // Map Dispatch for ReduxExtraData
     result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
     return result;
   };
 
   return connect(
-    mapStateToProps,
-    mapDispatchToProps
+    customMapStateToProps,
+    customMapDispatchToProps
   )(WithPureList as any);
 };
 export default withPureList;

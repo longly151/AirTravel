@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import Selector from '@utils/selector';
-import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog } from '@utils/hocHelper';
+import HocHelper, { IHocConstant, IExtraItem, IReduxExtraItem, IHocLog, IHocFlatListProps } from '@utils/hocHelper';
 import _ from 'lodash';
-import FlatList, { FlatListProps } from '../Common/FlatList/DefaultFlatList';
+import FlatList from '../Common/FlatList/DefaultFlatList';
 
 export interface WithReduxListProps extends IBase {
   getList: (query?: TQuery) => any;
@@ -21,7 +21,7 @@ interface State {
 }
 
 const withReduxList = (
-  { dispatchGetList, dispatchFilter, constant, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, log }: {
+  { dispatchGetList, dispatchFilter, constant, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log }: {
     dispatchGetList: any,
     dispatchFilter?: any,
     constant: IHocConstant,
@@ -30,6 +30,8 @@ const withReduxList = (
     renderItem?: ({ item, index }: {item: any, index: number}, themeName: ThemeEnum) => any,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
+    mapStateToProps?: (state: any) => any,
+    mapDispatchToProps?: (dispatch: any) => any,
     log?: IHocLog
   }
 ) => <P extends object>(
@@ -85,7 +87,7 @@ const withReduxList = (
       setFilter(this.filter.filterObject);
     };
 
-    renderFlatList = (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => {
+    renderFlatList = (flatListProps?: IHocFlatListProps) => {
       const { data, metadata, loading, error, getList, themeName } = this.props;
       const themeNameAny: any = themeName;
       const list = {
@@ -133,30 +135,46 @@ const withReduxList = (
     }
   }
 
-  const mapStateToProps = (state: any) => {
+  const customMapStateToProps = (state: any) => {
     let result: any = {
       themeName: themeSelector(state),
       filterData: filterSelector ? filterSelector(state) : {},
       ...Selector.getArray(listSelector, state),
     };
+
+    if (mapStateToProps) {
+      result = {
+        ...result,
+        ...mapStateToProps(state),
+      };
+    }
+
     // Map State for ReduxExtraData
     result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
     return result;
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  const customMapDispatchToProps = (dispatch: any) => {
     let result: any = {
       getList: (query?: TQuery) => dispatch(dispatchGetList({ query })),
       setFilter: (filter: any) => dispatch(dispatchFilter({ filter })),
     };
+
+    if (mapDispatchToProps) {
+      result = {
+        ...result,
+        ...mapDispatchToProps(dispatch),
+      };
+    }
+
     // Map Dispatch for ReduxExtraData
     result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
     return result;
   };
 
   return connect(
-    mapStateToProps,
-    mapDispatchToProps
+    customMapStateToProps,
+    customMapDispatchToProps
   )(WithReduxList as any);
 };
 export default withReduxList;

@@ -10,10 +10,12 @@ export interface WithPureDetailProps {
 }
 
 const withPureDetail = (
-  { url, extraData, reduxExtraData, log }: {
+  { url, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log }: {
     url: string,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
+    mapStateToProps?: (state: any) => any,
+    mapDispatchToProps?: (dispatch: any) => any,
     log?: IHocLog
   }
 ) => <P extends object>(
@@ -58,25 +60,41 @@ const withPureDetail = (
     }
   }
 
-  const mapStateToProps = (state: any) => {
+  const customMapStateToProps = (state: any) => {
     let result: any = {
       themeName: themeSelector(state)
     };
+
+    if (mapStateToProps) {
+      result = {
+        ...result,
+        ...mapStateToProps(state),
+      };
+    }
+
     // Map State for ReduxExtraData
     result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
     return result;
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
-    // Map Dispatch for ReduxExtraData
+  const customMapDispatchToProps = (dispatch: any) => {
     let result: any = {};
+
+    if (mapDispatchToProps) {
+      result = {
+        ...result,
+        ...mapDispatchToProps(dispatch),
+      };
+    }
+
+    // Map Dispatch for ReduxExtraData
     result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
     return result;
   };
 
   return connect(
-    mapStateToProps,
-    mapDispatchToProps
+    customMapStateToProps,
+    customMapDispatchToProps
   )(WithPureDetail as any);
 };
 export default withPureDetail;

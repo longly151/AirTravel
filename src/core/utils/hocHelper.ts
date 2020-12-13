@@ -58,10 +58,14 @@ export interface IHocLog {
   extraPayload?: any,
 }
 
+export interface IHocFlatListProps extends Omit<FlatListProps, 'renderItem' | 'data' > {
+  key?: string;
+}
+
 export interface WithListProps {
   filter: Filter,
   applyFilter: () => any;
-  renderFlatList: (flatListProps?: Omit<FlatListProps, 'renderItem' | 'data' >) => any;
+  renderFlatList: (flatListProps?: IHocFlatListProps) => any;
   getList: (query?: TQuery) => Promise<any>;
   themeName: ThemeEnum;
 }

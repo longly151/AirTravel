@@ -114,12 +114,20 @@ function ProductListScreen(props: WithListProps) {
 
   // // [Optional] ExtraData || ReduxExtraData
   // console.log('props.moreDetail', props.moreDetail);
+
+  // // [Optional] mapStateToProps
+  // console.log('props.language', props.language);
+
+  // // [Optional] mapDispatchToProps
+  // props.handleChangeLanguage('vi');
+
   const { renderFlatList } = props;
+
   return (
     <Container>
       <Header backIcon title="FlatList" shadow switchTheme />
       <Body>
-        <QuickView row center>
+        <QuickView row center marginVertical={10}>
           <Button title="Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={handleFilter} />
           <Button title="Clear Filter" center titlePaddingHorizontal={20} marginHorizontal={5} onPress={clearFilter} />
         </QuickView>
@@ -174,6 +182,15 @@ export default withReduxList({
   //   }
   // ]
 
+  // // [Optional] mapStateToProps
+  // mapStateToProps: (state: any) => ({
+  //   language: languageSelector(state),
+  // }),
+
+  // // [Optional] mapDispatchToProps
+  // mapDispatchToProps: (dispatch: any) => ({
+  //   handleChangeLanguage: (data: string) => dispatch(changeLanguage(data)),
+  // })
 })(ProductListScreen);
 
 // export default withPureList({

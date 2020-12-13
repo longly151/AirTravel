@@ -56,6 +56,12 @@ class ProductDetailScreen extends Component<Props, State> {
     // // [Optional] ExtraData || ReduxExtraData
     // console.log('props.moreDetail', this.props.moreDetail);
 
+    // // [Optional] mapStateToProps
+    // console.log('this.props.language', this.props.language);
+
+    // // [Optional] mapDispatchToProps
+    // this.props.handleChangeLanguage('vi');
+
     return (
       <Container>
         <ParallaxScrollView
@@ -124,6 +130,15 @@ export default withReduxDetail({
   //   }
   // ]
 
+  // // [Optional] mapStateToProps
+  // mapStateToProps: (state: any) => ({
+  //   language: languageSelector(state),
+  // }),
+
+  // // [Optional] mapDispatchToProps
+  // mapDispatchToProps: (dispatch: any) => ({
+  //   handleChangeLanguage: (data: string) => dispatch(changeLanguage(data)),
+  // })
 })(ProductDetailScreen);
 
 // export default withPureDetail({

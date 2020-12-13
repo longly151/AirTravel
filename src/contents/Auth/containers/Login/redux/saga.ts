@@ -10,13 +10,17 @@ import Redux from '@utils/redux';
 import {
   loginSuccess, loginFail, login, logout,
 } from './slice';
-import { realtorLoginApi } from './api';
+import { realtorLoginApi, registerFcmTokenApi } from './api';
 
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(realtorLoginApi, payload.data);
     const { data } = response;
     Global.token = data.token;
+
+    // Register FCM Token
+    yield call(registerFcmTokenApi, { nofifyToken: Global.fcmToken });
+
     yield put(loginSuccess(data));
     const requiredLogin = yield select((state) => requireLoginSelector(state));
     if (!requiredLogin) {
