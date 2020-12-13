@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { connect } from 'react-redux';
 import { themeSelector } from '@contents/Config/redux/selector';
@@ -14,11 +15,13 @@ export interface WithReduxDetailProps {
 interface State {}
 
 const withReduxDetail = (
-  { dispatchGetDetail, constant, extraData, reduxExtraData, log }:{
+  { dispatchGetDetail, constant, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log }:{
     dispatchGetDetail: any,
     constant: IHocConstant,
     extraData?: IExtraItem[],
     reduxExtraData?: IReduxExtraItem[],
+    mapStateToProps?: (state: any) => any,
+    mapDispatchToProps?: (dispatch: any) => any,
     log?: IHocLog
   }
 ) => <P extends object>(
@@ -72,28 +75,44 @@ const withReduxDetail = (
     }
   }
 
-  const mapStateToProps = (state: any) => {
+  const customMapStateToProps = (state: any) => {
     let result: any = {
       themeName: themeSelector(state),
       ...Selector.getObject(detailSelector, state),
     };
+
+    if (mapStateToProps) {
+      result = {
+        ...result,
+        ...mapStateToProps(state),
+      };
+    }
+
     // Map State for ReduxExtraData
     result = HocHelper.mapStateForReduxExtraData(result, state, reduxExtraData);
     return result;
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
-    // Map Dispatch for ReduxExtraData
+  const customMapDispatchToProps = (dispatch: any) => {
     let result: any = {
       getDetail: (item: any) => dispatch(dispatchGetDetail(item)),
     };
+
+    if (mapDispatchToProps) {
+      result = {
+        ...result,
+        ...mapDispatchToProps(dispatch),
+      };
+    }
+
+    // Map Dispatch for ReduxExtraData
     result = HocHelper.mapDispatchForReduxExtraData(result, dispatch, reduxExtraData);
     return result;
   };
 
   return connect(
-    mapStateToProps,
-    mapDispatchToProps
+    customMapStateToProps,
+    customMapDispatchToProps
   )(WithReduxDetail as any);
 };
 export default withReduxDetail;

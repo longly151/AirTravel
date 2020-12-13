@@ -115,12 +115,14 @@ class AppContainer extends React.Component<Props, State> {
       const enabled = await firebase.messaging().hasPermission();
       if (enabled === 1) {
         const fcmToken = await firebase.messaging().getToken();
+        Global.fcmToken = fcmToken;
         // eslint-disable-next-line no-console
         console.log('fcmToken', fcmToken);
       } else {
         const authorizationStatus = await firebase.messaging().requestPermission();
         if (authorizationStatus) {
           const fcmToken = await firebase.messaging().getToken();
+          Global.fcmToken = fcmToken;
           // eslint-disable-next-line no-console
           console.log('fcmToken', fcmToken);
         }
