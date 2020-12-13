@@ -165,7 +165,7 @@ class Settings extends React.PureComponent<Props> {
       </Container>
     ) : (
       <Container>
-        <Header title={i18next.t('header:setting')} />
+        <Header t="header:setting" shadow />
         <Body scrollable fullWidth>
           <QuickView marginTop={10}>
             {sections.map((e) => this.renderItem(e))}

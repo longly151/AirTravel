@@ -2,19 +2,40 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native';
-import { Container, withPureDetail, QuickView, Button, Text } from '@components';
+import { Container, withPureDetail, QuickView, Button, Text, Loading, ModalButton } from '@components';
 import { WithDetailProps } from '@utils/hocHelper';
 import { IBase } from '@utils/redux';
 import { NavigationService } from '@utils/navigation';
-import AppHelper from '@utils/appHelper';
+import AppHelper, { Global } from '@utils/appHelper';
 import AppView from '@utils/appView';
+import Helper from '@utils/helper';
+import { ThemeEnum } from '@contents/Config/redux/slice';
+import i18next from 'i18next';
+import authStack from '@contents/Auth/containers/routes';
 import Header from '../components/Header';
 import Body from '../components/Body';
 import detailServiceRoute from '../routes';
 
 class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
+  loginModal: any;
+
   render() {
-    const { loading, data, error } = this.props;
+    const { loading, data, error, themeName } = this.props;
+    const theme = AppHelper.getThemeByName(themeName);
+    const bgColor = theme.key === ThemeEnum.DARK
+      ? theme.colors.secondaryBackground
+      : theme.colors.primaryBackground;
+
+    if (Object.keys(data).length <= 1) {
+      return (
+        <Container>
+          <QuickView height="100%" center>
+            <Loading />
+          </QuickView>
+        </Container>
+      );
+    }
+
     return (
       <Container>
         <ScrollView>
@@ -25,31 +46,38 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
           position="absolute"
           bottom={0}
           style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.23,
-            shadowRadius: 2.62,
-            elevation: 4,
-            zIndex: 10000,
+            ...AppView.shadow
           }}
           width={AppView.screenWidth}
           height={100}
-          backgroundColor="#fff"
+          backgroundColor={bgColor}
           row
           paddingHorizontal={18}
           alignItems="center"
           justifyContent="space-between"
         >
           <QuickView width="30%">
-            <Text bold fontSize={18}>
-              Add dates for prices
-            </Text>
+            {
+              loading ? <Loading /> : (
+                <Text bold fontSize={18}>
+                  {`${Helper.numberWithCommas(data.price)} `}
+                  &#8363;
+                </Text>
+              )
+            }
           </QuickView>
+          <ModalButton
+            ref={(ref: any) => { this.loginModal = ref; }}
+            title="Confirmation Modal Button"
+            modalProps={{
+              title: i18next.t('auth:require_login'),
+              type: 'confirmation',
+              onOkButtonPress: () => NavigationService.navigate(authStack.loginScreen),
+            }}
+            invisible
+          />
           <Button
-            title="Check availabillity"
+            t="service_detail:start_trip"
             borderRadius={8}
             fontSize={18}
             titlePaddingHorizontal={35}
@@ -58,10 +86,14 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
             primary
             color="#fff"
             onPress={() => {
-              NavigationService.navigate(
-                detailServiceRoute.selectDate,
-                AppHelper.setItemIntoParams(data)
-              );
+              if (!Global.token) {
+                this.loginModal.open();
+              } else {
+                NavigationService.navigate(
+                  detailServiceRoute.selectDate,
+                  AppHelper.setItemIntoParams(data)
+                );
+              }
             }}
           />
         </QuickView>

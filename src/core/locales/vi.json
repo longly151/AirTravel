@@ -56,11 +56,15 @@
     "profile": "Tài khoản"
   },
   "header": {
+    "favorite": "Yêu thích",
+    "trip": "Chuyến đi",
+    "notification": "Thông báo",
     "setting": "Cài đặt",
     "example": "Danh sách các component"
   },
   "auth": {
     "login": "Đăng nhập",
+    "require_login": "Để sử dụng tính năng này, vui lòng đăng nhập",
     "login_mobile": "Đăng nhập với SĐT",
     "input_email_address": "Nhập Email *",
     "input_password": "Mật khẩu *",
@@ -118,14 +122,30 @@
   },
   "service_detail": {
     "product": "Sản phẩm",
-    "hosted_by": "Cung cấp bởi"
+    "hosted_by": "Cung cấp bởi",
+    "start_trip": "Bắt đầu chuyến đi",
+    "title": "Chọn ngày",
+    "description": "Thêm ngày cho chuyến đi của bạn để nhận mức giá chính xác",
+    "add_date": "Chọn ngày để xem giá sản phẩm",
+    "order": "Đặt sản phẩm",
+    "night_stay": "{{night}} đêm lưu trú"
   },
   "empty": {
     "empty_notification": "Không có thông báo nào",
     "empty_favorite": "Danh sách yêu thích rỗng",
     "empty_trip": "Chưa có chuyến đi nào"
   },
-  "select_date": {
-    "add_date": "Chọn ngày để xem giá sản phẩm"
+  "trip": {
+    "detail": "Chi tiết dịch vụ",
+    "name": "Tên dịch vụ",
+    "price": "Đơn giá",
+    "duration": "Số ngày",
+    "total_price": "Tổng giá tiền",
+    "pending": "Đang xử lý",
+    "customer_paying": "Đang đợi thanh toán",
+    "pay_now": "Thanh toán ngay",
+    "success": "Thành công",
+    "cancel": "Đã huỷ",
+    "pay_info": "Quý khách vui lòng chuyển tiền vào số tài khoản sau:\n\nTên chủ TK: Nguyen Thi Phu\nSố TK: 2010108100599\nNgân hàng: MB-Bank\nSố tiền: {{amount}} VND"
   }
 }

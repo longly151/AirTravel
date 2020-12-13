@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import {
   QuickView, Text, Container, Header, Body, Image,
 } from '@components';
-import i18next from 'i18next';
 import AppView from '@utils/appView';
 
 class FavoriteListScreen extends PureComponent {
   render() {
     return (
       <Container>
-        <Header title="Favorite" />
+        <Header t="header:favorite" shadow />
         <Body>
           <QuickView center height="100%">
             <Image source={require('@assets/images/empty-favorite.png')} width={0.7 * AppView.screenWidth} />

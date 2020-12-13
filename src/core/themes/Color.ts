@@ -24,7 +24,7 @@ const Color = {
    * Dark Color
    */
   darkPrimary: '#1EC19A',
-  darkSecondary: '#43484d',
+  darkSecondary: '#b8c6d4',
   darkSuccess: '#51d96c',
   darkWarning: '#FBBD08',
   darkError: '#e60023',

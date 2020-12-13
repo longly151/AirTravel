@@ -56,11 +56,15 @@
     "profile": "Profile"
   },
   "header": {
+    "favorite": "Favorite",
+    "trip": "Trip",
+    "notification": "Notification",
     "setting": "Setting",
     "example": "Component List Example"
   },
   "auth": {
     "login": "Login",
+    "require_login": "To use this feature, please login",
     "login_mobile": "Login with Mobile",
     "input_email_address": "Email Address *",
     "input_password": "Password *",
@@ -118,14 +122,30 @@
   },
   "service_detail": {
     "product": "Product",
-    "hosted_by": "Hosted by"
+    "hosted_by": "Hosted by",
+    "start_trip": "Start your trip",
+    "title": "Select Dates",
+    "description": "Add your travel dates for exact pricing",
+    "add_date": "Add dates for prices",
+    "order": "Order",
+    "night_stay": "{{night}}-night stay"
   },
   "empty": {
     "empty_notification": "Your notification is empty",
     "empty_favorite": "Your Favorite List is empty",
     "empty_trip": "You have not booked any trip yet"
   },
-  "select_date": {
-    "add_date": "Add dates for prices"
+  "trip": {
+    "detail": "View Service Detail",
+    "name": "Service Name",
+    "price": "Price",
+    "duration": "Duration (days)",
+    "total_price": "Total Price",
+    "pending": "Processing",
+    "customer_paying": "Waiting for payment",
+    "pay_now": "Pay now",
+    "success": "Success",
+    "cancel": "Cancel",
+    "pay_info": "Please transfer to this account number:\n\nHolder: Nguyen Thi Phu\nAccount Number: 2010108100599\nBank: MB-Bank\nAmount: {{amount}} VND"
   }
 }

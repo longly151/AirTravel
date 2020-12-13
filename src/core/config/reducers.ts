@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import config from '@contents/Config/redux/slice';
 import auth from '@contents/Auth/redux/reducer';
+import bill from '@contents/Main/containers/Trip/redux/slice';
 import product from '@contents/Example/containers/Common/FlatList/WithRedux/redux/slice';
 import serviceCategory from '@contents/Main/containers/Home/containers/Categories/redux/slice';
 import service from '@contents/Service/redux/slice';
@@ -13,6 +14,7 @@ const appReducers = combineReducers({
   product,
   serviceCategory,
   service,
+  bill,
 });
 
 /**
