@@ -6,6 +6,7 @@ import { NavigationService } from '@utils/navigation';
 import { serviceSetFilter } from '@contents/Service/redux/slice';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import AppView from '@utils/appView';
 import homeStack from '../../routes';
 import crucialCategory from './data';
 import crucialCategoryStyle from './styles';
@@ -17,12 +18,13 @@ interface Props {
 
 class CrucialCategory extends PureComponent<Props> {
   render() {
+    const width = AppView.screenWidth - 36;
     const { theme, setFilter } = this.props;
     return (
       <View style={crucialCategoryStyle.imageContainer}>
         <Image
           source={{ uri: crucialCategory.illustration }}
-          style={crucialCategoryStyle.image}
+          style={{ ...crucialCategoryStyle.image, width }}
         />
         <QuickView
           style={crucialCategoryStyle.imageOverlay}

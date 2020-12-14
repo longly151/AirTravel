@@ -8,11 +8,18 @@ import {
   serviceGetSpecialList,
   serviceGetSpecialListSuccess,
   serviceGetSpecialListFail,
+  serviceGetHotDealList,
+  serviceGetHotDealListSuccess,
+  serviceGetHotDealListFail,
   serviceGetDetail,
   serviceGetDetailFail,
   serviceGetDetailSuccess,
 } from './slice';
-import { fetchServices, fetchServiceById } from './api';
+import {
+  fetchServices,
+  fetchServiceById,
+  fetchServicesBestSeller,
+} from './api';
 
 export function* getListSaga({ payload }: { payload: any }) {
   try {
@@ -42,10 +49,21 @@ export function* getSpecialListSaga({ payload }: { payload: any }) {
   }
 }
 
+export function* getHotDealListSaga() {
+  try {
+    const response = yield call(fetchServicesBestSeller);
+    yield put(serviceGetHotDealListSuccess(response));
+    return true;
+  } catch (error) {
+    yield put(serviceGetHotDealListFail(yield* handleException(error)));
+    return false;
+  }
+}
+
 export function* getDetailSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(fetchServiceById, payload.id);
-    yield put(serviceGetDetailSuccess(response));
+    yield put(serviceGetDetailSuccess(response.data));
     return true;
   } catch (error) {
     yield put(serviceGetDetailFail(yield* handleException(error)));
@@ -56,5 +74,6 @@ export function* getDetailSaga({ payload }: { payload: any }) {
 export default [
   takeLatest(serviceGetList, getListSaga),
   takeLatest(serviceGetSpecialList, getSpecialListSaga),
+  takeLatest(serviceGetHotDealList, getHotDealListSaga),
   takeLatest(serviceGetDetail, getDetailSaga),
 ];

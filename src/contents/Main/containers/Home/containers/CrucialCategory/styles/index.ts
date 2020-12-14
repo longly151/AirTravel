@@ -14,10 +14,9 @@ export default StyleSheet.create({
     top: 0,
     zIndex: 1,
     borderRadius: 8,
-    opacity: 0.24,
+    opacity: 0.3,
   },
   image: {
-    width: '100%',
     height: 400,
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'cover',

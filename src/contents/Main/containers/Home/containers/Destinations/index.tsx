@@ -47,9 +47,13 @@ class Destinations extends PureComponent<Props> {
   render() {
     return (
       <QuickView marginTop={20} marginBottom={30}>
-        <Text fontSize={24} bold marginBottom={30} marginLeft={18}>
-          Your next trip
-        </Text>
+        <Text
+          fontSize={24}
+          bold
+          marginBottom={30}
+          marginLeft={18}
+          t="home:destination"
+        />
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/jsx-indent */
 import React, { PureComponent } from 'react';
 import {
   View,
@@ -10,6 +12,8 @@ import {
 } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { Image } from '@components';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
 
 const IS_IOS = Platform.OS === 'ios';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -143,23 +147,41 @@ class Card extends PureComponent<Props> {
             },
           ]}
         >
-          {data.enName && (
-            <Text
-              style={[styles.title, { color: theme.Modal.textColor }]}
-              numberOfLines={2}
-            >
-              {data.enName.toUpperCase()}
-            </Text>
-          )}
+          {i18next.t('key') === LanguageEnum.EN
+            ? data.enName && (
+                <Text
+                  style={[styles.title, { color: theme.Modal.textColor }]}
+                  numberOfLines={2}
+                >
+                  {data.enName.toUpperCase()}
+                </Text>
+              )
+            : data.viName && (
+                <Text
+                  style={[styles.title, { color: theme.Modal.textColor }]}
+                  numberOfLines={2}
+                >
+                  {data.viName.toUpperCase()}
+                </Text>
+              )}
 
-          {data.subtitle && (
-            <Text
-              style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={2}
-            >
-              {data.subtitle}
-            </Text>
-          )}
+          {i18next.t('key') === LanguageEnum.EN
+            ? data.enSubtitle && (
+                <Text
+                  style={[styles.subtitle, { color: theme.Modal.textColor }]}
+                  numberOfLines={2}
+                >
+                  {data.enSubtitle}
+                </Text>
+              )
+            : data.viSubtitle && (
+                <Text
+                  style={[styles.subtitle, { color: theme.Modal.textColor }]}
+                  numberOfLines={2}
+                >
+                  {data.viSubtitle}
+                </Text>
+              )}
           {children}
         </View>
       </TouchableOpacity>
