@@ -2,7 +2,15 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native';
-import { Container, withPureDetail, QuickView, Button, Text, Loading, ModalButton } from '@components';
+import {
+  Container,
+  withPureDetail,
+  QuickView,
+  Button,
+  Text,
+  Loading,
+  ModalButton,
+} from '@components';
 import { WithDetailProps } from '@utils/hocHelper';
 import { IBase } from '@utils/redux';
 import { NavigationService } from '@utils/navigation';
@@ -21,6 +29,7 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
 
   render() {
     const { loading, data, error, themeName } = this.props;
+
     const theme = AppHelper.getThemeByName(themeName);
     const bgColor = theme.key === ThemeEnum.DARK
       ? theme.colors.secondaryBackground
@@ -51,7 +60,7 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
           position="absolute"
           bottom={0}
           style={{
-            ...AppView.shadow
+            ...AppView.shadow,
           }}
           width={AppView.screenWidth}
           height={100}
@@ -62,17 +71,19 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
           justifyContent="space-between"
         >
           <QuickView width="30%">
-            {
-              loading ? <Loading /> : (
-                <Text bold fontSize={18}>
-                  {`${Helper.numberWithCommas(data.price)} `}
-                  &#8363;
-                </Text>
-              )
-            }
+            {loading ? (
+              <Loading />
+            ) : (
+              <Text bold fontSize={18}>
+                {`${Helper.numberWithCommas(data.price)} `}
+                &#8363;
+              </Text>
+            )}
           </QuickView>
           <ModalButton
-            ref={(ref: any) => { this.loginModal = ref; }}
+            ref={(ref: any) => {
+              this.loginModal = ref;
+            }}
             title="Confirmation Modal Button"
             modalProps={{
               title: i18next.t('auth:require_login'),
@@ -96,7 +107,7 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
               } else {
                 NavigationService.navigate(
                   detailServiceRoute.selectDate,
-                  AppHelper.setItemIntoParams(data)
+                  AppHelper.setItemIntoParams(data),
                 );
               }
             }}

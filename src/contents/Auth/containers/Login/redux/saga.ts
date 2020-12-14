@@ -1,21 +1,18 @@
-import {
-  put, call, takeLatest, select,
-} from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 import { Global } from '@utils/appHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 import { requireLoginSelector } from '@contents/Config/redux/selector';
 import { NavigationService } from '@utils/navigation';
 import exampleStack from '@contents/Example/routes';
 import Redux from '@utils/redux';
-import {
-  loginSuccess, loginFail, login, logout,
-} from './slice';
+import { loginSuccess, loginFail, login, logout } from './slice';
 import { realtorLoginApi, registerFcmTokenApi, removeFcmTokenApi } from './api';
 
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(realtorLoginApi, payload.data);
     const { data } = response;
+
     Global.token = data.token;
 
     // Register FCM Token

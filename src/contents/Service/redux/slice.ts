@@ -7,6 +7,7 @@ import {
   TDetail,
   CONSTANT,
   TSpecialList,
+  THotDealList,
 } from './constant';
 
 const slice = createSlice({
@@ -20,6 +21,10 @@ const slice = createSlice({
     ...Redux.createArrayReducer<TSpecialList>(
       `${CONSTANT.NAME}GetSpecialList`,
       CONSTANT.SPECIAL_LIST,
+    ),
+    ...Redux.createArrayReducer<THotDealList>(
+      `${CONSTANT.NAME}GetHotDealList`,
+      CONSTANT.HOT_DEAL_LIST,
     ),
     serviceSetFilter: (state, action) => {
       state[CONSTANT.FILTER] = action.payload.filter;
@@ -49,6 +54,9 @@ export const {
   serviceGetSpecialList,
   serviceGetSpecialListSuccess,
   serviceGetSpecialListFail,
+  serviceGetHotDealList,
+  serviceGetHotDealListSuccess,
+  serviceGetHotDealListFail,
   serviceSetFilter,
   serviceGetDetail,
   serviceGetDetailSuccess,

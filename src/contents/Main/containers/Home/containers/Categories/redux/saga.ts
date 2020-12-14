@@ -49,15 +49,19 @@ export function* getHomeScreenListSaga({ payload }: { payload: any }) {
     );
 
     response.data.map((e: any, index: any) => {
-      let subtitle = '';
+      let enSubtitle = '';
+      let viSubtitle = '';
       e.children.map((ec: any) => {
-        subtitle += `${ec.enName} - `;
+        enSubtitle += `${ec.enName} - `;
+        viSubtitle += `${ec.viName} - `;
         return ec;
       });
       e.illustration = mockCategories[index].illustration;
-      if (subtitle === '') e.subtitle = mockCategories[index].subtitle;
+      if (enSubtitle === '') e.enSubtitle = mockCategories[index].subtitle;
+      if (viSubtitle === '') e.viSubtitle = mockCategories[index].subtitle;
       else {
-        e.subtitle = subtitle.slice(0, subtitle.length - 3);
+        e.enSubtitle = enSubtitle.slice(0, enSubtitle.length - 3);
+        e.viSubtitle = viSubtitle.slice(0, viSubtitle.length - 3);
       }
       return e;
     });

@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { View, Dimensions } from 'react-native';
-import { withTheme, ThemeProps } from 'react-native-elements';
+import { withTheme } from 'react-native-elements';
 import { QuickView, Text, Button } from '@components';
+import { NavigationService } from '@utils/navigation';
 import Carousel from '../Carousel';
 // import topTours from './data';
 import greetingStyles from './styles';
+import homeRoutes from '../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -28,9 +30,6 @@ class Greeting extends PureComponent<Props> {
               color="#fff"
               t="home:greet"
             />
-            <Text style={greetingStyles.greetText} color="#fff">
-              Hieu
-            </Text>
           </QuickView>
 
           <Text
@@ -47,6 +46,9 @@ class Greeting extends PureComponent<Props> {
             width={viewportWidth - greetMarginVertical * 2}
             fontSize={14}
             marginTop={20}
+            onPress={() => {
+              NavigationService.navigate(homeRoutes.service);
+            }}
           />
         </QuickView>
       </View>
@@ -54,6 +56,4 @@ class Greeting extends PureComponent<Props> {
   }
 }
 
-export default withTheme(
-  (Greeting as unknown) as React.ComponentType<Props & ThemeProps<any>>,
-);
+export default withTheme(Greeting as any);

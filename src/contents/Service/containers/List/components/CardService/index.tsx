@@ -1,3 +1,7 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { QuickView, Text, Image } from '@components';
@@ -6,7 +10,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
 import AppHelper from '@utils/appHelper';
 import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
 import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
+import Helper from '@utils/helper';
 import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
@@ -28,7 +35,7 @@ const styles = StyleSheet.create({
 
 class CardService extends PureComponent<Props> {
   static defaultProps = {
-    showHeartIcon: true
+    showHeartIcon: true,
   };
 
   render() {
@@ -38,14 +45,12 @@ class CardService extends PureComponent<Props> {
       <QuickView
         marginBottom={40}
         row
-        onPress={() => NavigationService.navigate(
-          serviceRoutes.detail,
-          {
+        onPress={() =>
+          NavigationService.navigate(serviceRoutes.detail, {
             screen: detailServiceStack.index,
             params: AppHelper.setItemIntoParams(data),
-          }
-        )}
-      >
+          })
+        }>
         <Image
           source={{ uri: data.thumbnail }}
           height={130}
@@ -53,25 +58,23 @@ class CardService extends PureComponent<Props> {
           style={{ position: 'relative' }}
           borderRadius={4}
         />
-        {
-          showHeartIcon ? (
-            <QuickView
-              style={styles.providerBadgetContainer}
-              alignItems="flex-end"
-            >
-              <WishlistIcon id={data.id} active={data.isFavourite} />
-            </QuickView>
-          ) : null
-        }
+        {showHeartIcon ? (
+          <QuickView
+            style={styles.providerBadgetContainer}
+            alignItems="flex-end">
+            <WishlistIcon id={data.id} active={data.isFavourite} />
+          </QuickView>
+        ) : null}
 
         <QuickView
           width={(viewportWidth - 32) / 2 - 15}
           marginLeft={15}
-          justifyContent="space-between"
-        >
+          justifyContent="space-between">
           <QuickView>
             <Text numberOfLines={2} fontSize={20} bold>
-              {data.enTitle}
+              {i18next.t('key') === LanguageEnum.EN
+                ? data.enTitle
+                : data.viTitle}
             </Text>
             <QuickView row alignItems="center" marginTop={10}>
               <Icon name="map-marker" color="red" size={16} />
@@ -80,7 +83,9 @@ class CardService extends PureComponent<Props> {
               </Text>
             </QuickView>
           </QuickView>
-          <Text fontSize={14}>{`${data.currentPrice} vnd - ${data.unit}`}</Text>
+          <Text fontSize={14}>
+            {`${Helper.numberWithCommas(data.currentPrice)} vnd - ${data.unit}`}
+          </Text>
         </QuickView>
       </QuickView>
     );

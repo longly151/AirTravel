@@ -16,6 +16,11 @@ export const serviceSpecialListSelector = Selector.createArraySelector(
   CONSTANT.SPECIAL_LIST,
 );
 
+export const serviceHotDealListSelector = Selector.createArraySelector(
+  root,
+  CONSTANT.HOT_DEAL_LIST,
+);
+
 export const serviceDetailSelector = Selector.createObjectSelector(
   root,
   CONSTANT.DETAIL,
