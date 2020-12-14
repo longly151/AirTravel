@@ -36,7 +36,7 @@ class CardService extends PureComponent<Props> {
 
     return (
       <QuickView
-        marginBottom={40}
+        marginBottom={20}
         row
         onPress={() => NavigationService.navigate(
           serviceRoutes.detail,
