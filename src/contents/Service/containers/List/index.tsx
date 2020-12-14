@@ -20,6 +20,9 @@ import AppView from '@utils/appView';
 import { compose } from 'recompose';
 import withBottomSheet from '@components/Hoc/withBottomSheet';
 import MapButton from '@contents/Main/containers/Home/Map/containers/MapButton';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
+import _ from 'lodash';
 import CardService from './components/CardService';
 
 const styles = StyleSheet.create({
@@ -35,8 +38,6 @@ const styles = StyleSheet.create({
     zIndex: 99999,
   },
   inputContainer: {
-    borderColor: '#fff',
-
     marginTop: -20,
     marginBottom: -50,
     marginRight: 0,
@@ -89,10 +90,17 @@ function ListServiceScreen(props: any) {
 
   const handleOnChangeText = (value: any) => {
     const { filter, applyFilter } = props;
-    filter.deleteFilterByKey('destination.city.name');
-    filter.mergeFilter('destination.city.name', '$contL', value);
+    if (i18next.t('key') === LanguageEnum.EN) {
+      filter.deleteFilterByKey('enTitle');
+      filter.mergeFilter('enTitle', '$contL', value);
+    } else {
+      filter.deleteFilterByKey('viTitle');
+      filter.mergeFilter('viTitle', '$contL', value);
+    }
     applyFilter();
   };
+
+  const debouncedOnSearch = _.debounce(handleOnChangeText, 1000);
 
   const renderScrollBottomSheet = () => {
     const { open, setModalContent, theme, close } = props;
@@ -107,9 +115,12 @@ function ListServiceScreen(props: any) {
               paddingVertical: 20,
               paddingHorizontal: 20,
             }}>
-            <Text bold fontSize={22} marginBottom={10}>
-              Service
-            </Text>
+            <Text
+              bold
+              fontSize={22}
+              marginBottom={10}
+              t="list_service:filter_title"
+            />
             <ListCheckBox
               data={dataRow}
               defaultValue={selectedCategories}
@@ -128,7 +139,7 @@ function ListServiceScreen(props: any) {
             />
           </BottomSheetScrollView>
           <Button
-            title="Show all services"
+            t="list_service:filter_button"
             borderRadius={8}
             fontSize={18}
             titlePaddingHorizontal={35}
@@ -148,31 +159,37 @@ function ListServiceScreen(props: any) {
     if (open) open();
   };
 
-  const { renderFlatList } = props;
+  const { renderFlatList, theme, serviceListRefreshCount, data } = props;
 
   return (
     <Body>
       <TouchableOpacity activeOpacity={0.9}>
         <QuickView
-          backgroundColor="#fff"
+          backgroundColor={theme.colors.primaryBackground}
           row
           alignItems="center"
           justifyContent="space-between"
           padding={10}
           borderRadius={8}
           borderWidth={2}
+          style={{ borderColor: theme.colors.primaryText }}
           marginTop={20}>
           <QuickView row alignItems="center" width={300}>
-            <Icon name="magnify" size={24} />
+            <Icon name="magnify" size={24} color={theme.colors.primaryText} />
             <Input
-              placeholder="Where are you going?"
-              onChangeText={handleOnChangeText}
-              inputContainerStyle={styles.inputContainer}
-              inputStyle={styles.input}
+              onChangeText={debouncedOnSearch}
+              inputContainerStyle={{
+                ...styles.inputContainer,
+                borderColor: theme.colors.primaryBackground,
+              }}
+              inputStyle={{ ...styles.input, color: theme.colors.primaryText }}
             />
           </QuickView>
           <QuickView
-            style={{ borderRightWidth: 2 }}
+            style={{
+              borderRightWidth: 2,
+              borderColor: theme.colors.primaryText,
+            }}
             marginLeft={-20}
             marginRight={5}
             paddingVertical={2}>
@@ -180,9 +197,9 @@ function ListServiceScreen(props: any) {
               name="filter-outline"
               size={22}
               onPress={renderScrollBottomSheet}
+              color={theme.colors.primaryText}
             />
           </QuickView>
-
           <MapButton />
         </QuickView>
       </TouchableOpacity>
@@ -196,15 +213,24 @@ function ListServiceScreen(props: any) {
         position="relative">
         <Icon
           name="arrow-left"
+          color={theme.colors.primaryText}
           size={24}
           onPress={() => NavigationService.goBack()}
           style={{ position: 'absolute', left: 0 }}
         />
-        <Text fontSize={18} bold>
-          {totalServices} services to enjoy
-        </Text>
+        <QuickView row>
+          <Text fontSize={18} bold>
+            {totalServices}
+          </Text>
+          <Text
+            fontSize={18}
+            bold
+            t="list_service:amount_title"
+            style={{ marginLeft: 5 }}
+          />
+        </QuickView>
       </QuickView>
-      {renderFlatList()}
+      {renderFlatList({ key: serviceListRefreshCount, extraData: data, keyExtractor: (item: any) => `${item.id}_${item.isFavourite}` })}
     </Body>
   );
 }
@@ -230,8 +256,12 @@ export default compose(
       'unit',
       'destinations',
       'createdAt',
-      'updatedAt'
+      'updatedAt',
     ],
     renderItem,
+
+    mapStateToProps: (state: any) => ({
+      serviceListRefreshCount: state.service.serviceListRefreshCount
+    })
   }),
 )(ListServiceScreen as any);

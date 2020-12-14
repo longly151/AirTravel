@@ -1,15 +1,27 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable react/jsx-indent */
+/* eslint-disable react/jsx-wrap-multilines */
+/* eslint-disable no-nested-ternary */
 import React, { PureComponent } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Platform,
   Dimensions,
 } from 'react-native';
 import { withTheme, ThemeProps } from 'react-native-elements';
-import { QuickView, Image } from '@components';
-import { AirbnbRating } from 'react-native-ratings';
+import { QuickView, Image, Text } from '@components';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationService } from '@utils/navigation';
+import AppHelper from '@utils/appHelper';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import serviceStack from '@contents/Service/routes';
+import Helper from '@utils/helper';
 
 const IS_IOS = Platform.OS === 'ios';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -37,6 +49,7 @@ interface Props {
   overlayColor?: string;
   backgroundColor?: string;
   theme?: any;
+  getDetailService?: any;
 }
 
 const styles = StyleSheet.create({
@@ -128,8 +141,17 @@ class SliderEntry extends PureComponent<Props> {
         height: sliderHeight || slideHeight,
       },
     ]);
+
     return (
-      <TouchableOpacity activeOpacity={1} style={containerStyle}>
+      <TouchableOpacity
+        activeOpacity={1}
+        style={containerStyle}
+        onPress={() =>
+          NavigationService.navigate(serviceStack.detail, {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(data),
+          })}
+      >
         <View
           style={[
             styles.imageContainer,
@@ -153,38 +175,67 @@ class SliderEntry extends PureComponent<Props> {
           backgroundColor={backgroundColor}
         >
           <View style={styles.textContainer}>
-            {data.enTitle ? (
+            {i18next.t('key') === LanguageEnum.EN ? (
+              data.enTitle ? (
+                <Text
+                  style={[styles.title, { color: theme.Modal.textColor }]}
+                  numberOfLines={1}
+                >
+                  {data.enTitle}
+                </Text>
+              ) : (
+                false
+              )
+            ) : data.viTitle ? (
               <Text
                 style={[styles.title, { color: theme.Modal.textColor }]}
                 numberOfLines={1}
               >
-                {data.enTitle}
+                {data.viTitle}
               </Text>
             ) : (
               false
             )}
-            <Text
-              style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={1}
-            >
-              {data.note}
-            </Text>
+            {i18next.t('key') === LanguageEnum.EN
+              ? data.enDescription && (
+                  <Text
+                    style={[styles.subtitle, { color: theme.Modal.textColor }]}
+                    numberOfLines={1}
+                  >
+                    {data.enDescription}
+                  </Text>
+                )
+              : data.viDescription && (
+                  <Text
+                    style={[styles.subtitle, { color: theme.Modal.textColor }]}
+                    numberOfLines={1}
+                  >
+                    {data.viDescription}
+                  </Text>
+                )}
           </View>
           <QuickView
             flex={1}
             alignItems="flex-end"
             style={styles.reviewContainer}
           >
-            <AirbnbRating size={20} showRating={false} />
+            {data.destinations[0] ? (
+              <QuickView row alignItems="center" marginTop={10}>
+                <Icon name="map-marker" color="red" size={16} />
+                <Text fontSize={12} bold>
+                  {data.destinations[0].city.name}
+                </Text>
+              </QuickView>
+            ) : null}
             <Text
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
               numberOfLines={1}
             >
-              <Text style={[styles.score, { color: theme.Modal.textColor }]}>
-                4.3
+              <Text fontSize={14}>
+                {`${Helper.numberWithCommas(data.currentPrice)} vnd - ${
+                  data.unit
+                }`}
               </Text>
-              {' '}
-              (3456 views)
             </Text>
           </QuickView>
         </QuickView>
@@ -192,6 +243,7 @@ class SliderEntry extends PureComponent<Props> {
     );
   }
 }
+
 export default withTheme(
   (SliderEntry as unknown) as React.ComponentType<Props & ThemeProps<any>>,
 );

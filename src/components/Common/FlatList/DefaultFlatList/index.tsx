@@ -57,10 +57,10 @@ class FlatList extends PureComponent<FlatListProps, State> {
     }
   }
 
-  handleRefresh = () => {
+  handleRefresh = (silent: boolean = false) => {
     const { list, getList } = this.props;
     if (list && getList) {
-      this.setState({ page: 1, refreshing: true }, () => {
+      this.setState({ page: 1, refreshing: !silent }, () => {
         getList();
       });
     }
@@ -187,11 +187,11 @@ class FlatList extends PureComponent<FlatListProps, State> {
           ref={(ref) => {
             this.flatListRef = ref;
           }}
+          keyExtractor={(item) => `${item.id}`}
           {...otherProps}
           ListEmptyComponent={renderEmpty || this.renderEmpty}
           data={list.data}
           renderItem={renderItem}
-          keyExtractor={(item) => `${item.id}`}
           onEndReached={this.handleLoadMore}
           ListFooterComponent={this.renderFooter}
           refreshControl={(

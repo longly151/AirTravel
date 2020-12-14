@@ -28,7 +28,7 @@ const rootReducer = (state: any, action: any) => {
     console.log('RESET_REDUX Called');
     Global.token = '';
     // state = undefined;
-    state = _.pick(state, ['config']);
+    state = _.pick(state, ['config', 'service', 'serviceCategory']);
   }
   return appReducers(state, action);
 };

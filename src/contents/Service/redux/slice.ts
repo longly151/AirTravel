@@ -7,6 +7,7 @@ import {
   TDetail,
   CONSTANT,
   TSpecialList,
+  THotDealList,
 } from './constant';
 
 const slice = createSlice({
@@ -17,9 +18,22 @@ const slice = createSlice({
       `${CONSTANT.NAME}GetList`,
       CONSTANT.LIST,
     ),
+    setFavourite: (state, action) => {
+      state.listData.forEach((element: any, index: number) => {
+        const { id, isFavourite } = action.payload;
+        if (element.id === id) {
+          state.listData[index].isFavourite = isFavourite;
+        }
+      });
+      // state.serviceListRefreshCount += 1;
+    },
     ...Redux.createArrayReducer<TSpecialList>(
       `${CONSTANT.NAME}GetSpecialList`,
       CONSTANT.SPECIAL_LIST,
+    ),
+    ...Redux.createArrayReducer<THotDealList>(
+      `${CONSTANT.NAME}GetHotDealList`,
+      CONSTANT.HOT_DEAL_LIST,
     ),
     serviceSetFilter: (state, action) => {
       state[CONSTANT.FILTER] = action.payload.filter;
@@ -46,9 +60,13 @@ export const {
   serviceGetList,
   serviceGetListSuccess,
   serviceGetListFail,
+  setFavourite,
   serviceGetSpecialList,
   serviceGetSpecialListSuccess,
   serviceGetSpecialListFail,
+  serviceGetHotDealList,
+  serviceGetHotDealListSuccess,
+  serviceGetHotDealListFail,
   serviceSetFilter,
   serviceGetDetail,
   serviceGetDetailSuccess,

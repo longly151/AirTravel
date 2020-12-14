@@ -1,9 +1,16 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Badge, withTheme } from 'react-native-elements';
 import { QuickView, Text, Button, FlatList, Card } from '@components';
 import { NavigationService } from '@utils/navigation';
+import serviceStack from '@contents/Service/routes';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import AppHelper from '@utils/appHelper';
+import Helper from '@utils/helper';
 import hotDealStyles from './styles';
 import homeStack from '../../routes';
 
@@ -23,7 +30,9 @@ class HotDeals extends PureComponent<Props> {
       ...item,
       illustration: item.thumbnail,
       enName: item.enTitle,
-      subtitle: item.enDescription,
+      enSubtitle: item.enDescription,
+      viName: item.viTitle,
+      viSubtitle: item.viDescription,
     };
     return (
       <Card
@@ -32,24 +41,27 @@ class HotDeals extends PureComponent<Props> {
         cardHeight={350}
         marginHorizontal={18}
         backgroundColor={theme.Card.backgroundColor}
-      >
+        onPress={() =>
+          NavigationService.navigate(serviceStack.detail, {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(item),
+          })
+        }>
         <QuickView
           row
           marginTop={20}
           justifyContent="space-between"
-          alignItems="center"
-        >
+          alignItems="center">
           <QuickView row>
             <Text fontSize={18} color="#bf081f" marginRight={8}>
-              {`${item.currentPrice} vnd`}
+              {`${Helper.numberWithCommas(item.currentPrice)} vnd`}
             </Text>
             <Text
               fontSize={16}
               style={{
                 textDecorationLine: 'line-through',
-              }}
-            >
-              {`${item.price} vnd`}
+              }}>
+              {`${Helper.numberWithCommas(item.price)} vnd`}
             </Text>
           </QuickView>
           <Badge
@@ -68,8 +80,7 @@ class HotDeals extends PureComponent<Props> {
     return (
       <LinearGradient
         colors={['#f49d02', '#f97501', '#ff5f00']}
-        style={hotDealStyles.container}
-      >
+        style={hotDealStyles.container}>
         <Text
           style={hotDealStyles.title}
           color={theme.Card.backgroundColor}

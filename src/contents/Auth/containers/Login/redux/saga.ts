@@ -1,31 +1,28 @@
-import {
-  put, call, takeLatest, select,
-} from 'redux-saga/effects';
+import { put, call, takeLatest, select } from 'redux-saga/effects';
 import { Global } from '@utils/appHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 import { requireLoginSelector } from '@contents/Config/redux/selector';
 import { NavigationService } from '@utils/navigation';
 import exampleStack from '@contents/Example/routes';
 import Redux from '@utils/redux';
-import {
-  loginSuccess, loginFail, login, logout,
-} from './slice';
-import { realtorLoginApi, registerFcmTokenApi } from './api';
+import { loginSuccess, loginFail, login, logout } from './slice';
+import { realtorLoginApi, registerFcmTokenApi, removeFcmTokenApi } from './api';
 
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(realtorLoginApi, payload.data);
     const { data } = response;
-    Global.token = data.token;
 
-    // Register FCM Token
-    yield call(registerFcmTokenApi, { nofifyToken: Global.fcmToken });
+    Global.token = data.token;
 
     yield put(loginSuccess(data));
     const requiredLogin = yield select((state) => requireLoginSelector(state));
     if (!requiredLogin) {
       NavigationService.goBack();
     }
+
+    // Register FCM Token
+    yield call(registerFcmTokenApi, { nofifyToken: Global.fcmToken });
     return true;
   } catch (error) {
     yield put(loginFail(Redux.handleException(error)));
@@ -47,6 +44,9 @@ export function* realtorLogoutSaga() {
     // yield call(removeAsyncStorageData);
     // const after = yield call(viewAsyncStorageData);
     // console.log('after remove', after);
+
+    // Remove FCM Token
+    yield call(removeFcmTokenApi, { nofifyToken: Global.fcmToken });
 
     yield call(removeAsyncStorageData);
     yield put({ type: 'RESET_REDUX' });

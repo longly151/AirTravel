@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
 import AppView from '@utils/appView';
+import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -13,6 +14,9 @@ interface Props {
   gallery: any;
   loading: boolean;
   theme?: any;
+  isFavourite?: boolean;
+  id: number;
+  handleSetFavourite?: any;
 }
 
 interface State {
@@ -39,7 +43,7 @@ class Header extends PureComponent<Props, State> {
 
   render() {
     const { activeSlide } = this.state;
-    const { loading, gallery } = this.props;
+    const { loading, gallery, isFavourite, id } = this.props;
     return (
       <QuickView position="relative" height={300}>
         {
@@ -76,7 +80,7 @@ class Header extends PureComponent<Props, State> {
           padding={12}
           borderRadius={50}
         >
-          <Icon name="heart-outline" size={24} />
+          <WishlistIcon id={id} active={isFavourite} inactiveColor="#D36363" />
         </QuickView>
         <QuickView
           position="absolute"
