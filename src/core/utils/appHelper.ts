@@ -1,3 +1,5 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 /* eslint-disable class-methods-use-this */
 import AsyncStorage from '@react-native-community/async-storage';

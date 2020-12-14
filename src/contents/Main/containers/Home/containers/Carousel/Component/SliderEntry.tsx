@@ -150,15 +150,16 @@ class SliderEntry extends PureComponent<Props> {
           NavigationService.navigate(serviceStack.detail, {
             screen: detailServiceStack.index,
             params: AppHelper.setItemIntoParams(data),
-          })
-        }>
+          })}
+      >
         <View
           style={[
             styles.imageContainer,
             {
               backgroundColor: theme.Modal.backgroundColor || backgroundColor,
             },
-          ]}>
+          ]}
+        >
           <QuickView
             style={styles.imageOverlay}
             backgroundColor={overlayColor}
@@ -171,13 +172,15 @@ class SliderEntry extends PureComponent<Props> {
           alignItems="center"
           justifyContent="space-between"
           style={styles.detailContainer}
-          backgroundColor={backgroundColor}>
+          backgroundColor={backgroundColor}
+        >
           <View style={styles.textContainer}>
             {i18next.t('key') === LanguageEnum.EN ? (
               data.enTitle ? (
                 <Text
                   style={[styles.title, { color: theme.Modal.textColor }]}
-                  numberOfLines={1}>
+                  numberOfLines={1}
+                >
                   {data.enTitle}
                 </Text>
               ) : (
@@ -186,7 +189,8 @@ class SliderEntry extends PureComponent<Props> {
             ) : data.viTitle ? (
               <Text
                 style={[styles.title, { color: theme.Modal.textColor }]}
-                numberOfLines={1}>
+                numberOfLines={1}
+              >
                 {data.viTitle}
               </Text>
             ) : (
@@ -196,14 +200,16 @@ class SliderEntry extends PureComponent<Props> {
               ? data.enDescription && (
                   <Text
                     style={[styles.subtitle, { color: theme.Modal.textColor }]}
-                    numberOfLines={1}>
+                    numberOfLines={1}
+                  >
                     {data.enDescription}
                   </Text>
                 )
               : data.viDescription && (
                   <Text
                     style={[styles.subtitle, { color: theme.Modal.textColor }]}
-                    numberOfLines={1}>
+                    numberOfLines={1}
+                  >
                     {data.viDescription}
                   </Text>
                 )}
@@ -211,7 +217,8 @@ class SliderEntry extends PureComponent<Props> {
           <QuickView
             flex={1}
             alignItems="flex-end"
-            style={styles.reviewContainer}>
+            style={styles.reviewContainer}
+          >
             {data.destinations[0] ? (
               <QuickView row alignItems="center" marginTop={10}>
                 <Icon name="map-marker" color="red" size={16} />
@@ -222,7 +229,8 @@ class SliderEntry extends PureComponent<Props> {
             ) : null}
             <Text
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
-              numberOfLines={1}>
+              numberOfLines={1}
+            >
               <Text fontSize={14}>
                 {`${Helper.numberWithCommas(data.currentPrice)} vnd - ${
                   data.unit

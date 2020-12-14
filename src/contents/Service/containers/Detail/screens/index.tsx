@@ -31,10 +31,9 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
     const { loading, data, error, themeName } = this.props;
 
     const theme = AppHelper.getThemeByName(themeName);
-    const bgColor =
-      theme.key === ThemeEnum.DARK
-        ? theme.colors.secondaryBackground
-        : theme.colors.primaryBackground;
+    const bgColor = theme.key === ThemeEnum.DARK
+      ? theme.colors.secondaryBackground
+      : theme.colors.primaryBackground;
 
     if (Object.keys(data).length <= 1) {
       return (
@@ -69,7 +68,8 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
           row
           paddingHorizontal={18}
           alignItems="center"
-          justifyContent="space-between">
+          justifyContent="space-between"
+        >
           <QuickView width="30%">
             {loading ? (
               <Loading />
@@ -88,8 +88,7 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
             modalProps={{
               title: i18next.t('auth:require_login'),
               type: 'confirmation',
-              onOkButtonPress: () =>
-                NavigationService.navigate(authStack.loginScreen),
+              onOkButtonPress: () => NavigationService.navigate(authStack.loginScreen),
             }}
             invisible
           />

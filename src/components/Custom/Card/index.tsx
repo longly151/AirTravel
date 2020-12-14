@@ -111,7 +111,8 @@ class Card extends PureComponent<Props> {
       <TouchableOpacity
         activeOpacity={1}
         style={containerStyle}
-        onPress={onPress}>
+        onPress={onPress}
+      >
         <View
           style={[
             styles.imageContainer,
@@ -121,7 +122,8 @@ class Card extends PureComponent<Props> {
               borderTopRightRadius: entryBorderRadius,
               height: imageHeight,
             },
-          ]}>
+          ]}
+        >
           <Image
             source={{ uri: data.illustration }}
             height={imageHeight}
@@ -143,19 +145,22 @@ class Card extends PureComponent<Props> {
               borderBottomLeftRadius: entryBorderRadius,
               borderBottomRightRadius: entryBorderRadius,
             },
-          ]}>
+          ]}
+        >
           {i18next.t('key') === LanguageEnum.EN
             ? data.enName && (
                 <Text
                   style={[styles.title, { color: theme.Modal.textColor }]}
-                  numberOfLines={2}>
+                  numberOfLines={2}
+                >
                   {data.enName.toUpperCase()}
                 </Text>
               )
             : data.viName && (
                 <Text
                   style={[styles.title, { color: theme.Modal.textColor }]}
-                  numberOfLines={2}>
+                  numberOfLines={2}
+                >
                   {data.viName.toUpperCase()}
                 </Text>
               )}
@@ -164,14 +169,16 @@ class Card extends PureComponent<Props> {
             ? data.enSubtitle && (
                 <Text
                   style={[styles.subtitle, { color: theme.Modal.textColor }]}
-                  numberOfLines={2}>
+                  numberOfLines={2}
+                >
                   {data.enSubtitle}
                 </Text>
               )
             : data.viSubtitle && (
                 <Text
                   style={[styles.subtitle, { color: theme.Modal.textColor }]}
-                  numberOfLines={2}>
+                  numberOfLines={2}
+                >
                   {data.viSubtitle}
                 </Text>
               )}

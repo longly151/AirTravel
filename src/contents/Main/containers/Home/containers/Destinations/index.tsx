@@ -20,7 +20,8 @@ class Destinations extends PureComponent<Props> {
           onPress={() => {
             NavigationService.navigate(homeStack.service);
           }}
-          key={e.id}>
+          key={e.id}
+        >
           <QuickView row marginBottom={12}>
             <Image
               source={{ uri: e.illustration }}
