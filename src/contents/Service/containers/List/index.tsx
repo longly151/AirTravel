@@ -20,10 +20,10 @@ import AppView from '@utils/appView';
 import { compose } from 'recompose';
 import withBottomSheet from '@components/Hoc/withBottomSheet';
 import MapButton from '@contents/Main/containers/Home/Map/containers/MapButton';
-import CardService from './components/CardService';
 import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
+import CardService from './components/CardService';
 
 const styles = StyleSheet.create({
   headerContainer: {

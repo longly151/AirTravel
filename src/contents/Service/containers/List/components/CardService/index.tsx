@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
@@ -11,8 +13,8 @@ import detailServiceStack from '@contents/Service/containers/Detail/routes';
 import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
-import serviceRoutes from '../../../../routes';
 import Helper from '@utils/helper';
+import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
 

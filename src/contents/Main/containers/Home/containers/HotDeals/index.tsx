@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { Dimensions } from 'react-native';
