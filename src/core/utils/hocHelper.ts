@@ -64,7 +64,7 @@ export interface IHocFlatListProps extends Omit<FlatListProps, 'renderItem' | 'd
 
 export interface WithListProps {
   filter: Filter,
-  applyFilter: () => any;
+  applyFilter: (silent?: boolean) => any;
   renderFlatList: (flatListProps?: IHocFlatListProps) => any;
   getList: (query?: TQuery) => Promise<any>;
   themeName: ThemeEnum;

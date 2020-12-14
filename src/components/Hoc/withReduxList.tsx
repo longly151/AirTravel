@@ -81,10 +81,10 @@ const withReduxList = (
       }
     }
 
-    applyFilter = () => {
+    applyFilter = (silent: boolean = false) => {
       const { setFilter } = this.props;
-      this.flatList.handleRefresh();
-      setFilter(this.filter.filterObject);
+      this.flatList?.handleRefresh(silent);
+      if (setFilter) setFilter(this.filter.filterObject);
     };
 
     renderFlatList = (flatListProps?: IHocFlatListProps) => {
@@ -157,7 +157,7 @@ const withReduxList = (
   const customMapDispatchToProps = (dispatch: any) => {
     let result: any = {
       getList: (query?: TQuery) => dispatch(dispatchGetList({ query })),
-      setFilter: (filter: any) => dispatch(dispatchFilter({ filter })),
+      setFilter: dispatchFilter ? (filter: any) => dispatch(dispatchFilter({ filter })) : null,
     };
 
     if (mapDispatchToProps) {

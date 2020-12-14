@@ -9,6 +9,7 @@ import AppHelper from '@utils/appHelper';
 import detailServiceStack from '@contents/Service/containers/Detail/routes';
 import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
+import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
 import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
@@ -16,6 +17,7 @@ const { width: viewportWidth } = Dimensions.get('window');
 interface Props {
   theme?: any;
   data?: any;
+  showHeartIcon?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -28,8 +30,12 @@ const styles = StyleSheet.create({
 });
 
 class CardService extends PureComponent<Props> {
+  static defaultProps = {
+    showHeartIcon: true,
+  };
+
   render() {
-    const { data } = this.props;
+    const { data, showHeartIcon } = this.props;
 
     return (
       <QuickView
@@ -48,9 +54,14 @@ class CardService extends PureComponent<Props> {
           style={{ position: 'relative' }}
           borderRadius={4}
         />
-        <QuickView style={styles.providerBadgetContainer} alignItems="flex-end">
-          <Icon name="heart-outline" color="#fff" size={20} />
-        </QuickView>
+        {showHeartIcon ? (
+          <QuickView
+            style={styles.providerBadgetContainer}
+            alignItems="flex-end">
+            <WishlistIcon id={data.id} active={data.isFavourite} />
+          </QuickView>
+        ) : null}
+
         <QuickView
           width={(viewportWidth - 32) / 2 - 15}
           marginLeft={15}

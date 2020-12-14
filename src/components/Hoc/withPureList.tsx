@@ -81,8 +81,8 @@ const withPureList = (
 
     fetch = (queryString: string): any => Api.get(`${url}?${queryString}`);
 
-    applyFilter = () => {
-      this.flatList.handleRefresh();
+    applyFilter = (silent: boolean = false) => {
+      this.flatList.handleRefresh(silent);
     };
 
     getList = async (query: TQuery) => {
