@@ -50,7 +50,7 @@ function FavoriteListScreen(props: Props) {
 }
 
 export default withPureList({
-  url: '/services/favourites?sort=updatedAt%2CDESC&',
+  url: '/services/favourites',
   fields: [
     'id',
     'enTitle',

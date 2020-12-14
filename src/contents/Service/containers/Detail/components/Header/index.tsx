@@ -16,6 +16,7 @@ interface Props {
   theme?: any;
   isFavourite?: boolean;
   id: number;
+  handleSetFavourite?: any;
 }
 
 interface State {

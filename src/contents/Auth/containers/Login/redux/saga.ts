@@ -15,14 +15,14 @@ export function* realtorLoginSaga({ payload }: { payload: any }) {
 
     Global.token = data.token;
 
-    // Register FCM Token
-    yield call(registerFcmTokenApi, { nofifyToken: Global.fcmToken });
-
     yield put(loginSuccess(data));
     const requiredLogin = yield select((state) => requireLoginSelector(state));
     if (!requiredLogin) {
       NavigationService.goBack();
     }
+
+    // Register FCM Token
+    yield call(registerFcmTokenApi, { nofifyToken: Global.fcmToken });
     return true;
   } catch (error) {
     yield put(loginFail(Redux.handleException(error)));
