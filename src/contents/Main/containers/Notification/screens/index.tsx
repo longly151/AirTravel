@@ -14,6 +14,8 @@ import { WithListProps } from '@utils/hocHelper';
 interface Props extends WithListProps {
   navigation: any;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const renderItem = ({ item }: { item: any }) => <Text>OK</Text>;
 
 function NotificationListScreen(props: Props) {

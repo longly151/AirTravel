@@ -1,7 +1,4 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import AppHelper from '@utils/appHelper';
-import { ThemeEnum } from '@contents/Config/redux/slice';
 import AppView from '@utils/appView';
 import {
   QuickView,

@@ -1,7 +1,7 @@
-import { Icon, QuickView } from '@components';
+import { Icon } from '@components';
 import Api from '@utils/api';
 import React, { Component } from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 interface Props {
   active: boolean;
@@ -34,7 +34,10 @@ class WishlistIcon extends Component<Props, State> {
       try {
         await Api.put(`/customers/services/${id}/favourites`);
         this.setState({ active: !active });
-      } catch (error) {}
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('error', error);
+      }
     }
   };
 
