@@ -10,7 +10,7 @@ import Redux from '@utils/redux';
 import {
   loginSuccess, loginFail, login, logout,
 } from './slice';
-import { realtorLoginApi, registerFcmTokenApi } from './api';
+import { realtorLoginApi, registerFcmTokenApi, removeFcmTokenApi } from './api';
 
 export function* realtorLoginSaga({ payload }: { payload: any }) {
   try {
@@ -47,6 +47,9 @@ export function* realtorLogoutSaga() {
     // yield call(removeAsyncStorageData);
     // const after = yield call(viewAsyncStorageData);
     // console.log('after remove', after);
+
+    // Remove FCM Token
+    yield call(removeFcmTokenApi, { nofifyToken: Global.fcmToken });
 
     yield call(removeAsyncStorageData);
     yield put({ type: 'RESET_REDUX' });

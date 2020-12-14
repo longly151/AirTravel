@@ -1,33 +1,52 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import {
-  QuickView, Text, Container, Header, Body, Image,
-} from '@components';
+import React from 'react';
 import AppView from '@utils/appView';
+import {
+  QuickView,
+  Text,
+  Header,
+  withPureList,
+  Container,
+  Body,
+  Image
+} from '@components';
+import { WithListProps } from '@utils/hocHelper';
 
-class NotificationListScreen extends PureComponent {
-  render() {
-    return (
-      <Container>
-        <Header t="header:notification" shadow />
-        <Body>
-          <QuickView center height="100%">
-            <Image source={require('@assets/images/empty-notification.png')} width={0.7 * AppView.screenWidth} />
-            <Text marginTop={30} primary type="xTitle" bold center t="empty:empty_notification" />
-          </QuickView>
-        </Body>
-      </Container>
-    );
-  }
+interface Props extends WithListProps {
+  navigation: any;
+}
+const renderItem = ({ item }: { item: any }) => <Text>OK</Text>;
+
+function NotificationListScreen(props: Props) {
+  const { navigation, applyFilter, renderFlatList } = props;
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      applyFilter(true);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const renderEmpty = () => (
+    <QuickView center marginTop={AppView.screenHeight / 5}>
+      <Image source={require('@assets/images/empty-notification.png')} width={0.7 * AppView.screenWidth} />
+      <Text marginTop={30} primary type="xTitle" bold center t="empty:empty_notification" />
+    </QuickView>
+  );
+
+  return (
+    <Container>
+      <Header t="header:notification" shadow />
+      <Body>
+        {renderFlatList({
+          renderEmpty,
+          contentContainerStyle: { marginTop: 15, paddingBottom: 20 },
+        })}
+      </Body>
+    </Container>
+  );
 }
 
-const mapStateToProps = (state: any) => ({
-
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationListScreen);
+export default withPureList({
+  url: '/customers/notifications?sort=updatedAt%2CDESC&',
+  renderItem,
+})(NotificationListScreen);
