@@ -159,7 +159,7 @@ function ListServiceScreen(props: any) {
     if (open) open();
   };
 
-  const { renderFlatList, theme } = props;
+  const { renderFlatList, theme, serviceListRefreshCount, data } = props;
 
   return (
     <Body>
@@ -200,7 +200,6 @@ function ListServiceScreen(props: any) {
               color={theme.colors.primaryText}
             />
           </QuickView>
-
           <MapButton />
         </QuickView>
       </TouchableOpacity>
@@ -231,7 +230,7 @@ function ListServiceScreen(props: any) {
           />
         </QuickView>
       </QuickView>
-      {renderFlatList()}
+      {renderFlatList({ key: serviceListRefreshCount, extraData: data, keyExtractor: (item: any) => `${item.id}_${item.isFavourite}` })}
     </Body>
   );
 }
@@ -260,5 +259,9 @@ export default compose(
       'updatedAt',
     ],
     renderItem,
+
+    mapStateToProps: (state: any) => ({
+      serviceListRefreshCount: state.service.serviceListRefreshCount
+    })
   }),
 )(ListServiceScreen as any);

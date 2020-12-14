@@ -16,7 +16,7 @@ interface Props extends WithListProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const renderItem = ({ item }: { item: any }) => <Text>OK</Text>;
+const renderItem = ({ item }: { item: any }) => <Text>Notification</Text>;
 
 function NotificationListScreen(props: Props) {
   const { navigation, applyFilter, renderFlatList } = props;

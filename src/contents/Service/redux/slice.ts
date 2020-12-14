@@ -18,6 +18,15 @@ const slice = createSlice({
       `${CONSTANT.NAME}GetList`,
       CONSTANT.LIST,
     ),
+    setFavourite: (state, action) => {
+      state.listData.forEach((element: any, index: number) => {
+        const { id, isFavourite } = action.payload;
+        if (element.id === id) {
+          state.listData[index].isFavourite = isFavourite;
+        }
+      });
+      // state.serviceListRefreshCount += 1;
+    },
     ...Redux.createArrayReducer<TSpecialList>(
       `${CONSTANT.NAME}GetSpecialList`,
       CONSTANT.SPECIAL_LIST,
@@ -51,6 +60,7 @@ export const {
   serviceGetList,
   serviceGetListSuccess,
   serviceGetListFail,
+  setFavourite,
   serviceGetSpecialList,
   serviceGetSpecialListSuccess,
   serviceGetSpecialListFail,

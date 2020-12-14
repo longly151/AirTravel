@@ -45,11 +45,13 @@ class CardService extends PureComponent<Props> {
       <QuickView
         marginBottom={20}
         row
-        onPress={() =>
+        onPress={() => {
+          if (!showHeartIcon) data.isFavourite = true;
           NavigationService.navigate(serviceRoutes.detail, {
             screen: detailServiceStack.index,
             params: AppHelper.setItemIntoParams(data),
-          })
+          });
+        }
         }>
         <Image
           source={{ uri: data.thumbnail }}
