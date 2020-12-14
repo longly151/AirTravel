@@ -16,11 +16,13 @@ import AppHelper from '@utils/appHelper';
 import detailServiceStack from '@contents/Service/containers/Detail/routes';
 import Helper from '@utils/helper';
 import i18next from 'i18next';
-import Selector from '@utils/selector';
-import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { Global } from '@utils/api';
 import serviceRoutes from '../../../../Service/routes';
 import { billGetList, CONSTANT } from '../redux/slice';
+
+interface Props extends WithListProps {
+  navigation: any;
+}
 
 const renderBadge = (item: any) => {
   switch (item.status) {
@@ -165,7 +167,14 @@ const renderItem = ({ item, index }: {item: any, index: number}, themeName: Them
   );
 };
 
-class TripListScreen extends PureComponent<WithListProps> {
+class TripListScreen extends PureComponent<Props> {
+  componentDidMount() {
+    const { navigation, applyFilter } = this.props;
+    const unsubscribe = navigation.addListener('focus', () => {
+      applyFilter(true);
+    });
+  }
+
   renderEmpty = () => (
     <QuickView center marginTop={AppView.screenHeight / 5}>
       <Image source={require('@assets/images/empty-trip.png')} width={0.7 * AppView.screenWidth} />
@@ -181,7 +190,7 @@ class TripListScreen extends PureComponent<WithListProps> {
       <Container>
         <Header t="header:trip" shadow homeIcon={item?.goHome} />
         <Body fullWidth>
-          {renderFlatList({ renderEmpty: this.renderEmpty, key: Global.token.toString() })}
+          {renderFlatList({ renderEmpty: this.renderEmpty, key: Global?.token?.toString() || 'empty' })}
         </Body>
       </Container>
     );
@@ -196,7 +205,4 @@ export default withReduxList({
   },
   fields: ['id', 'totalPrice', 'status', 'createdAt', 'updatedAt'],
   renderItem,
-  mapStateToProps: (state: any) => ({
-    loginData: Selector.getObject(loginSelector, state),
-  }),
 })(TripListScreen);

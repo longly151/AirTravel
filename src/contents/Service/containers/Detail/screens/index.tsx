@@ -39,7 +39,12 @@ class ServiceDetailScreen extends PureComponent<WithDetailProps & IBase> {
     return (
       <Container>
         <ScrollView>
-          <Header gallery={data?.gallery} loading={loading} />
+          <Header
+            gallery={data?.gallery}
+            loading={loading}
+            isFavourite={data?.isFavourite}
+            id={data?.id}
+          />
           <Body data={data} loading={loading} error={error} />
         </ScrollView>
         <QuickView
