@@ -7,8 +7,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
 import AppView from '@utils/appView';
 import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
-import { connect } from 'react-redux';
-import { setFavourite } from '@contents/Service/redux/slice';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -45,7 +43,7 @@ class Header extends PureComponent<Props, State> {
 
   render() {
     const { activeSlide } = this.state;
-    const { loading, gallery, isFavourite, id, handleSetFavourite } = this.props;
+    const { loading, gallery, isFavourite, id } = this.props;
     return (
       <QuickView position="relative" height={300}>
         {
