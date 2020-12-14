@@ -45,7 +45,7 @@ export function* getSpecialListSaga({ payload }: { payload: any }) {
 export function* getDetailSaga({ payload }: { payload: any }) {
   try {
     const response = yield call(fetchServiceById, payload.id);
-    yield put(serviceGetDetailSuccess(response));
+    yield put(serviceGetDetailSuccess(response.data));
     return true;
   } catch (error) {
     yield put(serviceGetDetailFail(yield* handleException(error)));

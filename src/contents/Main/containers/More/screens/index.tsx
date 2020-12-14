@@ -14,6 +14,7 @@ import { compose } from 'recompose';
 import Selector from '@utils/selector';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { withTranslation } from 'react-i18next';
+import { Global } from '@utils/api';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -40,14 +41,8 @@ interface Props {
 }
 
 class Settings extends React.PureComponent<Props> {
-  renderItem = ({
-    title, backgroundColor, icon, rightElement,
-  }: any) => (
-    <ListItem
-      containerStyle={{ paddingVertical: 8 }}
-      key={title}
-      bottomDivider
-    >
+  renderItem = ({ title, backgroundColor, icon, rightElement }: any) => (
+    <ListItem containerStyle={{ paddingVertical: 8 }} key={title} bottomDivider>
       <Icon
         name={icon}
         type="ionicon"
@@ -63,9 +58,7 @@ class Settings extends React.PureComponent<Props> {
         }}
       />
       <ListItem.Content>
-        <ListItem.Title>
-          {title}
-        </ListItem.Title>
+        <ListItem.Title>{title}</ListItem.Title>
       </ListItem.Content>
       {rightElement}
     </ListItem>
@@ -102,29 +95,26 @@ class Settings extends React.PureComponent<Props> {
 
     const { theme, loginData } = this.props;
 
-    return Object.keys(loginData.data).length !== 0 ? (
+    return loginData.data.token ? (
       <Container>
         <QuickView
           height={200}
           backgroundColor={theme.colors.primary}
           position="relative"
           borderBottomLeftRadius={24}
-          borderBottomRightRadius={24}
-        >
+          borderBottomRightRadius={24}>
           <QuickView
             padding={20}
             position="absolute"
             top={120}
             width={AppView.screenWidth}
-            borderRadius={10}
-          >
+            borderRadius={10}>
             <QuickView
               alignItems="center"
               backgroundColor={theme.colors.primaryBackground}
               position="relative"
               borderRadius={20}
-              style={AppView.shadow}
-            >
+              style={AppView.shadow}>
               <Avatar
                 size="xlarge"
                 rounded
@@ -190,4 +180,8 @@ const withReduce = connect(mapStateToProps, mapDispatchToProps, null, {
   forwardRef: true,
 });
 
-export default compose(withTheme, withReduce, withTranslation())(Settings as any);
+export default compose(
+  withTheme,
+  withReduce,
+  withTranslation(),
+)(Settings as any);

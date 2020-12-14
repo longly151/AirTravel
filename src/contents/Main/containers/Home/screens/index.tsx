@@ -35,19 +35,17 @@ class HomeScreen extends PureComponent<Props> {
     };
     return (
       <Container scrollable>
-        {
-          list.loading ? (
-            <Loading marginTop={50} />
-          ) : (
-            <>
-              <Greeting {...listProps} />
-              <CrucialCategory />
-              <Categories />
-              <HotDeals {...listProps} />
-              <Destinations />
-            </>
-          )
-        }
+        {list.loading ? (
+          <Loading marginTop={50} />
+        ) : (
+          <>
+            <Greeting {...listProps} />
+            <CrucialCategory />
+            <Categories />
+            <HotDeals {...listProps} />
+            {/* <Destinations /> */}
+          </>
+        )}
       </Container>
     );
   }
@@ -58,8 +56,10 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getSpecialList: (query?: TQuery) => dispatch(serviceGetSpecialList({ query })),
-  getCategoryList: (query?: TQuery) => dispatch(serviceCategoryGetList({ query })),
+  getSpecialList: (query?: TQuery) =>
+    dispatch(serviceGetSpecialList({ query })),
+  getCategoryList: (query?: TQuery) =>
+    dispatch(serviceCategoryGetList({ query })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

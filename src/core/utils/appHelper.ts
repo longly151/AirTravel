@@ -38,9 +38,9 @@ export interface IImage {
   sourceUrl?: string;
   remoteUrl?: string;
   resizedImageUrl?: {
-    origin: string,
-    medium: string,
-    thumbnail: string
+    origin: string;
+    medium: string;
+    thumbnail: string;
   };
 }
 
@@ -81,7 +81,7 @@ export class CAppHelper {
     const itemsArray = await AsyncStorage.multiGet(keys);
     const result: any = {};
     itemsArray.map((item) => {
-    // eslint-disable-next-line prefer-destructuring
+      // eslint-disable-next-line prefer-destructuring
       result[`${item[0]}`] = item[1];
       return result;
     });
@@ -89,21 +89,17 @@ export class CAppHelper {
   }
 
   getParams(props: any) {
-    const {
-      route,
-    } = props;
+    const { route } = props;
     return route?.params;
   }
 
   getItemFromParams(props: any) {
-    const {
-      route,
-    } = props;
+    const { route } = props;
     return route?.params?.item;
   }
 
   setItemIntoParams(item: any) {
-    return ({ item });
+    return { item };
   }
 
   focusNextField(component: any, name: string) {
@@ -115,14 +111,12 @@ export class CAppHelper {
   }
 
   getIdFromParams(props: any) {
-    const {
-      route,
-    } = props;
+    const { route } = props;
     return route?.params?.item?.id || route?.params?.id;
   }
 
   setIdIntoParams(item: any) {
-    return ({ item: { id: item.id } });
+    return { item: { id: item.id } };
   }
 
   setModalIntoGlobal(content: any): number {
@@ -133,7 +127,7 @@ export class CAppHelper {
       id = 1;
       modal = {
         id,
-        content
+        content,
       };
       Global.modal.push(modal);
       return id;
@@ -149,7 +143,7 @@ export class CAppHelper {
     id = preId + 1;
     modal = {
       id,
-      content
+      content,
     };
     Global.modal.push(modal);
     return id;
@@ -168,35 +162,39 @@ export class CAppHelper {
     const result = await Api.post(presignedUrlApi, data);
     const returnResult: any = [];
     result.data.forEach((item: any) => {
-      returnResult.push(
-        {
-          presignedUrl: item.presignedUrl,
-          returnUrl: item.url,
-        }
-      );
+      returnResult.push({
+        presignedUrl: item.presignedUrl,
+        returnUrl: item.url,
+      });
     });
     return returnResult;
   };
 
-  async uploadToS3(presignedUrl: string, data: {
-    name?: string,
-    type: string,
-    uri: string,
-  }) {
-    const uri = Platform.OS === 'ios'
-      ? data.uri.replace('file:///', '').replace('file://', '')
-      : data.uri.replace('file://', '').replace('file:/', '');
+  async uploadToS3(
+    presignedUrl: string,
+    data: {
+      name?: string;
+      type: string;
+      uri: string;
+    },
+  ) {
+    const uri =
+      Platform.OS === 'ios'
+        ? data.uri.replace('file:///', '').replace('file://', '')
+        : data.uri.replace('file://', '').replace('file:/', '');
 
     return RNFetchBlob.fetch(
       'PUT',
       presignedUrl,
-      { 'Content-Type': data.type,
-      },
+      { 'Content-Type': data.type },
       RNFetchBlob.wrap(uri),
     );
   }
 
-  async uploadImageToS3(folderPrefix: string = 'images', image: IImage): Promise<string> {
+  async uploadImageToS3(
+    folderPrefix: string = 'images',
+    image: IImage,
+  ): Promise<string> {
     // Get uploadUrl
     const uploadUrlBody: any = [];
     uploadUrlBody.push({
@@ -222,15 +220,16 @@ export class CAppHelper {
     }
   }
 
-  async uploadResizedImageToS3(folderPrefix: string = 'images', resizedImage: IResizedImage): Promise<{origin: string, medium: string, thumbnail: string}> {
+  async uploadResizedImageToS3(
+    folderPrefix: string = 'images',
+    resizedImage: IResizedImage,
+  ): Promise<{ origin: string; medium: string; thumbnail: string }> {
     // Get uploadUrl
     const uploadUrlBody: any = [];
     const keys: any = [];
     // eslint-disable-next-line no-restricted-syntax
-    for (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [key, value] of Object.entries(resizedImage)
-    ) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [key, value] of Object.entries(resizedImage)) {
       uploadUrlBody.push({
         type: value.mime,
         fileName: value.name,
@@ -250,7 +249,10 @@ export class CAppHelper {
         type: resizedImage.origin.mime,
         uri: resizedImage.origin.path,
       };
-      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'origin')].presignedUrl, origin);
+      await this.uploadToS3(
+        uploadUrls[_.indexOf(keys, 'origin')].presignedUrl,
+        origin,
+      );
       returnUrl.origin = uploadUrls[0].returnUrl;
 
       // medium
@@ -259,7 +261,10 @@ export class CAppHelper {
         type: resizedImage.medium.mime,
         uri: resizedImage.medium.path,
       };
-      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'medium')].presignedUrl, medium);
+      await this.uploadToS3(
+        uploadUrls[_.indexOf(keys, 'medium')].presignedUrl,
+        medium,
+      );
       returnUrl.medium = uploadUrls[0].returnUrl;
 
       // medium
@@ -268,7 +273,10 @@ export class CAppHelper {
         type: resizedImage.thumbnail.mime,
         uri: resizedImage.thumbnail.path,
       };
-      await this.uploadToS3(uploadUrls[_.indexOf(keys, 'thumbnail')].presignedUrl, thumbnail);
+      await this.uploadToS3(
+        uploadUrls[_.indexOf(keys, 'thumbnail')].presignedUrl,
+        thumbnail,
+      );
       returnUrl.thumbnail = uploadUrls[0].returnUrl;
 
       return returnUrl;
@@ -282,7 +290,11 @@ export class CAppHelper {
   }
 
   // eslint-disable-next-line max-len
-  async resize(image: Image, resizedWidth: number = 500, resizedHeight?: number): Promise<IImage> {
+  async resize(
+    image: Image,
+    resizedWidth: number = 500,
+    resizedHeight?: number,
+  ): Promise<IImage> {
     const uri = image.path;
     let imageFormat: any = 'JPEG';
     switch (uri.split('.').pop()) {
@@ -298,9 +310,14 @@ export class CAppHelper {
         imageFormat = 'JPEG';
         break;
     }
-    const height: number = resizedHeight || (image.height / image.width) * resizedWidth;
+    const height: number =
+      resizedHeight || (image.height / image.width) * resizedWidth;
     const data = await ImageResizer.createResizedImage(
-      uri, resizedWidth, height, imageFormat, 95
+      uri,
+      resizedWidth,
+      height,
+      imageFormat,
+      95,
     );
 
     return {
@@ -310,7 +327,7 @@ export class CAppHelper {
       height: data.height,
       size: data.size,
       path: data.path,
-      sourceUrl: image.sourceURL
+      sourceUrl: image.sourceURL,
     };
   }
 
@@ -332,7 +349,9 @@ export class CAppHelper {
     });
   };
 
-  showNotificationMessage = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+  showNotificationMessage = (
+    remoteMessage: FirebaseMessagingTypes.RemoteMessage,
+  ) => {
     if (remoteMessage.notification) {
       showMessage({
         message: remoteMessage.notification.title || '',
@@ -352,15 +371,83 @@ export class CAppHelper {
 
   initCalendarLanguage = () => {
     LocaleConfig.locales.en = {
-      monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      monthNamesShort: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'],
-      dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      monthNames: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ],
+      monthNamesShort: [
+        'jan',
+        'feb',
+        'mar',
+        'apr',
+        'may',
+        'jun',
+        'jul',
+        'aug',
+        'sep',
+        'oct',
+        'nov',
+        'dec',
+      ],
+      dayNames: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ],
+      dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     };
     LocaleConfig.locales.vi = {
-      monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-      monthNamesShort: ['Thg.1', 'Thg.2', 'Thg.3', 'Thg.4', 'Thg.5', 'Thg.6', 'Thg.7', 'Thg.8', 'Thg.9', 'Thg.10', 'Thg.11', 'Thg.12'],
-      dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+      monthNames: [
+        'Tháng 1',
+        'Tháng 2',
+        'Tháng 3',
+        'Tháng 4',
+        'Tháng 5',
+        'Tháng 6',
+        'Tháng 7',
+        'Tháng 8',
+        'Tháng 9',
+        'Tháng 10',
+        'Tháng 11',
+        'Tháng 12',
+      ],
+      monthNamesShort: [
+        'Thg.1',
+        'Thg.2',
+        'Thg.3',
+        'Thg.4',
+        'Thg.5',
+        'Thg.6',
+        'Thg.7',
+        'Thg.8',
+        'Thg.9',
+        'Thg.10',
+        'Thg.11',
+        'Thg.12',
+      ],
+      dayNames: [
+        'Chủ nhật',
+        'Thứ 2',
+        'Thứ 3',
+        'Thứ 4',
+        'Thứ 5',
+        'Thứ 6',
+        'Thứ 7',
+      ],
       dayNamesShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
     };
   };

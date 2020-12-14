@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
     zIndex: 99999,
   },
   inputContainer: {
-    borderColor: '#fff',
-
     marginTop: -20,
     marginBottom: -50,
     marginRight: 0,
@@ -107,9 +105,12 @@ function ListServiceScreen(props: any) {
               paddingVertical: 20,
               paddingHorizontal: 20,
             }}>
-            <Text bold fontSize={22} marginBottom={10}>
-              Service
-            </Text>
+            <Text
+              bold
+              fontSize={22}
+              marginBottom={10}
+              t="list_service:filter_title"
+            />
             <ListCheckBox
               data={dataRow}
               defaultValue={selectedCategories}
@@ -128,7 +129,7 @@ function ListServiceScreen(props: any) {
             />
           </BottomSheetScrollView>
           <Button
-            title="Show all services"
+            t="list_service:filter_button"
             borderRadius={8}
             fontSize={18}
             titlePaddingHorizontal={35}
@@ -148,31 +149,37 @@ function ListServiceScreen(props: any) {
     if (open) open();
   };
 
-  const { renderFlatList } = props;
+  const { renderFlatList, theme } = props;
 
   return (
     <Body>
       <TouchableOpacity activeOpacity={0.9}>
         <QuickView
-          backgroundColor="#fff"
+          backgroundColor={theme.colors.primaryBackground}
           row
           alignItems="center"
           justifyContent="space-between"
           padding={10}
           borderRadius={8}
           borderWidth={2}
+          style={{ borderColor: theme.colors.primaryText }}
           marginTop={20}>
           <QuickView row alignItems="center" width={300}>
-            <Icon name="magnify" size={24} />
+            <Icon name="magnify" size={24} color={theme.colors.primaryText} />
             <Input
-              placeholder="Where are you going?"
               onChangeText={handleOnChangeText}
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={{
+                ...styles.inputContainer,
+                borderColor: theme.colors.primaryBackground,
+              }}
               inputStyle={styles.input}
             />
           </QuickView>
           <QuickView
-            style={{ borderRightWidth: 2 }}
+            style={{
+              borderRightWidth: 2,
+              borderColor: theme.colors.primaryText,
+            }}
             marginLeft={-20}
             marginRight={5}
             paddingVertical={2}>
@@ -180,6 +187,7 @@ function ListServiceScreen(props: any) {
               name="filter-outline"
               size={22}
               onPress={renderScrollBottomSheet}
+              color={theme.colors.primaryText}
             />
           </QuickView>
 
@@ -196,13 +204,22 @@ function ListServiceScreen(props: any) {
         position="relative">
         <Icon
           name="arrow-left"
+          color={theme.colors.primaryText}
           size={24}
           onPress={() => NavigationService.goBack()}
           style={{ position: 'absolute', left: 0 }}
         />
-        <Text fontSize={18} bold>
-          {totalServices} services to enjoy
-        </Text>
+        <QuickView row>
+          <Text fontSize={18} bold>
+            {totalServices}
+          </Text>
+          <Text
+            fontSize={18}
+            bold
+            t="list_service:amount_title"
+            style={{ marginLeft: 5 }}
+          />
+        </QuickView>
       </QuickView>
       {renderFlatList()}
     </Body>
@@ -230,7 +247,7 @@ export default compose(
       'unit',
       'destinations',
       'createdAt',
-      'updatedAt'
+      'updatedAt',
     ],
     renderItem,
   }),

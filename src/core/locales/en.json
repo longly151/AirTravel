@@ -91,14 +91,15 @@
     "resend_otp": "Resend verification code?"
   },
   "home": {
-    "greet": "Hello, ",
+    "greet": "Hello,",
     "expected_find": "Where do you want to go?",
     "btn_find": "Where are you going?",
     "crucial_category_title": "Get out and broaden your horizontal",
     "crucial_category_subTitle": "Plan a different kind of getaway to uncover the hidden gems in your life.",
     "crucial_category_btn_explore": "Let's go",
     "hot_deal_title": "Hot deals",
-    "hot_deal_explore": "Explore all"
+    "hot_deal_explore": "Explore ",
+    "destination": "Your next trip"
   },
   "validator": {
     "email": "E-Mail does not appear to be valid!",
@@ -147,5 +148,10 @@
     "success": "Success",
     "cancel": "Cancel",
     "pay_info": "Please transfer to this account number:\n\nHolder: NGUYEN THI PHU\nAccount Number: 2010108100599\nBank: MB-Bank\nAmount: {{amount}} VND"
+  },
+  "list_service": {
+    "amount_title": "services to enjoy",
+    "filter_title": "Service categories",
+    "filter_button": "Show all services"
   }
 }

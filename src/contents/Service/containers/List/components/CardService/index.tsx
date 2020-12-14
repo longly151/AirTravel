@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { withTheme, ThemeProps } from 'react-native-elements';
 import { QuickView, Text, Image } from '@components';
@@ -6,6 +7,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
 import AppHelper from '@utils/appHelper';
 import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
 import serviceRoutes from '../../../../routes';
 
 const { width: viewportWidth } = Dimensions.get('window');
@@ -32,14 +35,12 @@ class CardService extends PureComponent<Props> {
       <QuickView
         marginBottom={40}
         row
-        onPress={() => NavigationService.navigate(
-          serviceRoutes.detail,
-          {
+        onPress={() =>
+          NavigationService.navigate(serviceRoutes.detail, {
             screen: detailServiceStack.index,
             params: AppHelper.setItemIntoParams(data),
-          }
-        )}
-      >
+          })
+        }>
         <Image
           source={{ uri: data.thumbnail }}
           height={130}
@@ -53,11 +54,12 @@ class CardService extends PureComponent<Props> {
         <QuickView
           width={(viewportWidth - 32) / 2 - 15}
           marginLeft={15}
-          justifyContent="space-between"
-        >
+          justifyContent="space-between">
           <QuickView>
             <Text numberOfLines={2} fontSize={20} bold>
-              {data.enTitle}
+              {i18next.t('key') === LanguageEnum.EN
+                ? data.enTitle
+                : data.viTitle}
             </Text>
             <QuickView row alignItems="center" marginTop={10}>
               <Icon name="map-marker" color="red" size={16} />

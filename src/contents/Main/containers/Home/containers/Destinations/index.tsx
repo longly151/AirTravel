@@ -20,8 +20,7 @@ class Destinations extends PureComponent<Props> {
           onPress={() => {
             NavigationService.navigate(homeStack.service);
           }}
-          key={e.id}
-        >
+          key={e.id}>
           <QuickView row marginBottom={12}>
             <Image
               source={{ uri: e.illustration }}
@@ -47,9 +46,13 @@ class Destinations extends PureComponent<Props> {
   render() {
     return (
       <QuickView marginTop={20} marginBottom={30}>
-        <Text fontSize={24} bold marginBottom={30} marginLeft={18}>
-          Your next trip
-        </Text>
+        <Text
+          fontSize={24}
+          bold
+          marginBottom={30}
+          marginLeft={18}
+          t="home:destination"
+        />
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
