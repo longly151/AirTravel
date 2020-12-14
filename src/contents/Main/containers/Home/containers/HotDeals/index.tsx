@@ -1,9 +1,14 @@
+/* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Badge, withTheme } from 'react-native-elements';
 import { QuickView, Text, Button, FlatList, Card } from '@components';
 import { NavigationService } from '@utils/navigation';
+import serviceStack from '@contents/Service/routes';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import AppHelper from '@utils/appHelper';
+import Helper from '@utils/helper';
 import hotDealStyles from './styles';
 import homeStack from '../../routes';
 
@@ -33,7 +38,13 @@ class HotDeals extends PureComponent<Props> {
         cardWidth={0.8 * viewportWidth}
         cardHeight={350}
         marginHorizontal={18}
-        backgroundColor={theme.Card.backgroundColor}>
+        backgroundColor={theme.Card.backgroundColor}
+        onPress={() =>
+          NavigationService.navigate(serviceStack.detail, {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(item),
+          })
+        }>
         <QuickView
           row
           marginTop={20}
@@ -41,14 +52,14 @@ class HotDeals extends PureComponent<Props> {
           alignItems="center">
           <QuickView row>
             <Text fontSize={18} color="#bf081f" marginRight={8}>
-              {`${item.currentPrice} vnd`}
+              {`${Helper.numberWithCommas(item.currentPrice)} vnd`}
             </Text>
             <Text
               fontSize={16}
               style={{
                 textDecorationLine: 'line-through',
               }}>
-              {`${item.price} vnd`}
+              {`${Helper.numberWithCommas(item.price)} vnd`}
             </Text>
           </QuickView>
           <Badge

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable implicit-arrow-linebreak */
 import React, { PureComponent } from 'react';
 import { withTheme, ThemeProps } from 'react-native-elements';
@@ -11,6 +12,7 @@ import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import WishlistIcon from '@contents/Service/containers/Common/WishlistIcon';
 import serviceRoutes from '../../../../routes';
+import Helper from '@utils/helper';
 
 const { width: viewportWidth } = Dimensions.get('window');
 
@@ -79,7 +81,9 @@ class CardService extends PureComponent<Props> {
               </Text>
             </QuickView>
           </QuickView>
-          <Text fontSize={14}>{`${data.currentPrice} vnd - ${data.unit}`}</Text>
+          <Text fontSize={14}>
+            {`${Helper.numberWithCommas(data.currentPrice)} vnd - ${data.unit}`}
+          </Text>
         </QuickView>
       </QuickView>
     );

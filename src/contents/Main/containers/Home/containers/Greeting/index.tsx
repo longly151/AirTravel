@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Dimensions } from 'react-native';
-import { withTheme, ThemeProps } from 'react-native-elements';
+import { withTheme } from 'react-native-elements';
 import { QuickView, Text, Button } from '@components';
 import { NavigationService } from '@utils/navigation';
 import Carousel from '../Carousel';
@@ -56,6 +56,4 @@ class Greeting extends PureComponent<Props> {
   }
 }
 
-export default withTheme(
-  (Greeting as unknown) as React.ComponentType<Props & ThemeProps<any>>,
-);
+export default withTheme(Greeting as any);

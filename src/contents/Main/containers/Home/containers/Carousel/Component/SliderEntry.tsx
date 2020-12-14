@@ -17,11 +17,11 @@ import { QuickView, Image, Text } from '@components';
 import i18next from 'i18next';
 import { LanguageEnum } from '@contents/Config/redux/slice';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { connect } from 'react-redux';
-import { serviceGetDetail } from '@contents/Service/redux/slice';
 import { NavigationService } from '@utils/navigation';
 import AppHelper from '@utils/appHelper';
-import serviceRoutes from '../../../../../../Service/routes';
+import detailServiceStack from '@contents/Service/containers/Detail/routes';
+import serviceStack from '@contents/Service/routes';
+import Helper from '@utils/helper';
 
 const IS_IOS = Platform.OS === 'ios';
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -133,7 +133,6 @@ class SliderEntry extends PureComponent<Props> {
       theme,
       backgroundColor,
       overlayColor,
-      getDetailService,
     } = this.props;
     const containerStyle = StyleSheet.flatten([
       styles.slideInnerContainer,
@@ -148,10 +147,10 @@ class SliderEntry extends PureComponent<Props> {
         activeOpacity={1}
         style={containerStyle}
         onPress={() =>
-          NavigationService.navigate(
-            serviceRoutes.detail,
-            AppHelper.setItemIntoParams(data),
-          )
+          NavigationService.navigate(serviceStack.detail, {
+            screen: detailServiceStack.index,
+            params: AppHelper.setItemIntoParams(data),
+          })
         }>
         <View
           style={[
@@ -225,7 +224,9 @@ class SliderEntry extends PureComponent<Props> {
               style={[styles.subtitle, { color: theme.Modal.textColor }]}
               numberOfLines={1}>
               <Text fontSize={14}>
-                {`${data.currentPrice} vnd - ${data.unit}`}
+                {`${Helper.numberWithCommas(data.currentPrice)} vnd - ${
+                  data.unit
+                }`}
               </Text>
             </Text>
           </QuickView>
@@ -235,17 +236,6 @@ class SliderEntry extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => ({});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  getDetailService: (id?: any) => dispatch(serviceGetDetail({ id })),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(
-  withTheme(
-    (SliderEntry as unknown) as React.ComponentType<Props & ThemeProps<any>>,
-  ),
+export default withTheme(
+  (SliderEntry as unknown) as React.ComponentType<Props & ThemeProps<any>>,
 );

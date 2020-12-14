@@ -21,6 +21,9 @@ import { compose } from 'recompose';
 import withBottomSheet from '@components/Hoc/withBottomSheet';
 import MapButton from '@contents/Main/containers/Home/Map/containers/MapButton';
 import CardService from './components/CardService';
+import i18next from 'i18next';
+import { LanguageEnum } from '@contents/Config/redux/slice';
+import _ from 'lodash';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -87,10 +90,17 @@ function ListServiceScreen(props: any) {
 
   const handleOnChangeText = (value: any) => {
     const { filter, applyFilter } = props;
-    filter.deleteFilterByKey('destination.city.name');
-    filter.mergeFilter('destination.city.name', '$contL', value);
+    if (i18next.t('key') === LanguageEnum.EN) {
+      filter.deleteFilterByKey('enTitle');
+      filter.mergeFilter('enTitle', '$contL', value);
+    } else {
+      filter.deleteFilterByKey('viTitle');
+      filter.mergeFilter('viTitle', '$contL', value);
+    }
     applyFilter();
   };
+
+  const debouncedOnSearch = _.debounce(handleOnChangeText, 1000);
 
   const renderScrollBottomSheet = () => {
     const { open, setModalContent, theme, close } = props;
@@ -167,12 +177,12 @@ function ListServiceScreen(props: any) {
           <QuickView row alignItems="center" width={300}>
             <Icon name="magnify" size={24} color={theme.colors.primaryText} />
             <Input
-              onChangeText={handleOnChangeText}
+              onChangeText={debouncedOnSearch}
               inputContainerStyle={{
                 ...styles.inputContainer,
                 borderColor: theme.colors.primaryBackground,
               }}
-              inputStyle={styles.input}
+              inputStyle={{ ...styles.input, color: theme.colors.primaryText }}
             />
           </QuickView>
           <QuickView
