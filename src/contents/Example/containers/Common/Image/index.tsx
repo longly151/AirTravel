@@ -205,7 +205,7 @@ class ImageExample extends PureComponent<any, State> {
             />
             <Text type="title" center marginBottom={5} marginTop={25}>Local Image</Text>
             <Image
-              source={require('@assets/images/loginBackground.png')}
+              source={require('@assets/images/loginBackground.jpg')}
               width={200}
               center
               viewEnable

@@ -5,10 +5,11 @@ import AppHelper from '@utils/appHelper';
 import Filter from '@utils/filter';
 import Api from '@utils/api';
 import { connect } from 'react-redux';
-import { themeSelector } from '@contents/Config/redux/selector';
+import { languageSelector, themeSelector } from '@contents/Config/redux/selector';
 import { ThemeEnum } from '@contents/Config/redux/slice';
 import _ from 'lodash';
 import HocHelper, { IReduxExtraItem, IExtraItem, IHocLog, IHocFlatListProps } from '@utils/hocHelper';
+import translate from 'translate-google-api';
 import FlatList from '../Common/FlatList/DefaultFlatList';
 
 export interface WithPureListProps {
@@ -20,7 +21,7 @@ export interface WithPureListProps {
 // };
 
 const withPureList = (
-  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log }: {
+  { url, fields, ListHeaderComponent, renderItem, extraData, reduxExtraData, mapStateToProps, mapDispatchToProps, log, contentTranslate }: {
     url: string,
     fields?: Array<string>,
     ListHeaderComponent?: React.ComponentType<any>,
@@ -29,7 +30,8 @@ const withPureList = (
     reduxExtraData?: IReduxExtraItem[],
     mapStateToProps?: (state: any) => any,
     mapDispatchToProps?: (dispatch: any) => any,
-    log?: IHocLog
+    log?: IHocLog,
+    contentTranslate?: boolean;
   }
 ) => <P extends object>(
   WrappedComponent: React.ComponentType<P>
@@ -89,7 +91,27 @@ const withPureList = (
       const { data: dataState } = this.state;
       try {
         this.setState({ loading: true });
+
         const response = await this.fetch(Redux.stringifyQuery(query));
+        const { languageName } = this.props;
+
+        // Temporary Translate
+        if (contentTranslate && languageName === 'vi' && response && response.data && !_.isEmpty(response.data)) {
+          try {
+            await Promise.all(response.data.map(async (e: any, index: number) => {
+              response.data[index].title = await translate(e.title, {
+                to: languageName,
+              });
+              response.data[index].body = await translate(e.body, {
+                to: languageName,
+              });
+            }));
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log('error', error);
+          }
+        }
+
         const { metadata } = response;
         const dataGet = response[dataPrefix];
         let data = dataGet;
@@ -175,7 +197,8 @@ const withPureList = (
 
   const customMapStateToProps = (state: any) => {
     let result: any = {
-      themeName: themeSelector(state)
+      themeName: themeSelector(state),
+      languageName: languageSelector(state)
     };
 
     if (mapStateToProps) {
