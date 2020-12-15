@@ -52,7 +52,7 @@ const renderItem = ({ item }: { item: any }, themeName: any) => {
 };
 
 function NotificationListScreen(props: Props) {
-  const { navigation, applyFilter, renderFlatList, language } = props;
+  const { navigation, applyFilter, renderFlatList } = props;
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
