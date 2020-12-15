@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationService } from '@utils/navigation';
 import { Input, withTheme } from 'react-native-elements';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import AppView from '@utils/appView';
@@ -203,33 +203,35 @@ function ListServiceScreen(props: any) {
           <MapButton />
         </QuickView>
       </TouchableOpacity>
-
-      <QuickView
-        row
-        alignItems="center"
-        justifyContent="center"
-        marginTop={20}
-        marginBottom={30}
-        position="relative">
-        <Icon
-          name="arrow-left"
-          color={theme.colors.primaryText}
-          size={24}
-          onPress={() => NavigationService.goBack()}
-          style={{ position: 'absolute', left: 0 }}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <QuickView
+          row
+          alignItems="center"
+          justifyContent="center"
+          marginTop={20}
+          marginBottom={30}
+          position="relative"
+        >
+          <Icon
+            name="arrow-left"
+            color={theme.colors.primaryText}
+            size={24}
+            onPress={() => NavigationService.goBack()}
+            style={{ position: 'absolute', left: 0 }}
         />
-        <QuickView row>
-          <Text fontSize={18} bold>
-            {totalServices}
-          </Text>
-          <Text
-            fontSize={18}
-            bold
-            t="list_service:amount_title"
-            style={{ marginLeft: 5 }}
+          <QuickView row>
+            <Text fontSize={18} bold>
+              {totalServices}
+            </Text>
+            <Text
+              fontSize={18}
+              bold
+              t="list_service:amount_title"
+              style={{ marginLeft: 5 }}
           />
+          </QuickView>
         </QuickView>
-      </QuickView>
+      </TouchableWithoutFeedback>
       {renderFlatList({ key: serviceListRefreshCount, extraData: data, keyExtractor: (item: any) => `${item.id}_${item.isFavourite}` })}
     </Body>
   );

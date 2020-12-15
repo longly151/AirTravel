@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
 import { QuickView, Container, Avatar } from '@components';
+import { Keyboard } from 'react-native';
 import RegisterForm from './Shared/RegisterForm';
 import LoginBackIcon from '../Login/Shared/LoginBackIcon';
 
 class RegisterScreen extends PureComponent {
   render() {
     return (
-      <Container>
+      <Container touchableComponent="TouchableWithoutFeedback" onPress={() => Keyboard.dismiss()}>
         <QuickView
           paddingHorizontal={20}
           backgroundImage={{
-            source: require('@assets/images/loginBackground.png'),
+            source: require('@assets/images/loginBackground.jpg'),
           }}
         >
           <LoginBackIcon />

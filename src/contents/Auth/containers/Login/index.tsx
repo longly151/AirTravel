@@ -2,14 +2,15 @@ import React, { PureComponent } from 'react';
 import {
   QuickView, Container, Avatar,
 } from '@components';
+import { Keyboard } from 'react-native';
 import LoginForm from './Shared/LoginForm';
 import LoginBackIcon from './Shared/LoginBackIcon';
 
 class LoginScreen extends PureComponent {
   render() {
     return (
-      <Container>
-        <QuickView paddingHorizontal={20} backgroundImage={{ source: require('@assets/images/loginBackground.png') }}>
+      <Container touchableComponent="TouchableWithoutFeedback" onPress={() => Keyboard.dismiss()}>
+        <QuickView paddingHorizontal={20} backgroundImage={{ source: require('@assets/images/loginBackground.jpg') }}>
           <LoginBackIcon />
           <QuickView marginBottom={20} marginTop={60} center>
             <Avatar
