@@ -12,7 +12,7 @@
     "test:handle": "jest",
     "test": "yarn test:pre && yarn test:handle && yarn test:after",
     "test:update": "yarn test:pre && yarn test:handle -- -u && yarn test:after",
-    "make:splash": "react-native set-splash --path src/assets/images/app/splash.png --background \"#222222\"",
+    "make:splash": "react-native set-splash --path src/assets/images/app/splash.png --resize cover --background \"#3b1d61\"",
     "make:icon": "react-native set-icon --platform ios --path src/assets/images/app/icon-ios.png && react-native set-icon --platform android --path src/assets/images/app/icon-android.png",
     "lint": "eslint . --ext .ts,.tsx --fix --max-warnings 0",
     "upstream": "git fetch upstream && git checkout upstream/dev -- src/components src/contents/Example"
@@ -103,6 +103,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
+    "@bam.tech/react-native-make": "^3.0.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/enzyme": "^3.10.7",
     "@types/enzyme-adapter-react-16": "^1.0.6",

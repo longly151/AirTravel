@@ -15,6 +15,7 @@ import Selector from '@utils/selector';
 import { loginSelector } from '@contents/Auth/containers/Login/redux/selector';
 import { withTranslation } from 'react-i18next';
 import { Global } from '@utils/api';
+import { ThemeEnum } from '@contents/Config/redux/slice';
 
 const BLUE = '#007AFF';
 const GREY = '#8E8E93';
@@ -94,6 +95,7 @@ class Settings extends React.PureComponent<Props> {
     ];
 
     const { theme, loginData } = this.props;
+    const bgColor = theme.key === ThemeEnum.DARK ? theme.colors.secondaryBackground : '#FFF';
 
     return loginData.data.token ? (
       <Container>
@@ -113,7 +115,7 @@ class Settings extends React.PureComponent<Props> {
           >
             <QuickView
               alignItems="center"
-              backgroundColor={theme.colors.primaryBackground}
+              backgroundColor={bgColor}
               position="relative"
               borderRadius={20}
               style={AppView.shadow}
