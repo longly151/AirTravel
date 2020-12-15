@@ -43,16 +43,16 @@ const renderItem = ({ item }: { item: any }, themeName: any) => {
         <Icon name="notifications" size={30} color={theme.colors.primary} />
       </QuickView>
       <QuickView flex={8.8} marginRight={10}>
-        <Text marginTop={10} marginBottom={5} type="title">{item.title}</Text>
-        <Text numberOfLines={1}>{item.body}</Text>
-        <Text numberOfLines={2} marginTop={5} marginBottom={10} type="subtitle">{moment(item.createdAt).fromNow()}</Text>
+        <Text numberOfLines={1} marginTop={10} marginBottom={5} type="title" primary>{item.title}</Text>
+        <Text numberOfLines={2}>{item.body}</Text>
+        <Text marginTop={5} marginBottom={10} type="subtitle">{moment(item.createdAt).fromNow()}</Text>
       </QuickView>
     </QuickView>
   );
 };
 
 function NotificationListScreen(props: Props) {
-  const { navigation, applyFilter, renderFlatList } = props;
+  const { navigation, applyFilter, renderFlatList, language } = props;
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -85,4 +85,5 @@ function NotificationListScreen(props: Props) {
 export default withPureList({
   url: '/customers/notifications?sort=updatedAt%2CDESC&',
   renderItem,
+  contentTranslate: true,
 })(withTheme(NotificationListScreen));
